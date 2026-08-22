@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Expo & Build outputs
+.expo/
+**/dist/
+web-build/
+*.tsbuildinfo
+
+# macOS & System files
+.DS_Store
+*.pem
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Native generated folders
+/ios
+/android

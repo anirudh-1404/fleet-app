@@ -1,0 +1,181 @@
+export const DUMMY_VEHICLES = [
+  {
+    id: "1",
+    name: "Volvo FH16",
+    registration: "ABC-123",
+    fleetNumber: "FLT-021",
+    vin: "1HGCM82633A123456",
+    make: "Volvo",
+    model: "FH16",
+    year: "2022",
+    odometer: "245,860 km",
+    type: "Trucks",
+    status: "Active",
+    healthStatus: "Good",
+    lastService: "Jan 12, 2026",
+    nextService: "250,000 km",
+    regoExpiry: "Oct 15, 2026",
+    insuranceExpiry: "Nov 30, 2026",
+    imageUrl: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "John Smith",
+      license: "AU-248716",
+      phone: "+61 412 345 678",
+      email: "john.smith@example.com"
+    }
+  },
+  {
+    id: "2",
+    name: "Scania R500",
+    registration: "XYZ-789",
+    fleetNumber: "FLT-022",
+    vin: "1HGCM82633A987654",
+    make: "Scania",
+    model: "R500",
+    year: "2021",
+    odometer: "189,450 km",
+    type: "Trucks",
+    status: "In Service",
+    healthStatus: "Good",
+    lastService: "Feb 05, 2026",
+    nextService: "200,000 km",
+    regoExpiry: "Dec 10, 2026",
+    insuranceExpiry: "Jan 15, 2027",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "Michael Brown",
+      license: "AU-185392",
+      phone: "+61 412 876 543",
+      email: "michael.brown@example.com"
+    }
+  },
+  {
+    id: "3",
+    name: "Toyota Hiace",
+    registration: "VAN-456",
+    fleetNumber: "FLT-035",
+    vin: "1HGCM82633A543210",
+    make: "Toyota",
+    model: "Hiace",
+    year: "2020",
+    odometer: "98,210 km",
+    type: "Vans",
+    status: "Active",
+    healthStatus: "Good",
+    lastService: "Nov 20, 2025",
+    nextService: "110,000 km",
+    regoExpiry: "Aug 05, 2026",
+    insuranceExpiry: "Sep 12, 2026",
+    imageUrl: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "Sarah Connor",
+      license: "AU-456123",
+      phone: "+61 412 777 888",
+      email: "sarah.connor@example.com"
+    }
+  },
+  {
+    id: "4",
+    name: "Ford Ranger",
+    registration: "UTE-101",
+    fleetNumber: "FLT-014",
+    vin: "1HGCM82633A112233",
+    make: "Ford",
+    model: "Ranger",
+    year: "2023",
+    odometer: "45,000 km",
+    type: "Utes",
+    status: "Out of Service",
+    healthStatus: "Needs Attention",
+    lastService: "Mar 15, 2026",
+    nextService: "50,000 km",
+    regoExpiry: "Jul 10, 2026",
+    insuranceExpiry: "Jul 10, 2026",
+    imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "Mike Tyson",
+      license: "AU-789012",
+      phone: "+61 412 999 000",
+      email: "mike.tyson@example.com"
+    }
+  },
+  {
+    id: "5",
+    name: "Tesla Model Y",
+    registration: "EV-888",
+    fleetNumber: "FLT-099",
+    vin: "1HGCM82633A445566",
+    make: "Tesla",
+    model: "Model Y",
+    year: "2022",
+    odometer: "32,450 km",
+    type: "Cars",
+    status: "Active",
+    healthStatus: "Excellent",
+    lastService: "May 10, 2025",
+    nextService: "40,000 km",
+    regoExpiry: "Feb 18, 2027",
+    insuranceExpiry: "Mar 01, 2027",
+    imageUrl: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "Elon Musk",
+      license: "AU-555333",
+      phone: "+61 412 222 333",
+      email: "elon.musk@example.com"
+    }
+  },
+  {
+    id: "6",
+    name: "Mercedes Sprinter",
+    registration: "SPR-555",
+    fleetNumber: "FLT-052",
+    vin: "1HGCM82633A778899",
+    make: "Mercedes",
+    model: "Sprinter",
+    year: "2021",
+    odometer: "120,550 km",
+    type: "Vans",
+    status: "In Service",
+    healthStatus: "Good",
+    lastService: "Dec 18, 2025",
+    nextService: "135,000 km",
+    regoExpiry: "Jun 30, 2026",
+    insuranceExpiry: "Jul 15, 2026",
+    imageUrl: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "James Bond",
+      license: "AU-007007",
+      phone: "+61 412 007 007",
+      email: "james.bond@example.com"
+    }
+  },
+  {
+    id: "7",
+    name: "Toyota Hilux",
+    registration: "HLX-303",
+    fleetNumber: "FLT-082",
+    vin: "1HGCM82633A990011",
+    make: "Toyota",
+    model: "Hilux",
+    year: "2020",
+    odometer: "156,700 km",
+    type: "Utes",
+    status: "Active",
+    healthStatus: "Good",
+    lastService: "Oct 25, 2025",
+    nextService: "170,000 km",
+    regoExpiry: "Sep 15, 2026",
+    insuranceExpiry: "Oct 01, 2026",
+    imageUrl: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80",
+    driver: {
+      name: "Tony Stark",
+      license: "AU-300000",
+      phone: "+61 412 300 000",
+      email: "tony.stark@example.com"
+    }
+  }
+];
+
+export const getVehicleById = (id) => {
+  return DUMMY_VEHICLES.find((v) => v.id === id) || DUMMY_VEHICLES[0];
+};
