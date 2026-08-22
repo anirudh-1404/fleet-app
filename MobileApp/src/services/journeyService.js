@@ -9,8 +9,8 @@ export const journeyService = {
     const res = await api.get("/journeys/today");
     return res.data;
   },
-  endJourney: async () => {
-    const res = await api.post("/journeys/end");
+  endJourney: async (endOdometer) => {
+    const res = await api.post("/journeys/end", { endOdometer });
     return res.data;
   },
 };

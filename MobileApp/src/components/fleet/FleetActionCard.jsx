@@ -2,59 +2,82 @@ import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+// Color mapping for premium visual hierarchy
+const ICON_THEMES = {
+  "car-sport-outline": { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" },
+  "people-outline": { bg: "#ECFDF5", icon: "#059669", border: "#A7F3D0" },
+  "checkbox-outline": { bg: "#F5F3FF", icon: "#7C3AED", border: "#DDD6FE" },
+  "construct-outline": { bg: "#FFFBEB", icon: "#D97706", border: "#FDE68A" },
+  "receipt-outline": { bg: "#F3F4F6", icon: "#4B5563", border: "#E5E7EB" },
+  "flash-outline": { bg: "#EFF6FF", icon: "#0284C7", border: "#BAE6FD" },
+  "call-outline": { bg: "#ECFEFF", icon: "#0891B2", border: "#A5F3FC" },
+  "document-text-outline": { bg: "#EEF2FF", icon: "#4F46E5", border: "#C7D2FE" },
+  "notifications-outline": { bg: "#FFF1F2", icon: "#E11D48", border: "#FECDD3" },
+};
+
 export default function FleetActionCard({ title, subtitle, icon, isFeatured, onPress }) {
+  const theme = ICON_THEMES[icon] || { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" };
+
   if (isFeatured) {
     return (
       <TouchableOpacity
-        activeOpacity={0.7}
+        activeOpacity={0.75}
         onPress={onPress}
-        className="w-full bg-white border border-[#E8EDF3] rounded-[24px] p-5 flex-row items-center justify-between min-h-[96px]"
+        className="w-full bg-white border border-[#E2E8F0] rounded-[24px] p-4 flex-row items-center justify-between min-h-[92px]"
         style={{
-          shadowColor: "#111827",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.015,
-          shadowRadius: 10,
-          elevation: 1,
+          shadowColor: "#0F172A",
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.03,
+          shadowRadius: 12,
+          elevation: 2,
         }}
       >
         <View className="flex-row items-center flex-1 mr-4">
-          <View className="w-12 h-12 rounded-full bg-[#EEF4FF] items-center justify-center mr-4">
-            <Ionicons name={icon} size={24} color="#2563EB" />
+          <View
+            className="w-12 h-12 rounded-[18px] items-center justify-center mr-3.5"
+            style={{ backgroundColor: theme.bg, borderWidth: 1, borderColor: theme.border }}
+          >
+            <Ionicons name={icon} size={24} color={theme.icon} />
           </View>
           <View className="flex-1">
-            <Text className="text-base font-bold text-[#111827]">{title}</Text>
-            <Text className="text-xs text-[#6B7280] mt-0.5">{subtitle}</Text>
+            <Text className="text-base font-bold text-[#0F172A] tracking-tight">{title}</Text>
+            <Text className="text-xs text-[#64748B] mt-0.5 font-medium">{subtitle}</Text>
           </View>
         </View>
-        <Ionicons name="chevron-forward" size={18} color="#6B7280" />
+        <View className="w-8 h-8 rounded-full bg-[#F8FAFC] items-center justify-center border border-[#E2E8F0]">
+          <Ionicons name="chevron-forward" size={16} color="#64748B" />
+        </View>
       </TouchableOpacity>
     );
   }
 
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.75}
       onPress={onPress}
-      className="flex-1 bg-white border border-[#E8EDF3] rounded-[24px] p-5 justify-between min-h-[145px]"
+      className="flex-1 bg-white border border-[#E2E8F0] rounded-[24px] p-4 justify-between min-h-[142px]"
       style={{
-        shadowColor: "#111827",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.015,
-        shadowRadius: 10,
-        elevation: 1,
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 12,
+        elevation: 2,
       }}
     >
-      <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center">
-        <Ionicons name={icon} size={20} color="#2563EB" />
+      <View
+        className="w-11 h-11 rounded-[16px] items-center justify-center"
+        style={{ backgroundColor: theme.bg, borderWidth: 1, borderColor: theme.border }}
+      >
+        <Ionicons name={icon} size={22} color={theme.icon} />
       </View>
-      <View className="flex-row justify-between items-end mt-5">
+      <View className="flex-row justify-between items-end mt-4">
         <View className="flex-1 mr-2">
-          <Text className="text-sm font-semibold text-[#111827]">{title}</Text>
-          <Text className="text-[11px] text-[#6B7280] mt-0.5" numberOfLines={1}>
+          <Text className="text-sm font-bold text-[#0F172A] tracking-tight">{title}</Text>
+          <Text className="text-[11px] text-[#64748B] font-medium mt-0.5" numberOfLines={1}>
             {subtitle}
           </Text>
         </View>
-        <Ionicons name="chevron-forward" size={16} color="#6B7280" />
+        <Ionicons name="chevron-forward" size={16} color="#94A3B8" />
       </View>
     </TouchableOpacity>
   );

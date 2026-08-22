@@ -60,7 +60,7 @@ export default function FuelScreen() {
     <SafeAreaView className="flex-1 bg-[#F5F7FA]" edges={["top"]}>
       {/* Header */}
       <View className="px-6 pt-4 flex-row items-center justify-between mb-5">
-        <View className="flex-row items-center flex-1 mr-3">
+        <View className="flex-row items-center flex-1">
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.goBack()}
@@ -80,22 +80,6 @@ export default function FuelScreen() {
             <Text className="text-sm text-[#6B7280] mt-0.5">Monitor driver fuel entries and logs</Text>
           </View>
         </View>
-
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation.navigate(ROUTES.ADD_FUEL)}
-          className="h-10 px-4 bg-[#2563EB] rounded-full items-center justify-center flex-row"
-          style={{
-            shadowColor: "#2563EB",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.15,
-            shadowRadius: 6,
-            elevation: 2,
-          }}
-        >
-          <Ionicons name="add" size={18} color="white" />
-          <Text className="text-white text-xs font-semibold ml-1">Add Log</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Search Bar */}
@@ -117,9 +101,7 @@ export default function FuelScreen() {
           flexGrow: 1,
         }}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate(ROUTES.FUEL_DETAILS, { fuelId: item.id })}
+          <View
             className="bg-white border border-[#E8EDF3] rounded-[24px] p-5 mb-4"
             style={{
               shadowColor: "#111827",
@@ -156,15 +138,13 @@ export default function FuelScreen() {
                 <Text className="text-xs font-semibold text-[#111827]">{item.odometer}</Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
         )}
         ListEmptyComponent={
           <EmptyState
             title="No Fuel Logs Found"
             subtitle="No fuel entries match your search query."
             icon="color-fill-outline"
-            actionText="Add New Fuel Log"
-            onActionPress={() => navigation.navigate(ROUTES.ADD_FUEL)}
           />
         }
       />

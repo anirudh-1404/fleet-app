@@ -106,7 +106,7 @@ export default function NotesScreen() {
               {item.content}
             </Text>
             <View className="border-t border-[#E8EDF3] pt-3 flex-row justify-between items-center">
-              <Text className="text-[10px] text-[#6B7280] font-medium">Author: {item.author || "Michael Johnson"}</Text>
+              <Text className="text-[10px] text-[#6B7280] font-medium">Author: {item.author || "Manager"}</Text>
               <View className="bg-[#EFF6FF] rounded-full px-2.5 py-0.5">
                 <Text className="text-[9px] font-bold text-[#2563EB]">
                   {item.linkedVehicle || "Volvo FH16"}

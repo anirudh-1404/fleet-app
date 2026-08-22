@@ -30,12 +30,15 @@ export const startJourney = async (req, res) => {
       return res.json(existingJourney);
     }
 
+    const initialOdometer = todayInspection.odometer ? Number(String(todayInspection.odometer).replace(/[^0-9.]/g, "")) || 0 : 0;
+
     const journey = await Journey.create({
       driver: driverId,
       vehicle: todayInspection.vehicle,
       inspection: todayInspection._id,
       date: today,
       status: "started",
+      startOdometer: initialOdometer,
       startedAt: new Date(),
     });
 
@@ -74,6 +77,7 @@ export const getTodayJourney = async (req, res) => {
 
 export const endJourney = async (req, res) => {
   try {
+    const { endOdometer } = req.body;
     const today = getTodayDateString();
     const journey = await Journey.findOne({
       driver: req.user._id,
@@ -85,12 +89,39 @@ export const endJourney = async (req, res) => {
       return res.status(404).json({ message: "No active journey found to end" });
     }
 
+    const endOdoNum = endOdometer ? Number(String(endOdometer).replace(/[^0-9.]/g, "")) : 0;
+
     journey.status = "completed";
     journey.endedAt = new Date();
+    if (endOdoNum > 0) {
+      journey.endOdometer = endOdoNum;
+      if (journey.startOdometer) {
+        journey.distanceTraveled = Math.max(0, endOdoNum - journey.startOdometer);
+      }
+    }
     await journey.save();
 
-    return res.json(journey);
+    // Update vehicle odometer and UNASSIGN vehicle from driver so driver can take another trip
+    if (journey.vehicle) {
+      const updateFields = { assignedDriver: null };
+      if (endOdoNum > 0) {
+        updateFields.odometer = endOdoNum;
+      }
+      await Vehicle.findByIdAndUpdate(journey.vehicle, updateFields);
+    }
+
+    const populated = await Journey.findById(journey._id)
+      .populate("driver", "name email phone photo")
+      .populate("vehicle", "registration fleetNumber vehicleType make model");
+
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("journeyEnded", populated);
+    }
+
+    return res.json(populated);
   } catch (error) {
+    console.error("End Journey Error:", error);
     return res.status(500).json({ message: "Server error ending journey" });
   }
 };

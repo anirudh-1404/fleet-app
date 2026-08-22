@@ -5,22 +5,22 @@ import { Ionicons } from "@expo/vector-icons";
 export default function FleetSummaryCard({ label, value, icon }) {
   return (
     <View
-      className="bg-white border border-[#E8EDF3] rounded-[24px] p-5 mr-4 w-[150px] justify-between"
+      className="bg-white border border-[#E2E8F0] rounded-[22px] p-4 mr-3.5 w-[145px] justify-between"
       style={{
-        shadowColor: "#111827",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.015,
+        shadowColor: "#0F172A",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.025,
         shadowRadius: 10,
-        elevation: 1,
+        elevation: 2,
       }}
     >
-      <View className="flex-row justify-between items-center">
-        <Text className="text-2xl font-bold text-[#111827]">{value}</Text>
-        <View className="w-8 h-8 rounded-full bg-[#F1F5F9] items-center justify-center">
-          <Ionicons name={icon} size={16} color="#6B7280" />
+      <View className="flex-row justify-between items-center mb-3">
+        <Text className="text-2xl font-extrabold text-[#0F172A] tracking-tight">{value}</Text>
+        <View className="w-8 h-8 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] items-center justify-center">
+          <Ionicons name={icon} size={16} color="#475569" />
         </View>
       </View>
-      <Text className="text-[11px] font-semibold text-[#6B7280] mt-4" numberOfLines={2}>
+      <Text className="text-xs font-semibold text-[#64748B]" numberOfLines={1}>
         {label}
       </Text>
     </View>

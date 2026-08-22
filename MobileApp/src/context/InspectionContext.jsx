@@ -46,7 +46,7 @@ export function InspectionProvider({ children }) {
       if (journeyRes.status === "fulfilled" && journeyRes.value) {
         const j = journeyRes.value;
         setTodayJourneyRecord(j);
-        setJourneyStatus(j.status === "started" ? "Started" : "Not Started");
+        setJourneyStatus(j.status === "started" ? "Started" : j.status === "completed" ? "Completed" : "Not Started");
         if (j.startedAt) {
           setJourneyStartTime(
             new Date(j.startedAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
@@ -118,6 +118,18 @@ export function InspectionProvider({ children }) {
     return savedJourney;
   };
 
+  // End journey on backend
+  const endJourneyOnBackend = async (endOdometer) => {
+    const savedJourney = await journeyService.endJourney(endOdometer);
+    setIsInspectionCompleted(false);
+    setJourneyStatus("Not Started");
+    setJourneyStartTime(null);
+    setTodayInspectionRecord(null);
+    setTodayJourneyRecord(null);
+    setSelectedVehicle(null);
+    return savedJourney;
+  };
+
   const resetInspection = () => {
     setAnswers({});
     setNotes({});
@@ -150,6 +162,7 @@ export function InspectionProvider({ children }) {
         todayJourneyRecord,
         submitInspectionToBackend,
         startJourneyOnBackend,
+        endJourneyOnBackend,
         refreshTodayState: fetchTodayDriverState,
         resetInspection,
         isLoading,

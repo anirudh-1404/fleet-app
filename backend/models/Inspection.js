@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const inspectionItemSchema = new mongoose.Schema({
   itemKey: { type: String, required: true },
   label: { type: String, required: true },
-  status: { type: String, enum: ["PASS", "FAIL", "N/A", "PENDING"], default: "PENDING" },
+  status: { type: String, enum: ["PASS", "FAIL", "N/A", "NOTE", "PENDING"], default: "PENDING" },
   note: { type: String, default: "" },
 });
 

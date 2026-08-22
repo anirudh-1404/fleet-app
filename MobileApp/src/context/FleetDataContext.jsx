@@ -35,37 +35,25 @@ export function FleetDataProvider({ children }) {
     setIsLoading(true);
     setError(null);
     try {
-      const [
-        fuelData,
-        invoiceData,
-        contactData,
-        noteData,
-        reminderData,
-        serviceData,
-        opsData,
-        notifData,
-        inspData,
-      ] = await Promise.allSettled([
-        fuelService.getFuelLogs(),
-        invoiceService.getInvoices(),
-        contactService.getContacts(),
-        noteService.getNotes(),
-        reminderService.getReminders(),
-        serviceService.getDueServices(),
-        user && user.role === "manager" ? operationsService.getOperationsData() : Promise.resolve([]),
-        notificationService.getNotifications(),
-        user && user.role === "manager" ? inspectionService.getManagerInspections() : Promise.resolve([]),
-      ]);
+      const fuelLogsRes = await fuelService.getFuelLogs().catch(() => []);
+      const invoicesRes = await invoiceService.getInvoices().catch(() => []);
+      const contactsRes = await contactService.getContacts().catch(() => []);
+      const notesRes = await noteService.getNotes().catch(() => []);
+      const remindersRes = await reminderService.getReminders().catch(() => []);
+      const servicesRes = await serviceService.getDueServices().catch(() => []);
+      const opsRes = user && user.role === "manager" ? await operationsService.getOperationsData().catch(() => []) : [];
+      const notifRes = await notificationService.getNotifications().catch(() => []);
+      const inspRes = user && user.role === "manager" ? await inspectionService.getManagerInspections().catch(() => []) : [];
 
-      if (fuelData.status === "fulfilled") setFuelLogs(fuelData.value);
-      if (invoiceData.status === "fulfilled") setInvoices(invoiceData.value);
-      if (contactData.status === "fulfilled") setContacts(contactData.value);
-      if (noteData.status === "fulfilled") setNotes(noteData.value);
-      if (reminderData.status === "fulfilled") setReminders(reminderData.value);
-      if (serviceData.status === "fulfilled") setServices(serviceData.value);
-      if (opsData.status === "fulfilled") setDriverActivities(opsData.value);
-      if (notifData.status === "fulfilled") setNotifications(notifData.value);
-      if (inspData.status === "fulfilled") setInspections(inspData.value);
+      setFuelLogs(fuelLogsRes || []);
+      setInvoices(invoicesRes || []);
+      setContacts(contactsRes || []);
+      setNotes(notesRes || []);
+      setReminders(remindersRes || []);
+      setServices(servicesRes || []);
+      setDriverActivities(opsRes || []);
+      setNotifications(notifRes || []);
+      setInspections(inspRes || []);
     } catch (err) {
       console.error("Error fetching fleet data:", err);
       setError("Failed to load fleet data");

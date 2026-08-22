@@ -1,4 +1,7 @@
 const ROUTES = {
+  WELCOME: "Welcome",
+  PURCHASE: "Purchase",
+  CHECKOUT: "Checkout",
   LOGIN: "Login",
   FORGOT_PASSWORD: "ForgotPassword",
   MANAGER_DASHBOARD: "ManagerDashboard",

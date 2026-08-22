@@ -10,13 +10,14 @@ import { useFleetData } from "../../../context/FleetDataContext";
 export default function InspectionSubmittedScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const { setIsInspectionCompleted } = useInspection();
-  const { updateTodayInspection } = useFleetData();
+  const { setIsInspectionCompleted, selectedVehicle } = useInspection();
+  const fleetData = useFleetData();
+  const updateTodayInspection = fleetData?.updateTodayInspection;
 
   const vehicleInfo = {
-    name: "Volvo FH16",
-    registration: "ABC-123",
-    submissionTime: "08:15 AM"
+    name: selectedVehicle ? `${selectedVehicle.make || ""} ${selectedVehicle.model || selectedVehicle.vehicleType}`.trim() : "Assigned Vehicle",
+    registration: selectedVehicle ? selectedVehicle.registration : "--",
+    submissionTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   };
 
   // Formatted date (e.g. Wednesday, 5 August 2026)
@@ -30,8 +31,8 @@ export default function InspectionSubmittedScreen() {
     // 1. Update status to completed using local state
     setIsInspectionCompleted(true);
     // 2. Sync to Manager's Today Operations
-    if (updateTodayInspection) {
-      updateTodayInspection("John Smith", "08:15 AM", { pass: 30, fail: 1, na: 2, notes: 1 });
+    if (typeof updateTodayInspection === "function") {
+      updateTodayInspection("John Smith", vehicleInfo.submissionTime, { pass: 30, fail: 1, na: 2, notes: 1 });
     }
     // 3. Return to Driver Home screen
     navigation.navigate(ROUTES.DRIVER_HOME);

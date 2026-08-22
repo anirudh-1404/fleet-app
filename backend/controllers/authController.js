@@ -63,3 +63,47 @@ export const getMe = async (req, res) => {
     return res.status(500).json({ message: "Server error fetching user profile" });
   }
 };
+
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password, phone, role } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
+
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
+    if (existingUser) {
+      return res.status(400).json({ message: "An account with this email already exists" });
+    }
+
+    const user = await User.create({
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password,
+      phone: phone || "",
+      role: role || "manager",
+      status: "Active",
+    });
+
+    const token = generateToken(user._id);
+
+    return res.status(201).json({
+      message: "Account created successfully",
+      token,
+      role: user.role,
+      user: {
+        id: user._id,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        status: user.status,
+      },
+    });
+  } catch (error) {
+    console.error("Register Controller Error:", error);
+    return res.status(500).json({ message: error.message || "Server error during registration" });
+  }
+};

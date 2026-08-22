@@ -28,17 +28,15 @@ export const createInspection = async (req, res) => {
       return res.status(400).json({ message: "No vehicle found for inspection" });
     }
 
-    // Step 11: One inspection per driver per day check
-    const existing = await Inspection.findOne({
+    // Check if driver has an active journey in progress
+    const activeJourney = await Journey.findOne({
       driver: driverId,
-      vehicle: vehicle._id,
-      date: inspectionDate,
+      status: "started",
     });
 
-    if (existing) {
+    if (activeJourney) {
       return res.status(400).json({
-        message: "You have already submitted an inspection for today.",
-        inspection: existing,
+        message: "You have an active journey in progress. Complete your active journey before starting a new inspection.",
       });
     }
 
@@ -56,7 +54,7 @@ export const createInspection = async (req, res) => {
             else if (item.status === "FAIL") failCount++;
             else if (item.status === "N/A") naCount++;
 
-            if (item.note && item.note.trim() !== "") {
+            if (item.status === "NOTE" || (item.note && item.note.trim() !== "")) {
               notesCount++;
             }
           });

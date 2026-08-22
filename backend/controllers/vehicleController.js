@@ -104,12 +104,8 @@ export const getMyVehicle = async (req, res) => {
       "name email phone photo"
     );
 
-    if (!vehicle) {
-      // Fallback: return default first active vehicle if unassigned for demo smooth fallback
-      const fallback = await Vehicle.findOne({ status: "Active" });
-      return res.json(fallback || null);
-    }
-    return res.json(vehicle);
+    // If driver has no assigned vehicle, return null
+    return res.json(vehicle || null);
   } catch (error) {
     return res.status(500).json({ message: "Server error fetching assigned vehicle" });
   }

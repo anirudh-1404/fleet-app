@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   View,
   Text,
@@ -43,64 +43,39 @@ export default function DriverInspectionsScreen() {
     setIsLoading(true);
     try {
       const data = await inspectionService.getManagerInspections();
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         setRealInspections(data);
       }
     } catch (err) {
-      console.warn("Could not load backend inspections, using context/mock data fallback:", err.message);
+      console.warn("Could not load backend inspections:", err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   const displayList = useMemo(() => {
-    if (realInspections.length > 0) {
-      return realInspections.map((item) => ({
-        id: item._id || item.id,
-        driver: {
-          name: item.driver ? item.driver.name : "Driver",
-        },
-        vehicle: {
-          name: item.vehicle ? `${item.vehicle.make || ""} ${item.vehicle.model || ""}` : item.vehicleRegistration || "Vehicle",
-          registration: item.vehicleRegistration || (item.vehicle ? item.vehicle.registration : "N/A"),
-          fleetNumber: item.fleetNumber || (item.vehicle ? item.vehicle.fleetNumber : "N/A"),
-        },
-        inspectionStatus: item.overallStatus || "Completed",
-        journeyStatus: "Started",
-        inspectionTime: item.submittedAt ? new Date(item.submittedAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "Today",
-        journeyStartTime: "07:30 AM",
-        summary: {
-          pass: item.passCount || 0,
-          fail: item.failCount || 0,
-          na: item.naCount || 0,
-          notes: item.notesCount || 0,
-        },
-      }));
-    }
-
-    if (contextInspections && contextInspections.length > 0) {
-      return contextInspections.map((item) => ({
-        id: item._id || item.id,
-        driver: { name: item.driver ? item.driver.name : "Driver" },
-        vehicle: {
-          name: item.vehicleRegistration || "Vehicle",
-          registration: item.vehicleRegistration || "N/A",
-          fleetNumber: item.fleetNumber || "N/A",
-        },
-        inspectionStatus: item.overallStatus || "Completed",
-        journeyStatus: "Started",
-        inspectionTime: "Today",
-        journeyStartTime: "07:30 AM",
-        summary: {
-          pass: item.passCount || 0,
-          fail: item.failCount || 0,
-          na: item.naCount || 0,
-          notes: item.notesCount || 0,
-        },
-      }));
-    }
-
-    return MOCK_INSPECTIONS;
+    const list = realInspections.length > 0 ? realInspections : (contextInspections || []);
+    return list.map((item) => ({
+      id: item._id || item.id,
+      driver: {
+        name: item.driver ? (typeof item.driver === "object" ? item.driver.name : "Driver") : "Driver",
+      },
+      vehicle: {
+        name: item.vehicle ? `${item.vehicle.make || ""} ${item.vehicle.model || ""}`.trim() || item.vehicleRegistration : item.vehicleRegistration || "Vehicle",
+        registration: item.vehicleRegistration || (item.vehicle ? item.vehicle.registration : "N/A"),
+        fleetNumber: item.fleetNumber || (item.vehicle ? item.vehicle.fleetNumber : "N/A"),
+      },
+      inspectionStatus: item.overallStatus || "Completed",
+      journeyStatus: "Started",
+      inspectionTime: item.submittedAt ? new Date(item.submittedAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "Today",
+      journeyStartTime: "07:30 AM",
+      summary: {
+        pass: item.passCount || 0,
+        fail: item.failCount || 0,
+        na: item.naCount || 0,
+        notes: item.notesCount || 0,
+      },
+    }));
   }, [realInspections, contextInspections]);
 
   // Filtering logic

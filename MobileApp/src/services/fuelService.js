@@ -1,6 +1,11 @@
 import api from "./api";
 
 export const fuelService = {
+  getFuelLogs: async () => {
+    const response = await api.get("/fuel");
+    return response.data;
+  },
+
   getManagerFuelLogs: async () => {
     const response = await api.get("/fuel");
     return response.data;

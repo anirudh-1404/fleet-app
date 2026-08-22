@@ -17,16 +17,34 @@ import SearchBar from "@components/fleet/SearchBar";
 import SectionHeader from "@components/fleet/SectionHeader";
 import FleetActionCard from "@components/fleet/FleetActionCard";
 import FleetSummaryCard from "@components/fleet/FleetSummaryCard";
-import RecentActivityCard from "@components/fleet/RecentActivityCard";
 import TodaysOperationsCard from "@components/fleet/TodaysOperationsCard";
+import { vehicleService } from "../../../services/vehicleService";
+import { driverService } from "../../../services/driverService";
 import { useFleetData } from "../../../context/FleetDataContext";
-
 import { useAuth } from "../../../context/AuthContext";
 
 export default function DashboardScreen() {
   const navigation = useNavigation();
-  const { driverActivities, notifications } = useFleetData();
+  const { driverActivities, notifications, services, reminders } = useFleetData();
   const { user, logout } = useAuth();
+
+  const [vehicles, setVehicles] = React.useState([]);
+  const [drivers, setDrivers] = React.useState([]);
+
+  React.useEffect(() => {
+    loadSummaryCounts();
+  }, []);
+
+  const loadSummaryCounts = async () => {
+    try {
+      const vRes = await vehicleService.getVehicles().catch(() => []);
+      const dRes = await driverService.getDrivers().catch(() => []);
+      setVehicles(vRes || []);
+      setDrivers(dRes || []);
+    } catch (e) {
+      console.error("Error loading summary counts:", e);
+    }
+  };
 
   const unreadNotifCount = React.useMemo(() => {
     return (notifications || []).filter((n) => !n.isRead).length;
@@ -76,7 +94,7 @@ export default function DashboardScreen() {
         <View className="px-6 pt-4 flex-row justify-between items-start">
           <View>
             <Text className="text-sm font-semibold text-[#6B7280]">Good Morning,</Text>
-            <Text className="text-2xl font-bold text-[#111827] mt-0.5">Michael Johnson</Text>
+            <Text className="text-2xl font-bold text-[#111827] mt-0.5">{user?.name || "Manager"}</Text>
             <Text className="text-[15px] font-normal text-[#6B7280] mt-1">Fleet Overview</Text>
           </View>
           <View className="flex-row items-center gap-3">
@@ -165,7 +183,7 @@ export default function DashboardScreen() {
               />
               <FleetActionCard
                 title="Invoices"
-                subtitle="Billing & receipts"
+                subtitle="Coming soon"
                 icon="receipt-outline"
                 onPress={() => handleAction(ROUTES.INVOICES)}
               />
@@ -215,42 +233,11 @@ export default function DashboardScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 24 }}
           >
-            <FleetSummaryCard label="Total Vehicles" value="42" icon="car-sport-outline" />
-            <FleetSummaryCard label="Active Drivers" value="38" icon="people-outline" />
-            <FleetSummaryCard label="Due Services" value="3" icon="construct-outline" />
-            <FleetSummaryCard label="Upcoming Rego" value="5" icon="calendar-outline" />
+            <FleetSummaryCard label="Total Vehicles" value={String(vehicles.length)} icon="car-sport-outline" />
+            <FleetSummaryCard label="Active Drivers" value={String(drivers.length)} icon="people-outline" />
+            <FleetSummaryCard label="Due Services" value={String(services?.length || 0)} icon="construct-outline" />
+            <FleetSummaryCard label="Upcoming Rego" value={String(reminders?.length || 0)} icon="calendar-outline" />
           </ScrollView>
-        </View>
-
-        {/* ========================= */}
-        {/* 5. Recent Activity Section */}
-        {/* ========================= */}
-        <View className="px-6 mt-6">
-          <SectionHeader title="Recent Activity" />
-          <View className="bg-white border border-[#E8EDF3] rounded-[24px] px-5">
-            <RecentActivityCard
-              title="Truck #24 serviced"
-              subtitle="Completed • 2 hours ago"
-              icon="construct-outline"
-            />
-            <RecentActivityCard
-              title="Fuel entry added"
-              subtitle="Completed • Today"
-              icon="flash-outline"
-            />
-            <RecentActivityCard
-              title="Driver assigned"
-              subtitle="Completed • Yesterday"
-              icon="people-outline"
-            />
-            <RecentActivityCard
-              title="Inspection scheduled"
-              subtitle="Tomorrow"
-              icon="calendar-outline"
-              isLast={true}
-              statusColorClass="text-[#0284C7]"
-            />
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

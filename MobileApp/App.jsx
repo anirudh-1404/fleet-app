@@ -11,15 +11,15 @@ import { FleetDataProvider } from "./src/context/FleetDataContext";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <FleetDataProvider>
-          <InspectionProvider>
-            <NavigationContainer>
+      <NavigationContainer>
+        <AuthProvider>
+          <FleetDataProvider>
+            <InspectionProvider>
               <RootNavigator />
-            </NavigationContainer>
-          </InspectionProvider>
-        </FleetDataProvider>
-      </AuthProvider>
+            </InspectionProvider>
+          </FleetDataProvider>
+        </AuthProvider>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }

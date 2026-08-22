@@ -53,9 +53,9 @@ export default function InspectionReviewScreen() {
 
   const vehicleName = assignedVehicle
     ? `${assignedVehicle.make || ""} ${assignedVehicle.model || assignedVehicle.vehicleType}`.trim()
-    : "Volvo FH16";
-  const registration = assignedVehicle ? assignedVehicle.registration : "ABC-123";
-  const fleetNumber = assignedVehicle ? assignedVehicle.fleetNumber : "FLT-021";
+    : "Assigned Vehicle";
+  const registration = assignedVehicle ? assignedVehicle.registration : "--";
+  const fleetNumber = assignedVehicle ? assignedVehicle.fleetNumber : "--";
   const driverName = user ? user.name : "Driver";
 
   // Dynamic Today's Date formatted (e.g. Wednesday, 5 August 2026)

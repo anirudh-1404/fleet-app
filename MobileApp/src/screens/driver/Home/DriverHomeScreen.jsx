@@ -23,6 +23,7 @@ import SupportCard from "@components/fleet/SupportCard";
 import SectionHeader from "@components/fleet/SectionHeader";
 import ConfirmationModal from "@components/common/ConfirmationModal";
 import LogFuelModal from "@components/fleet/LogFuelModal";
+import EndJourneyModal from "@components/fleet/EndJourneyModal";
 
 import { useInspection } from "../../../context/InspectionContext";
 import { useAuth } from "../../../context/AuthContext";
@@ -41,6 +42,7 @@ export default function DriverHomeScreen() {
     todayInspectionRecord,
     todayJourneyRecord,
     startJourneyOnBackend,
+    endJourneyOnBackend,
     refreshTodayState,
     isLoading: isInspectionLoading,
   } = useInspection();
@@ -49,8 +51,10 @@ export default function DriverHomeScreen() {
   const [isVehicleLoading, setIsVehicleLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [fuelModalVisible, setFuelModalVisible] = useState(false);
+  const [endJourneyModalVisible, setEndJourneyModalVisible] = useState(false);
   const [isStartingJourney, setIsStartingJourney] = useState(false);
   const [myFuelLogs, setMyFuelLogs] = useState([]);
+  const [recentActivities, setRecentActivities] = useState([]);
 
   // Fetch driver assigned vehicle and fuel logs when screen is focused
   useEffect(() => {
@@ -96,15 +100,23 @@ export default function DriverHomeScreen() {
   const driverName = user ? user.name.split(" ")[0] : "Driver";
   const vehicleName = assignedVehicle
     ? `${assignedVehicle.make || ""} ${assignedVehicle.model || assignedVehicle.vehicleType}`.trim()
-    : "Volvo FH16";
-  const registration = assignedVehicle ? assignedVehicle.registration : "ABC-123";
-  const fleetNumber = assignedVehicle ? assignedVehicle.fleetNumber : "FLT-021";
+    : null;
+  const registration = assignedVehicle ? assignedVehicle.registration : null;
+  const fleetNumber = assignedVehicle ? assignedVehicle.fleetNumber : null;
 
   const handleStartInspection = () => {
     navigation.navigate(ROUTES.DRIVER_PRECHECK);
   };
 
   const handleStartJourneyPress = () => {
+    if (journeyStatus === "Completed" || todayJourneyRecord?.status === "completed") {
+      Alert.alert("Journey Completed", "Today's journey has already been finished.");
+      return;
+    }
+    if (isJourneyStarted) {
+      setEndJourneyModalVisible(true);
+      return;
+    }
     if (!isInspectionDone) {
       Alert.alert(
         "Inspection Required",
@@ -129,6 +141,34 @@ export default function DriverHomeScreen() {
       Alert.alert("Cannot Start Journey", msg);
     } finally {
       setIsStartingJourney(false);
+    }
+  };
+
+  const handleConfirmEndJourney = async (endOdometer) => {
+    try {
+      const res = await endJourneyOnBackend(endOdometer);
+      await fetchAssignedVehicle();
+
+      const finishTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const distanceText = res.distanceTraveled ? ` • Distance: +${res.distanceTraveled} KM` : "";
+      const vehicleText = res.vehicle ? ` (${res.vehicle.registration || ""})` : "";
+
+      const newActivity = {
+        id: Date.now().toString(),
+        title: `Journey Completed${vehicleText}`,
+        subtitle: `Today • ${finishTime}${distanceText}`,
+        icon: "flag-outline",
+        statusColorClass: "text-[#10B981]",
+      };
+
+      setRecentActivities((prev) => [newActivity, ...prev]);
+
+      Alert.alert(
+        "Journey Completed",
+        `Journey completed successfully! Vehicle unassigned and ready for your next inspection.`
+      );
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -172,8 +212,9 @@ export default function DriverHomeScreen() {
               name={vehicleName}
               registration={registration}
               fleetNumber={fleetNumber}
-              trailerNumber="TR-11"
+              trailerNumber={assignedVehicle ? "TR-11" : null}
               isDriverView={true}
+              isUnassigned={!assignedVehicle}
             />
           )}
         </View>
@@ -236,41 +277,59 @@ export default function DriverHomeScreen() {
             </TouchableOpacity>
           )}
 
-          {/* Start Journey */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            disabled={isJourneyStarted || isStartingJourney}
-            onPress={handleStartJourneyPress}
-            className={`h-14 rounded-[24px] items-center justify-center flex-row ${
-              isJourneyStarted
-                ? "bg-[#0284C7]"
-                : isInspectionDone
-                ? "bg-[#16A34A]"
-                : "bg-[#CBD5E1]"
-            }`}
-            style={{
-              shadowColor: isJourneyStarted ? "#0284C7" : isInspectionDone ? "#16A34A" : "#000",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: isInspectionDone && !isJourneyStarted ? 0.15 : 0,
-              shadowRadius: 12,
-              elevation: isInspectionDone && !isJourneyStarted ? 3 : 0,
-            }}
-          >
-            {isStartingJourney ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <>
-                <Ionicons
-                  name={isJourneyStarted ? "navigate-outline" : "play-outline"}
-                  size={20}
-                  color="white"
-                />
-                <Text className="text-white text-base font-bold ml-2">
-                  {isJourneyStarted ? "Journey Started" : "Start Journey"}
-                </Text>
-              </>
-            )}
-          </TouchableOpacity>
+          {/* Start / End / Completed Journey */}
+          {journeyStatus === "Completed" || todayJourneyRecord?.status === "completed" ? (
+            <View
+              className="h-14 rounded-[24px] bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center flex-row"
+              style={{
+                shadowColor: "#10B981",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.05,
+                shadowRadius: 8,
+                elevation: 1,
+              }}
+            >
+              <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+              <Text className="text-[#065F46] text-base font-bold ml-2">
+                Journey Completed
+              </Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              disabled={isStartingJourney}
+              onPress={handleStartJourneyPress}
+              className={`h-14 rounded-[24px] items-center justify-center flex-row ${
+                isJourneyStarted
+                  ? "bg-[#DC2626]"
+                  : isInspectionDone
+                  ? "bg-[#16A34A]"
+                  : "bg-[#CBD5E1]"
+              }`}
+              style={{
+                shadowColor: isJourneyStarted ? "#DC2626" : isInspectionDone ? "#16A34A" : "#000",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: isInspectionDone || isJourneyStarted ? 0.15 : 0,
+                shadowRadius: 12,
+                elevation: isInspectionDone || isJourneyStarted ? 3 : 0,
+              }}
+            >
+              {isStartingJourney ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <>
+                  <Ionicons
+                    name={isJourneyStarted ? "stop-circle-outline" : "play-outline"}
+                    size={20}
+                    color="white"
+                  />
+                  <Text className="text-white text-base font-bold ml-2">
+                    {isJourneyStarted ? "End Journey" : "Start Journey"}
+                  </Text>
+                </>
+              )}
+            </TouchableOpacity>
+          )}
 
           {/* Log Fuel Entry Action Button */}
           <TouchableOpacity
@@ -336,6 +395,16 @@ export default function DriverHomeScreen() {
         <View className="px-6 mb-6">
           <SectionHeader title="Recent Activity" />
           <View className="bg-white border border-[#E8EDF3] rounded-[24px] px-5">
+            {recentActivities.map((act, idx) => (
+              <RecentActivityCard
+                key={act.id || idx}
+                title={act.title}
+                subtitle={act.subtitle}
+                icon={act.icon || "flag-outline"}
+                statusColorClass={act.statusColorClass || "text-[#10B981]"}
+                isLast={idx === recentActivities.length - 1 && !isJourneyStarted && !isInspectionDone}
+              />
+            ))}
             {isJourneyStarted && (
               <RecentActivityCard
                 title="Journey Started"
@@ -350,10 +419,10 @@ export default function DriverHomeScreen() {
                 title="Inspection Submitted"
                 subtitle={`Today • ${todayInspectionRecord ? new Date(todayInspectionRecord.submittedAt || todayInspectionRecord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "08:15 AM"}`}
                 icon="checkmark-circle-outline"
-                isLast={true}
+                isLast={recentActivities.length === 0}
               />
             ) : (
-              !isJourneyStarted && (
+              !isJourneyStarted && recentActivities.length === 0 && (
                 <View className="py-6 items-center justify-center">
                   <Ionicons name="time-outline" size={24} color="#94A3B8" />
                   <Text className="text-xs text-[#94A3B8] font-semibold text-center mt-2">
@@ -391,6 +460,14 @@ export default function DriverHomeScreen() {
         visible={fuelModalVisible}
         onClose={() => setFuelModalVisible(false)}
         onSuccess={fetchMyFuelLogs}
+      />
+
+      {/* End Journey Odometer Modal */}
+      <EndJourneyModal
+        visible={endJourneyModalVisible}
+        onClose={() => setEndJourneyModalVisible(false)}
+        onConfirm={handleConfirmEndJourney}
+        startOdometer={todayJourneyRecord?.startOdometer || todayInspectionRecord?.odometer || 0}
       />
     </SafeAreaView>
   );

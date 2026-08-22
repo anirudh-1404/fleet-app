@@ -29,7 +29,11 @@ export function AuthProvider({ children }) {
             setRole(freshUser.role);
           }
         } catch (e) {
-          console.warn("Auth token validation failed:", e.message);
+          console.warn("Auth token validation failed, clearing stored auth:", e.message);
+          await authService.logout();
+          setUser(null);
+          setToken(null);
+          setRole(null);
         }
       }
     } catch (error) {
