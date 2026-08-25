@@ -75,9 +75,9 @@ export default function DriverDetailsScreen() {
 
   const name = driver ? driver.name : "Driver";
   const status = driver ? (driver.status || "Active") : "Active";
-  const phone = driver ? (driver.phone || "+61 400 000 000") : "+61 400 000 000";
-  const email = driver ? driver.email : "";
-  const licence = driver ? (driver.licence || "DL-994821") : "DL-994821";
+  const phone = driver?.phone || "-";
+  const email = driver?.email || "-";
+  const licence = driver?.licence || "-";
 
   // Vehicle formatting
   let vehicleName = "Unassigned";
@@ -159,11 +159,11 @@ export default function DriverDetailsScreen() {
           <DriverInfoCard
             fullName={name}
             licenceNumber={licence}
-            licenceExpiry={driver?.licenceExpiry || "Dec 2028"}
+            licenceExpiry={driver?.licenceExpiry || "-"}
             phone={phone}
             email={email}
-            emergencyContact={driver?.emergencyContact || "+61 400 111 222"}
-            employmentStatus={driver?.employmentStatus || "Full Time"}
+            emergencyContact={driver?.emergencyContact || "-"}
+            employmentStatus={driver?.employmentStatus || "-"}
             vehicle={vehicleName}
           />
         </View>
@@ -251,10 +251,10 @@ export default function DriverDetailsScreen() {
           <SectionHeader title="Licence Details" />
           <LicenceInfoCard
             licenceNumber={licence}
-            licenceClass={driver?.licenceClass || "Heavy Combination (HC)"}
-            issueDate={driver?.issueDate || "Jan 2020"}
-            expiryDate={driver?.licenceExpiry || "Dec 2028"}
-            status={driver?.licenceStatus || "Valid"}
+            licenceClass={driver?.licenceClass || "-"}
+            issueDate={driver?.issueDate || "-"}
+            expiryDate={driver?.licenceExpiry || "-"}
+            status={driver?.licenceStatus || (driver?.licence ? "Valid" : "-")}
           />
         </View>
 

@@ -2,11 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 
 const InfoItem = ({ label, value }) => {
+  const displayValue = value && String(value).trim() !== "" ? value : "-";
   return (
     <View className="flex-1">
       <Text className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">{label}</Text>
       <Text className="text-sm font-semibold text-[#111827] mt-1" numberOfLines={1} ellipsizeMode="tail">
-        {value}
+        {displayValue}
       </Text>
     </View>
   );

@@ -26,19 +26,19 @@ export default function DriverHeroCard({ name, status, licence, vehicle, phone, 
       <View className="w-full border-t border-[#E8EDF3] pt-4 flex-col gap-2.5">
         <View className="flex-row items-center justify-center">
           <Ionicons name="card-outline" size={14} color="#6B7280" />
-          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Licence: {licence}</Text>
+          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Licence: {licence || "-"}</Text>
         </View>
         <View className="flex-row items-center justify-center">
           <Ionicons name="car-sport-outline" size={14} color="#6B7280" />
-          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Vehicle: {vehicle}</Text>
+          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Vehicle: {vehicle || "Unassigned"}</Text>
         </View>
         <View className="flex-row items-center justify-center">
           <Ionicons name="call-outline" size={14} color="#6B7280" />
-          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{phone}</Text>
+          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{phone || "-"}</Text>
         </View>
         <View className="flex-row items-center justify-center">
           <Ionicons name="mail-outline" size={14} color="#6B7280" />
-          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{email}</Text>
+          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{email || "-"}</Text>
         </View>
       </View>
     </View>

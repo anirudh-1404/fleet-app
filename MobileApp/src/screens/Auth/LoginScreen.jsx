@@ -6,17 +6,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  TextInput,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
-
-import CustomInput from "../../components/inputs/CustomInput";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { useAuth } from "../../context/AuthContext";
 
 export default function LoginScreen() {
@@ -26,6 +24,7 @@ export default function LoginScreen() {
 
   const [email, setEmail] = useState(route?.params?.prefillEmail || "");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async () => {
@@ -40,124 +39,194 @@ export default function LoginScreen() {
       const data = await login(emailTrim, password);
       if (data.role === "manager") {
         navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
+      } else if (data.role === "rental_owner") {
+        navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
       } else if (data.role === "driver") {
         navigation.reset({ index: 0, routes: [{ name: "DriverStack" }] });
       }
     } catch (error) {
       const errorMsg =
-        error.response?.data?.message ||
-        "Invalid email or password. Please try again.";
-      Alert.alert("Login Failed", errorMsg);
+        error.response?.data?.message || "Invalid email or password. Please try again.";
+      Alert.alert("Sign In Failed", errorMsg);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <StatusBar style="dark" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+
+      {/* Back Button */}
+      <View style={{ paddingHorizontal: 20, paddingTop: 12 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{ width: 40, height: 40, justifyContent: "center" }}
+        >
+          <Ionicons name="arrow-back" size={24} color="#0F172A" />
+        </TouchableOpacity>
+      </View>
+
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        {/* Outer flex container — 3 equal sections */}
-        <View style={{ flex: 1, paddingHorizontal: 24, paddingBottom: 16 }}>
-
-          {/* Section 1: Top Branding — flex 1 */}
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View
-              style={{
-                width: 64,
-                height: 64,
-                borderRadius: 16,
-                backgroundColor: "#2563EB",
-                alignItems: "center",
-                justifyContent: "center",
-                shadowColor: "#2563EB",
-                shadowOffset: { width: 0, height: 6 },
-                shadowOpacity: 0.25,
-                shadowRadius: 12,
-                elevation: 5,
-              }}
-            >
-              <Ionicons name="car-sport" size={32} color="#FFFFFF" />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 24,
+            paddingTop: 16,
+            paddingBottom: 36,
+            flexGrow: 1,
+            justifyContent: "space-between",
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View>
+            {/* Header */}
+            <View style={{ marginBottom: 28 }}>
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  backgroundColor: "#2563EB",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 16,
+                }}
+              >
+                <Ionicons name="car" size={26} color="#FFFFFF" />
+              </View>
+              <Text style={{ fontSize: 28, fontWeight: "800", color: "#0F172A", letterSpacing: -0.5 }}>
+                Sign In
+              </Text>
+              <Text style={{ fontSize: 14, color: "#64748B", marginTop: 4 }}>
+                Enter your email and password to access your account.
+              </Text>
             </View>
 
-            <Text style={{ fontSize: 30, fontWeight: "800", color: "#0F172A", marginTop: 14, letterSpacing: -0.5 }}>
-              Fleev
-            </Text>
-            <Text style={{ fontSize: 13, color: "#64748B", textAlign: "center", marginTop: 4, fontWeight: "500" }}>
-              Sign in to manage your work effortlessly.
-            </Text>
-          </View>
-
-          {/* Section 2: Middle Form — flex 2 (bigger so inputs have room) */}
-          <View style={{ flex: 2, justifyContent: "center" }}>
-            {/* Email */}
+            {/* Email Field */}
             <View style={{ marginBottom: 16 }}>
-              <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", marginBottom: 6 }}>
                 Email Address
               </Text>
-              <CustomInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter your email"
-                keyboardType="email-address"
-                leftIcon="mail-outline"
-              />
+              <View
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingHorizontal: 12,
+                  height: 48,
+                }}
+              >
+                <Ionicons name="mail-outline" size={18} color="#94A3B8" />
+                <TextInput
+                  value={email}
+                  onChangeText={setEmail}
+                  placeholder="name@example.com"
+                  placeholderTextColor="#94A3B8"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  style={{
+                    flex: 1,
+                    marginLeft: 10,
+                    fontSize: 14,
+                    color: "#0F172A",
+                  }}
+                />
+              </View>
             </View>
 
-            {/* Password */}
-            <View style={{ marginBottom: 8 }}>
-              <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.8 }}>
+            {/* Password Field */}
+            <View style={{ marginBottom: 12 }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", marginBottom: 6 }}>
                 Password
               </Text>
-              <CustomInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                secureTextEntry
-                leftIcon="lock-closed-outline"
-              />
+              <View
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 10,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingHorizontal: 12,
+                  height: 48,
+                }}
+              >
+                <Ionicons name="lock-closed-outline" size={18} color="#94A3B8" />
+                <TextInput
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#94A3B8"
+                  secureTextEntry={!showPassword}
+                  style={{
+                    flex: 1,
+                    marginLeft: 10,
+                    fontSize: 14,
+                    color: "#0F172A",
+                  }}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    size={18}
+                    color="#64748B"
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
+            {/* Forgot Password */}
             <TouchableOpacity
-              style={{ alignSelf: "flex-end", paddingVertical: 4 }}
               onPress={() => navigation.navigate(ROUTES.FORGOT_PASSWORD)}
+              style={{ alignSelf: "flex-end", paddingVertical: 4, marginBottom: 20 }}
             >
-              <Text style={{ fontSize: 12, color: "#2563EB", fontWeight: "700" }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB" }}>
                 Forgot Password?
               </Text>
             </TouchableOpacity>
 
-            <View style={{ marginTop: 20 }}>
+            {/* Sign In Button */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={handleLogin}
+              disabled={isSubmitting}
+              style={{
+                height: 50,
+                backgroundColor: "#2563EB",
+                borderRadius: 12,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {isSubmitting ? (
-                <View style={{ height: 56, backgroundColor: "#2563EB", borderRadius: 20, alignItems: "center", justifyContent: "center" }}>
-                  <ActivityIndicator color="white" />
-                </View>
+                <ActivityIndicator color="#FFFFFF" />
               ) : (
-                <PrimaryButton title="Sign In" onPress={handleLogin} />
+                <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
+                  Sign In
+                </Text>
               )}
-            </View>
-          </View>
+            </TouchableOpacity>
 
-          {/* Section 3: Bottom Footer — flex 1 */}
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end", paddingBottom: 4 }}>
-            <Text style={{ fontSize: 11, color: "#94A3B8" }}>
-              By continuing, you agree to our
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 4 }}>
-              <TouchableOpacity>
-                <Text style={{ fontSize: 11, fontWeight: "600", color: "#64748B" }}>Terms</Text>
-              </TouchableOpacity>
-              <Text style={{ marginHorizontal: 6, fontSize: 11, color: "#CBD5E1" }}>&</Text>
-              <TouchableOpacity>
-                <Text style={{ fontSize: 11, fontWeight: "600", color: "#64748B" }}>Privacy Policy</Text>
-              </TouchableOpacity>
-            </View>
+            {/* Need account */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ROUTES.PURCHASE)}
+              style={{ marginTop: 24, alignItems: "center" }}
+            >
+              <Text style={{ fontSize: 13, color: "#64748B" }}>
+                Don't have an account?{" "}
+                <Text style={{ fontWeight: "700", color: "#2563EB" }}>Get Started</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
-
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

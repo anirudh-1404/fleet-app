@@ -36,6 +36,10 @@ api.interceptors.response.use(
       // Clear token on unauthorized response
       await AsyncStorage.removeItem("fleet_user_token");
       await AsyncStorage.removeItem("fleet_user_data");
+    } else if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
+      console.warn(
+        `[API Network Error] Could not reach backend at ${API_BASE_URL}. Ensure backend server is running and device is on the same network.`
+      );
     }
     return Promise.reject(error);
   }

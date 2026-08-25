@@ -24,7 +24,7 @@ export default function DriverCard({ driver, onPress }) {
           <DriverAvatar name={driver.name} />
           <View className="ml-3 flex-1">
             <Text className="text-base font-bold text-[#111827]">{driver.name}</Text>
-            <Text className="text-xs text-[#6B7280] mt-0.5">Licence: {driver.licence}</Text>
+            <Text className="text-xs text-[#6B7280] mt-0.5">Licence: {driver.licence || "-"}</Text>
           </View>
         </View>
         <StatusBadge status={driver.status} />
@@ -33,8 +33,8 @@ export default function DriverCard({ driver, onPress }) {
       {/* Middle Row: Assigned Vehicle Details */}
       <View className="bg-[#F8FAFC] border border-[#E8EDF3] rounded-[16px] px-4 py-3 my-4 flex-row justify-between items-center">
         <Text className="text-xs font-semibold text-[#6B7280]">Assigned Vehicle</Text>
-        <Text className={`text-xs font-bold ${driver.vehicle === "Not Assigned" ? "text-[#94A3B8]" : "text-[#2563EB]"}`}>
-          {driver.vehicle}
+        <Text className={`text-xs font-bold ${driver.vehicle === "Not Assigned" || !driver.vehicle ? "text-[#94A3B8]" : "text-[#2563EB]"}`}>
+          {driver.vehicle || "Not Assigned"}
         </Text>
       </View>
 
@@ -42,7 +42,7 @@ export default function DriverCard({ driver, onPress }) {
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
           <Ionicons name="call-outline" size={14} color="#6B7280" />
-          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{driver.phone}</Text>
+          <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{driver.phone || "-"}</Text>
         </View>
         <View className="flex-row items-center">
           <Text className="text-xs font-semibold text-[#2563EB] mr-1">Details</Text>

@@ -12,6 +12,7 @@ import ForgotPasswordScreen from "@screens/Auth/ForgotPasswordScreen";
 // Nested Stacks
 import ManagerNavigator from "./ManagerNavigator";
 import DriverNavigator from "./DriverNavigator";
+import RentalNavigator from "./RentalNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export default function RootNavigator() {
       <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
       <Stack.Screen name="ManagerStack" component={ManagerNavigator} />
       <Stack.Screen name="DriverStack" component={DriverNavigator} />
+      <Stack.Screen name="RentalStack" component={RentalNavigator} />
     </Stack.Navigator>
   );
 }

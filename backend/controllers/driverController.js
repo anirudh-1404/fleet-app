@@ -41,7 +41,19 @@ export const getDriverById = async (req, res) => {
 
 export const createDriver = async (req, res) => {
   try {
-    const { name, email, password, phone, status } = req.body;
+    const {
+      name,
+      email,
+      password,
+      phone,
+      status,
+      licence,
+      licenceExpiry,
+      licenceClass,
+      issueDate,
+      emergencyContact,
+      employmentStatus,
+    } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email, and password are required" });
@@ -59,6 +71,12 @@ export const createDriver = async (req, res) => {
       role: "driver",
       phone: phone || "",
       status: status || "Active",
+      licence: licence || "",
+      licenceExpiry: licenceExpiry || "",
+      licenceClass: licenceClass || "",
+      issueDate: issueDate || "",
+      emergencyContact: emergencyContact || "",
+      employmentStatus: employmentStatus || "",
     });
 
     const safeDriver = await User.findById(driver._id).select("-password");

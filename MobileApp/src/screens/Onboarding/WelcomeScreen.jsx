@@ -3,10 +3,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
@@ -15,69 +14,78 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8FAFC]">
-      <StatusBar style="dark" />
-      <View className="flex-1 px-7 py-8 justify-between items-center">
-        {/* Empty top spacing for visual balance */}
-        <View />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-        {/* Center Hero Branding */}
-        <View className="items-center w-full px-4">
-          {/* Logo Badge */}
+      <View style={{ flex: 1, paddingHorizontal: 28, justifyContent: "space-between", paddingVertical: 20 }}>
+        
+        {/* Top Logo Row (Single row, brought down nicely) */}
+        <View style={{ paddingTop: 28, flexDirection: "row", alignItems: "center", gap: 10 }}>
           <View
-            className="w-24 h-24 rounded-[32px] bg-[#2563EB] items-center justify-center mb-6"
             style={{
-              shadowColor: "#2563EB",
-              shadowOffset: { width: 0, height: 12 },
-              shadowOpacity: 0.3,
-              shadowRadius: 20,
-              elevation: 8,
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              backgroundColor: "#2563EB",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Ionicons name="car-sport" size={46} color="#FFFFFF" />
+            <Ionicons name="car" size={20} color="#FFFFFF" />
           </View>
-
-          {/* App Title & Welcome Header */}
-          <Text className="text-4xl font-extrabold text-[#0F172A] tracking-tight text-center">
-            Welcome to Fleev
-          </Text>
-
-          <Text className="text-base text-[#64748B] text-center leading-7 mt-3 px-6">
-            Smart fleet management & vehicle operations platform for modern transport teams.
+          <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A", letterSpacing: -0.5 }}>
+            Fleev
           </Text>
         </View>
 
-        {/* Bottom Action Section */}
-        <View className="w-full flex-col gap-3.5 mb-4">
+        {/* Center Simple Headline */}
+        <View style={{ marginVertical: "auto" }}>
+          <Text style={{ fontSize: 32, fontWeight: "800", color: "#0F172A", lineHeight: 40, letterSpacing: -0.5 }}>
+            Fleet management & vehicle rentals, simplified.
+          </Text>
+
+          <Text style={{ fontSize: 16, color: "#64748B", lineHeight: 24, marginTop: 12 }}>
+            Track your vehicles, manage driver pre-trip checks, and handle customer rentals with ease.
+          </Text>
+        </View>
+
+        {/* Bottom Buttons */}
+        <View style={{ gap: 12, paddingBottom: 12 }}>
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={() => navigation.navigate(ROUTES.PURCHASE)}
-            className="h-14 w-full rounded-[22px] bg-[#2563EB] items-center justify-center flex-row"
             style={{
-              shadowColor: "#2563EB",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.25,
-              shadowRadius: 12,
-              elevation: 5,
+              height: 52,
+              backgroundColor: "#2563EB",
+              borderRadius: 12,
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <Text className="text-white text-base font-extrabold mr-2">
-              Continue
+            <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
+              Get Started
             </Text>
-            <Ionicons name="arrow-forward" size={20} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.navigate(ROUTES.LOGIN)}
-            className="items-center py-2"
+            style={{
+              height: 52,
+              backgroundColor: "#F8FAFC",
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            <Text className="text-sm font-medium text-[#64748B]">
-              Already have an account?{" "}
-              <Text className="font-extrabold text-[#2563EB]">Sign In</Text>
+            <Text style={{ color: "#0F172A", fontSize: 15, fontWeight: "600" }}>
+              Sign In
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </SafeAreaView>
   );

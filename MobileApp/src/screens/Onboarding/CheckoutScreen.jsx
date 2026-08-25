@@ -7,28 +7,26 @@ import {
   Platform,
   TouchableOpacity,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
-
-import CustomInput from "../../components/inputs/CustomInput";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
 import { authService } from "../../services/authService";
 
 export default function CheckoutScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const isRental = route?.params?.plan === "rental";
 
-  // Manager Account Setup Fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
-  // Sample Card Details Fields
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -42,36 +40,23 @@ export default function CheckoutScreen() {
     return matches ? matches.join(" ") : cleaned;
   };
 
-  const formatExpiry = (text) => {
-    const cleaned = text.replace(/\D/g, "").slice(0, 4);
-    if (cleaned.length >= 3) {
-      return `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
-    }
-    return cleaned;
-  };
-
   const handleCheckout = async () => {
     if (!name.trim() || !email.trim() || !password || !phone.trim()) {
-      Alert.alert("Missing Profile Details", "Please fill in all account profile fields.");
-      return;
-    }
-
-    if (!cardNumber.trim() || !expiry.trim() || !cvc.trim()) {
-      Alert.alert("Missing Payment Details", "Please enter valid sample card payment details.");
+      Alert.alert("Missing Fields", "Please fill in your name, email, phone, and password.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      // Call backend API to register Manager user
-      await authService.register(name, email, password, phone, "manager");
+      const assignedRole = isRental ? "rental_owner" : "manager";
+      await authService.register(name.trim(), email.trim(), password, phone.trim(), assignedRole);
 
       Alert.alert(
-        "Purchase & Setup Successful 🎉",
-        "Your Manager Fleet Account has been created successfully! Please sign in with your email and password.",
+        "Account Created 🎉",
+        `Your ${isRental ? "Rental Owner" : "Fleet Manager"} account is ready. Please sign in to continue.`,
         [
           {
-            text: "Go to Login",
+            text: "Sign In",
             onPress: () => {
               navigation.navigate(ROUTES.LOGIN, { prefillEmail: email.trim() });
             },
@@ -80,9 +65,7 @@ export default function CheckoutScreen() {
       );
     } catch (error) {
       const errorMsg =
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : error.message || "Failed to create account. Please try again.";
+        error.response?.data?.message || error.message || "Failed to create account. Please try again.";
       Alert.alert("Registration Error", errorMsg);
     } finally {
       setIsSubmitting(false);
@@ -90,211 +73,251 @@ export default function CheckoutScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8FAFC]">
-      <StatusBar style="dark" />
-      <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: 24,
-            paddingTop: Platform.OS === "ios" ? 12 : 20,
-            paddingBottom: 40,
-          }}
-        >
-          {/* Header */}
-          <View className="flex-row items-center justify-between mb-6">
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              activeOpacity={0.7}
-              className="w-10 h-10 rounded-full bg-white border border-[#E2E8F0] items-center justify-center"
-              style={{
-                shadowColor: "#0F172A",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.03,
-                shadowRadius: 6,
-                elevation: 1,
-              }}
-            >
-              <Ionicons name="arrow-back" size={20} color="#0F172A" />
-            </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-            <View className="px-3.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0]">
-              <Text className="text-xs font-bold text-[#047857] uppercase tracking-wider">
-                Step 2 of 2 • Checkout
-              </Text>
-            </View>
+      {/* Header */}
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 12,
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "#FFFFFF",
+          borderBottomWidth: 1,
+          borderColor: "#E2E8F0",
+        }}
+      >
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 4, marginRight: 12 }}>
+          <Ionicons name="arrow-back" size={24} color="#0F172A" />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
+          {isRental ? "Rental Owner Setup" : "Fleet Manager Setup"}
+        </Text>
+      </View>
+
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <ScrollView
+          contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Plan chip */}
+          <View
+            style={{
+              backgroundColor: "#EFF6FF",
+              borderRadius: 10,
+              padding: 12,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 16,
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E40AF" }}>
+              Selected: {isRental ? "Vehicle Rentals ($129/mo)" : "Fleet Management ($149/mo)"}
+            </Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>Change</Text>
+            </TouchableOpacity>
           </View>
 
-          <Text className="text-2xl font-extrabold text-[#0F172A] tracking-tight mb-1">
-            Account & Payment Setup
-          </Text>
-          <Text className="text-xs text-[#64748B] mb-6">
-            Set up your manager profile and complete sample subscription checkout.
-          </Text>
+          {/* Form */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              padding: 16,
+              marginBottom: 16,
+            }}
+          >
+            <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A", marginBottom: 14 }}>
+              Account Information
+            </Text>
 
-          {/* Section 1: Profile Details */}
-          <View className="bg-white border border-[#E2E8F0] rounded-[24px] p-5 mb-5 shadow-sm">
-            <View className="flex-row items-center mb-4 pb-3 border-b border-[#F1F5F9]">
-              <View className="w-8 h-8 rounded-lg bg-[#EFF6FF] items-center justify-center mr-2.5">
-                <Ionicons name="person-outline" size={18} color="#2563EB" />
-              </View>
-              <Text className="text-base font-bold text-[#0F172A]">Manager Profile Details</Text>
-            </View>
-
-            {/* Name */}
-            <View className="mb-4">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Full Name
-              </Text>
-              <CustomInput
+            <View style={{ marginBottom: 12 }}>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#475569", marginBottom: 4 }}>Full Name</Text>
+              <TextInput
                 value={name}
                 onChangeText={setName}
-                placeholder="e.g. Michael Johnson"
-                leftIcon="person-outline"
+                placeholder="e.g. John Doe"
+                placeholderTextColor="#94A3B8"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  height: 44,
+                  fontSize: 14,
+                  color: "#0F172A",
+                }}
               />
             </View>
 
-            {/* Email */}
-            <View className="mb-4">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Manager Email Address
-              </Text>
-              <CustomInput
+            <View style={{ marginBottom: 12 }}>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#475569", marginBottom: 4 }}>Email Address</Text>
+              <TextInput
                 value={email}
                 onChangeText={setEmail}
-                placeholder="e.g. manager@fleet.com"
+                placeholder="john@example.com"
                 keyboardType="email-address"
-                leftIcon="mail-outline"
+                autoCapitalize="none"
+                placeholderTextColor="#94A3B8"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  height: 44,
+                  fontSize: 14,
+                  color: "#0F172A",
+                }}
               />
             </View>
 
-            {/* Phone */}
-            <View className="mb-4">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Phone Number
-              </Text>
-              <CustomInput
+            <View style={{ marginBottom: 12 }}>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#475569", marginBottom: 4 }}>Phone Number</Text>
+              <TextInput
                 value={phone}
                 onChangeText={setPhone}
-                placeholder="e.g. +61 412 345 678"
+                placeholder="+1 555-0199"
                 keyboardType="phone-pad"
-                leftIcon="call-outline"
+                placeholderTextColor="#94A3B8"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  height: 44,
+                  fontSize: 14,
+                  color: "#0F172A",
+                }}
               />
             </View>
 
-            {/* Password */}
-            <View className="mb-1">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Set Account Password
-              </Text>
-              <CustomInput
+            <View>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#475569", marginBottom: 4 }}>Password</Text>
+              <TextInput
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Choose password"
+                placeholder="Enter a secure password"
                 secureTextEntry
-                leftIcon="lock-closed-outline"
+                placeholderTextColor="#94A3B8"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  height: 44,
+                  fontSize: 14,
+                  color: "#0F172A",
+                }}
               />
             </View>
           </View>
 
-          {/* Section 2: Sample Payment Card Details */}
-          <View className="bg-white border border-[#E2E8F0] rounded-[24px] p-5 mb-6 shadow-sm">
-            <View className="flex-row items-center justify-between mb-4 pb-3 border-b border-[#F1F5F9]">
-              <View className="flex-row items-center">
-                <View className="w-8 h-8 rounded-lg bg-[#F5F3FF] items-center justify-center mr-2.5">
-                  <Ionicons name="card-outline" size={18} color="#7C3AED" />
-                </View>
-                <Text className="text-base font-bold text-[#0F172A]">Payment Card (Sample)</Text>
-              </View>
-              <View className="px-2 py-0.5 rounded bg-[#F1F5F9]">
-                <Text className="text-[10px] font-bold text-[#64748B]">DEMO MODE</Text>
-              </View>
+          {/* Test Card */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              padding: 16,
+              marginBottom: 20,
+            }}
+          >
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12 }}>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A" }}>Payment Details</Text>
+              <Text style={{ fontSize: 11, color: "#64748B" }}>Demo Mode</Text>
             </View>
 
-            {/* Cardholder Name */}
-            <View className="mb-4">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Cardholder Name
-              </Text>
-              <CustomInput
-                value={cardName}
-                onChangeText={setCardName}
-                placeholder="Name on card"
-                leftIcon="person-circle-outline"
-              />
-            </View>
-
-            {/* Card Number */}
-            <View className="mb-4">
-              <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                Card Number
-              </Text>
-              <CustomInput
+            <View style={{ marginBottom: 10 }}>
+              <TextInput
                 value={cardNumber}
-                onChangeText={(val) => setCardNumber(formatCardNumber(val))}
+                onChangeText={(v) => setCardNumber(formatCardNumber(v))}
                 placeholder="4242 4242 4242 4242"
                 keyboardType="numeric"
-                leftIcon="card-outline"
+                placeholderTextColor="#94A3B8"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  borderWidth: 1,
+                  borderColor: "#CBD5E1",
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  height: 44,
+                  fontSize: 14,
+                  color: "#0F172A",
+                }}
               />
             </View>
 
-            {/* Expiry & CVC */}
-            <View className="flex-row gap-3">
-              <View className="flex-1">
-                <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                  Expiry (MM/YY)
-                </Text>
-                <CustomInput
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <View style={{ flex: 1 }}>
+                <TextInput
                   value={expiry}
-                  onChangeText={(val) => setExpiry(formatExpiry(val))}
-                  placeholder="12/28"
-                  keyboardType="numeric"
-                  leftIcon="calendar-outline"
+                  onChangeText={setExpiry}
+                  placeholder="MM/YY"
+                  placeholderTextColor="#94A3B8"
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    borderWidth: 1,
+                    borderColor: "#CBD5E1",
+                    borderRadius: 8,
+                    paddingHorizontal: 12,
+                    height: 44,
+                    fontSize: 14,
+                    color: "#0F172A",
+                  }}
                 />
               </View>
-              <View className="flex-1">
-                <Text className="text-xs font-bold text-[#334155] mb-1.5 uppercase tracking-wider">
-                  CVC / CVV
-                </Text>
-                <CustomInput
+              <View style={{ flex: 1 }}>
+                <TextInput
                   value={cvc}
-                  onChangeText={(val) => setCvc(val.replace(/\D/g, "").slice(0, 4))}
-                  placeholder="123"
+                  onChangeText={setCvc}
+                  placeholder="CVC"
                   keyboardType="numeric"
                   secureTextEntry
-                  leftIcon="shield-checkmark-outline"
+                  placeholderTextColor="#94A3B8"
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    borderWidth: 1,
+                    borderColor: "#CBD5E1",
+                    borderRadius: 8,
+                    paddingHorizontal: 12,
+                    height: 44,
+                    fontSize: 14,
+                    color: "#0F172A",
+                  }}
                 />
               </View>
             </View>
           </View>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={handleCheckout}
             disabled={isSubmitting}
-            className="h-14 rounded-[24px] bg-[#2563EB] items-center justify-center flex-row shadow-lg shadow-blue-500/25"
             style={{
-              shadowColor: "#2563EB",
-              shadowOffset: { width: 0, height: 6 },
-              shadowOpacity: 0.25,
-              shadowRadius: 14,
-              elevation: 4,
+              height: 50,
+              backgroundColor: "#2563EB",
+              borderRadius: 12,
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {isSubmitting ? (
-              <ActivityIndicator color="white" />
+              <ActivityIndicator color="#FFFFFF" />
             ) : (
-              <>
-                <Ionicons name="lock-closed" size={18} color="white" style={{ marginRight: 8 }} />
-                <Text className="text-white text-base font-bold">
-                  Complete Account Setup
-                </Text>
-              </>
+              <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
+                Create Account
+              </Text>
             )}
           </TouchableOpacity>
         </ScrollView>

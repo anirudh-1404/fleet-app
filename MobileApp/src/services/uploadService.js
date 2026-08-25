@@ -4,10 +4,15 @@ import { SERVER_URL } from "@constants/config";
 export const normalizeImageUrl = (url) => {
   if (!url) return null;
   if (typeof url !== "string") return url;
-  if (url.includes("localhost:8000") || url.includes("127.0.0.1:8000")) {
+  if (
+    url.includes("localhost:8000") ||
+    url.includes("127.0.0.1:8000") ||
+    url.includes("10.0.2.2:8000")
+  ) {
     return url
       .replace("http://localhost:8000", SERVER_URL)
-      .replace("http://127.0.0.1:8000", SERVER_URL);
+      .replace("http://127.0.0.1:8000", SERVER_URL)
+      .replace("http://10.0.2.2:8000", SERVER_URL);
   }
   return url;
 };

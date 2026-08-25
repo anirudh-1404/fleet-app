@@ -45,6 +45,19 @@ const ROUTES = {
   // Driver screens
   DRIVER_HOME: "DriverHome",
   DRIVER_HISTORY: "DriverHistory",
+
+  // Rental screens
+  RENTAL_DASHBOARD: "RentalDashboard",
+  RENTAL_VEHICLE_LIST: "RentalVehicleList",
+  ADD_RENTAL_VEHICLE: "AddRentalVehicle",
+  RENTAL_VEHICLE_DETAILS: "RentalVehicleDetails",
+  EDIT_RENTAL_VEHICLE: "EditRentalVehicle",
+  RENTAL_LIST: "RentalList",
+  CREATE_RENTAL: "CreateRental",
+  RENTAL_DETAILS: "RentalDetails",
+  RETURN_RENTAL: "ReturnRental",
+  RENTAL_CUSTOMER_LIST: "RentalCustomerList",
+  RENTAL_CUSTOMER_DETAILS: "RentalCustomerDetails",
 };
 
 export default ROUTES;
