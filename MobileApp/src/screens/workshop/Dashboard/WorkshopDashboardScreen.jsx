@@ -65,6 +65,29 @@ export default function WorkshopDashboardScreen() {
     ]);
   };
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  const formatDisplayName = (rawName) => {
+    if (!rawName) return "Workshop Manager";
+    return rawName
+      .trim()
+      .split(/\s+/)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  const getInitials = (rawName) => {
+    if (!rawName) return "WM";
+    const parts = rawName.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  };
+
   const summary = dashboardData?.summary || {
     todaysJobs: 0,
     openWorkOrders: 0,
@@ -96,16 +119,17 @@ export default function WorkshopDashboardScreen() {
           borderColor: "#E2E8F0",
         }}
       >
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 13, fontWeight: "600", color: "#64748B" }}>
-            Workshop Hub
+            {getGreeting()},
           </Text>
-          <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
-            {user?.name || "Workshop Manager"}
+          <Text style={{ fontSize: 21, fontWeight: "800", color: "#0F172A", marginTop: 2 }}>
+            {formatDisplayName(user?.name)}
           </Text>
         </View>
 
         <TouchableOpacity
+          activeOpacity={0.7}
           onPress={handleLogout}
           style={{
             padding: 8,
