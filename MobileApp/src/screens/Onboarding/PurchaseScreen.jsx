@@ -115,6 +115,7 @@ export default function PurchaseScreen() {
               backgroundColor: "#FFFFFF",
               borderRadius: 14,
               padding: 18,
+              marginBottom: 14,
               borderWidth: 2,
               borderColor: selectedPlan === "rental" ? "#2563EB" : "#E2E8F0",
             }}
@@ -151,6 +152,54 @@ export default function PurchaseScreen() {
               <Text style={{ fontSize: 13, color: "#334155" }}>• Rental agreements and customer records</Text>
               <Text style={{ fontSize: 13, color: "#334155" }}>• Automatic return date calculation</Text>
               <Text style={{ fontSize: 13, color: "#334155" }}>• Double-booking prevention and damage logs</Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* Option 3: Workshop Management */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setSelectedPlan("workshop")}
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 14,
+              padding: 18,
+              marginBottom: 14,
+              borderWidth: 2,
+              borderColor: selectedPlan === "workshop" ? "#2563EB" : "#E2E8F0",
+            }}
+          >
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <Text style={{ fontSize: 18, fontWeight: "800", color: "#0F172A" }}>
+                Workshop Management
+              </Text>
+              <View
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: 11,
+                  backgroundColor: selectedPlan === "workshop" ? "#2563EB" : "#F1F5F9",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {selectedPlan === "workshop" && (
+                  <Ionicons name="checkmark" size={14} color="#FFFFFF" />
+                )}
+              </View>
+            </View>
+
+            <Text style={{ fontSize: 13, color: "#64748B", marginBottom: 12 }}>
+              For vehicle repair shops, servicing, and truck/trailer inspections.
+            </Text>
+
+            <Text style={{ fontSize: 22, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
+              $199 <Text style={{ fontSize: 13, fontWeight: "500", color: "#64748B" }}>/ month</Text>
+            </Text>
+
+            <View style={{ borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 10, gap: 6 }}>
+              <Text style={{ fontSize: 13, color: "#334155" }}>• Work orders & job lifecycle tracking</Text>
+              <Text style={{ fontSize: 13, color: "#334155" }}>• Truck & trailer inspections and checklists</Text>
+              <Text style={{ fontSize: 13, color: "#334155" }}>• Services, parts, invoices & collection ready</Text>
             </View>
           </TouchableOpacity>
         </ScrollView>

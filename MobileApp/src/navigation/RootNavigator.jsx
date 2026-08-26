@@ -13,6 +13,7 @@ import ForgotPasswordScreen from "@screens/Auth/ForgotPasswordScreen";
 import ManagerNavigator from "./ManagerNavigator";
 import DriverNavigator from "./DriverNavigator";
 import RentalNavigator from "./RentalNavigator";
+import WorkshopNavigator from "./WorkshopNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function RootNavigator() {
       <Stack.Screen name="ManagerStack" component={ManagerNavigator} />
       <Stack.Screen name="DriverStack" component={DriverNavigator} />
       <Stack.Screen name="RentalStack" component={RentalNavigator} />
+      <Stack.Screen name="WorkshopStack" component={WorkshopNavigator} />
     </Stack.Navigator>
   );
 }

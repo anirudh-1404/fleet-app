@@ -20,7 +20,21 @@ import { authService } from "../../services/authService";
 export default function CheckoutScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const isRental = route?.params?.plan === "rental";
+  const selectedPlan = route?.params?.plan || "fleet";
+  const isRental = selectedPlan === "rental";
+  const isWorkshop = selectedPlan === "workshop";
+
+  const getPlanTitle = () => {
+    if (isWorkshop) return "Workshop Manager Setup";
+    if (isRental) return "Rental Owner Setup";
+    return "Fleet Manager Setup";
+  };
+
+  const getPlanLabel = () => {
+    if (isWorkshop) return "Workshop Management ($199/mo)";
+    if (isRental) return "Vehicle Rentals ($129/mo)";
+    return "Fleet Management ($149/mo)";
+  };
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -48,12 +62,15 @@ export default function CheckoutScreen() {
 
     setIsSubmitting(true);
     try {
-      const assignedRole = isRental ? "rental_owner" : "manager";
+      let assignedRole = "manager";
+      if (isWorkshop) assignedRole = "workshop_manager";
+      else if (isRental) assignedRole = "rental_owner";
+
       await authService.register(name.trim(), email.trim(), password, phone.trim(), assignedRole);
 
       Alert.alert(
         "Account Created 🎉",
-        `Your ${isRental ? "Rental Owner" : "Fleet Manager"} account is ready. Please sign in to continue.`,
+        `Your ${isWorkshop ? "Workshop Manager" : isRental ? "Rental Owner" : "Fleet Manager"} account is ready. Please sign in to continue.`,
         [
           {
             text: "Sign In",
@@ -92,7 +109,7 @@ export default function CheckoutScreen() {
           <Ionicons name="arrow-back" size={24} color="#0F172A" />
         </TouchableOpacity>
         <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
-          {isRental ? "Rental Owner Setup" : "Fleet Manager Setup"}
+          {getPlanTitle()}
         </Text>
       </View>
 
@@ -114,7 +131,7 @@ export default function CheckoutScreen() {
             }}
           >
             <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E40AF" }}>
-              Selected: {isRental ? "Vehicle Rentals ($129/mo)" : "Fleet Management ($149/mo)"}
+              Selected: {getPlanLabel()}
             </Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>Change</Text>

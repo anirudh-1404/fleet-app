@@ -20,6 +20,7 @@ import reminderRoutes from "./routes/reminderRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import rentalRoutes from "./routes/rentalRoutes.js";
+import workshopRoutes from "./routes/workshopRoutes.js";
 import path from "path";
 
 dotenv.config();
@@ -57,6 +58,7 @@ app.use("/api/reminders", reminderRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/rental", rentalRoutes);
+app.use("/api/workshop", workshopRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Fleet Express API + MongoDB + Socket.IO Server Active" });
