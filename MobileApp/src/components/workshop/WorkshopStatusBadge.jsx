@@ -1,77 +1,77 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function WorkshopStatusBadge({ status, type = "status", size = "normal" }) {
+export default function WorkshopStatusBadge({ status, size = "normal" }) {
   if (!status) return null;
-
-  let bg = "#F1F5F9";
-  let text = "#475569";
-  let border = "#E2E8F0";
 
   const s = String(status).toUpperCase();
 
-  // Work Order & Vehicle Statuses
+  let dotColor = "#64748B";
+  let bg = "#F1F5F9";
+  let textColor = "#334155";
+
   if (s === "OPEN" || s === "AVAILABLE") {
+    dotColor = "#2563EB";
     bg = "#EFF6FF";
-    text = "#1D4ED8";
-    border = "#BFDBFE";
+    textColor = "#1E40AF";
   } else if (s === "IN_PROGRESS" || s === "IN_WORKSHOP" || s === "INSPECTION_PENDING") {
-    bg = "#FEF3C7";
-    text = "#B45309";
-    border = "#FDE68A";
+    dotColor = "#D97706";
+    bg = "#FFFBEB";
+    textColor = "#92400E";
   } else if (s === "WAITING_FOR_PARTS" || s === "URGENT" || s === "DUE") {
+    dotColor = "#EA580C";
     bg = "#FFF7ED";
-    text = "#C2410C";
-    border = "#FFEDD5";
+    textColor = "#9A3412";
   } else if (s === "READY_FOR_COLLECTION") {
-    bg = "#F3E8FF";
-    text = "#6B21A8";
-    border = "#E9D5FF";
+    dotColor = "#7C3AED";
+    bg = "#FAF5FF";
+    textColor = "#6B21A8";
   } else if (s === "COMPLETED" || s === "PASSED" || s === "PASS") {
-    bg = "#DCFCE7";
-    text = "#15803D";
-    border = "#BBF7D0";
+    dotColor = "#16A34A";
+    bg = "#F0FDF4";
+    textColor = "#166534";
   } else if (s === "CANCELLED" || s === "FAILED" || s === "FAIL" || s === "CRITICAL" || s === "OVERDUE" || s === "INACTIVE") {
-    bg = "#FEE2E2";
-    text = "#B91C1C";
-    border = "#FECACA";
+    dotColor = "#DC2626";
+    bg = "#FEF2F2";
+    textColor = "#991B1B";
   } else if (s === "OUTSIDE_WORKSHOP" || s === "UPCOMING") {
-    bg = "#F1F5F9";
-    text = "#475569";
-    border = "#CBD5E1";
-  } else if (s === "N/A" || s === "NORMAL") {
+    dotColor = "#64748B";
     bg = "#F8FAFC";
-    text = "#64748B";
-    border = "#E2E8F0";
+    textColor = "#475569";
   }
 
   const isSmall = size === "small";
 
-  const formatText = (val) => {
-    return val.replace(/_/g, " ");
-  };
-
   return (
     <View
       style={{
+        flexDirection: "row",
+        alignItems: "center",
         backgroundColor: bg,
-        borderWidth: 1,
-        borderColor: border,
-        paddingHorizontal: isSmall ? 6 : 10,
-        paddingVertical: isSmall ? 2 : 4,
-        borderRadius: 6,
+        paddingHorizontal: isSmall ? 8 : 10,
+        paddingVertical: isSmall ? 3 : 5,
+        borderRadius: 20,
         alignSelf: "flex-start",
       }}
     >
+      <View
+        style={{
+          width: isSmall ? 5 : 6,
+          height: isSmall ? 5 : 6,
+          borderRadius: 3,
+          backgroundColor: dotColor,
+          marginRight: 5,
+        }}
+      />
       <Text
         style={{
-          color: text,
-          fontSize: isSmall ? 10 : 12,
-          fontWeight: "700",
-          textTransform: "uppercase",
+          color: textColor,
+          fontSize: isSmall ? 11 : 12,
+          fontWeight: "600",
+          letterSpacing: 0.2,
         }}
       >
-        {formatText(s)}
+        {s.replace(/_/g, " ")}
       </Text>
     </View>
   );
