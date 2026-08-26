@@ -16,10 +16,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
 import { authService } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 export default function CheckoutScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { login } = useAuth();
   const selectedPlan = route?.params?.plan || "fleet";
   const isRental = selectedPlan === "rental";
   const isWorkshop = selectedPlan === "workshop";
@@ -67,6 +69,23 @@ export default function CheckoutScreen() {
       else if (isRental) assignedRole = "rental_owner";
 
       await authService.register(name.trim(), email.trim(), password, phone.trim(), assignedRole);
+
+      // Automatically log the user in
+      try {
+        const loginData = await login(email.trim(), password);
+        if (loginData.role === "workshop_manager") {
+          navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
+          return;
+        } else if (loginData.role === "rental_owner") {
+          navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
+          return;
+        } else if (loginData.role === "manager") {
+          navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
+          return;
+        }
+      } catch (loginErr) {
+        console.warn("Auto-login failed after registration, navigating to Login screen:", loginErr);
+      }
 
       Alert.alert(
         "Account Created 🎉",

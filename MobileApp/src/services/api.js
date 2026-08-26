@@ -9,7 +9,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000,
+  timeout: 45000,
 });
 
 // Attach Auth Bearer token to every request
@@ -36,6 +36,9 @@ api.interceptors.response.use(
       // Clear token on unauthorized response
       await AsyncStorage.removeItem("fleet_user_token");
       await AsyncStorage.removeItem("fleet_user_data");
+    } else if (error.code === "ECONNABORTED" || (error.message && error.message.includes("timeout"))) {
+      console.warn("[API Timeout] Backend is waking up from idle state. Extending wait window.");
+      error.message = "Server is warming up. Please tap again to proceed.";
     } else if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
       console.warn(
         `[API Network Error] Could not reach backend at ${API_BASE_URL}. Ensure backend server is running and device is on the same network.`
