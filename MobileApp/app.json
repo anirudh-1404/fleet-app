@@ -34,7 +34,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "ed4ff486-eb9b-4804-b988-a9b3d491e3ab"
+        "projectId": "2a66d5a5-8f9f-44fb-a5d6-75e6916f7464"
       }
     },
     "runtimeVersion": {
@@ -44,7 +44,7 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 3000,
-      "url": "https://u.expo.dev/ed4ff486-eb9b-4804-b988-a9b3d491e3ab"
+      "url": "https://u.expo.dev/2a66d5a5-8f9f-44fb-a5d6-75e6916f7464"
     }
   }
 }
