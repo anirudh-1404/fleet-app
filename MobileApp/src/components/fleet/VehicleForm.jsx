@@ -65,25 +65,27 @@ export default function VehicleForm({
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (initialValues) {
-      setVehicleType(initialValues.vehicleType || "Truck");
-      setRego(initialValues.registration || initialValues.rego || "");
-      setFleetNumber(initialValues.fleetNumber || "");
-      setMake(initialValues.make || "");
-      setModel(initialValues.model || "");
-      setYear(initialValues.year ? String(initialValues.year) : "");
-      setVin(initialValues.vin || "");
-      setStatus(initialValues.status || "Active");
-      setAssignedDriver(
-        initialValues.assignedDriver
-          ? typeof initialValues.assignedDriver === "object"
+    if (initialValues && Object.keys(initialValues).length > 0) {
+      if (initialValues.vehicleType) setVehicleType(initialValues.vehicleType);
+      if (initialValues.registration || initialValues.rego) setRego(initialValues.registration || initialValues.rego);
+      if (initialValues.fleetNumber) setFleetNumber(initialValues.fleetNumber);
+      if (initialValues.make) setMake(initialValues.make);
+      if (initialValues.model) setModel(initialValues.model);
+      if (initialValues.year) setYear(String(initialValues.year));
+      if (initialValues.vin) setVin(initialValues.vin);
+      if (initialValues.status) setStatus(initialValues.status);
+      if (initialValues.assignedDriver) {
+        setAssignedDriver(
+          typeof initialValues.assignedDriver === "object"
             ? initialValues.assignedDriver._id
             : initialValues.assignedDriver
-          : ""
-      );
-      setImageUrl(initialValues.imageUrl || initialValues.photo || "");
+        );
+      }
+      if (initialValues.imageUrl || initialValues.photo) {
+        setImageUrl(initialValues.imageUrl || initialValues.photo);
+      }
     }
-  }, [initialValues]);
+  }, [initialValues?._id, initialValues?.registration, initialValues?.rego]);
 
   const handleSubmit = () => {
     if (!rego.trim()) {
