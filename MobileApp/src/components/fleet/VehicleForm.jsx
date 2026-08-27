@@ -16,7 +16,7 @@ import CustomDropdown from "@components/inputs/CustomDropdown";
 import PrimaryButton from "@components/buttons/PrimaryButton";
 import VehiclePhotoCard from "./VehiclePhotoCard";
 
-import { DUMMY_DRIVERS } from "@data/drivers";
+import { driverService } from "../../services/driverService";
 
 const VEHICLE_TYPES = [
   { label: "Truck", value: "Truck" },
@@ -173,10 +173,28 @@ export default function VehicleForm({
     );
   };
 
-  const driverOptions = DUMMY_DRIVERS.map((driver) => ({
-    label: driver.name,
-    value: driver.name
-  }));
+  const [driverList, setDriverList] = useState([]);
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const data = await driverService.getDrivers();
+        const list = Array.isArray(data) ? data : data?.drivers || data?.data || [];
+        setDriverList(list);
+      } catch (err) {
+        console.warn("Failed to fetch drivers for VehicleForm:", err);
+      }
+    };
+    fetchDrivers();
+  }, []);
+
+  const driverOptions = [
+    { label: "None / Unassigned", value: "" },
+    ...driverList.map((driver) => ({
+      label: `${driver.name || driver.fullName || "Driver"}${driver.licenseNumber ? ` (${driver.licenseNumber})` : ""}`,
+      value: driver._id || driver.id || driver.name
+    }))
+  ];
 
   const handleSave = () => {
     handleSubmit();
