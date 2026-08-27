@@ -16,7 +16,8 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "package": "com.anirudh.joshi.fleev"
+      "package": "com.anirudh.joshi.fleev",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
