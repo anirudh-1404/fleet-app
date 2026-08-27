@@ -1,3 +1,4 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
@@ -6,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   RefreshControl,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -80,7 +80,7 @@ export default function WorkshopNotesScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

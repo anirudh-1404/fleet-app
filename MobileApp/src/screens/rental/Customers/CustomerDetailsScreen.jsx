@@ -1,10 +1,10 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -45,7 +45,7 @@ export default function CustomerDetailsScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
         <RentalStateView type="loading" message="Loading customer profile..." />
       </SafeAreaView>
     );
@@ -53,7 +53,7 @@ export default function CustomerDetailsScreen() {
 
   if (error || !data?.customer) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
         <RentalStateView type="error" message={error || "Customer not found"} onRetry={fetchDetails} />
       </SafeAreaView>
     );
@@ -62,7 +62,7 @@ export default function CustomerDetailsScreen() {
   const { customer, rentals = [] } = data;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

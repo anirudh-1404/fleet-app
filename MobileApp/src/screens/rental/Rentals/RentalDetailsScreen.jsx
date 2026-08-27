@@ -1,3 +1,4 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from "react";
 import {
   View,
@@ -5,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -70,7 +70,7 @@ export default function RentalDetailsScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
         <RentalStateView type="loading" message="Loading rental details..." />
       </SafeAreaView>
     );
@@ -78,7 +78,7 @@ export default function RentalDetailsScreen() {
 
   if (error || !rental) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
         <RentalStateView type="error" message={error || "Rental not found"} onRetry={fetchDetails} />
       </SafeAreaView>
     );
@@ -89,7 +89,7 @@ export default function RentalDetailsScreen() {
   const isCancellable = rental.status === "UPCOMING";
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

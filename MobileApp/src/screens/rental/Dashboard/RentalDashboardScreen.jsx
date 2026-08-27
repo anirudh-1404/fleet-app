@@ -1,3 +1,4 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
@@ -5,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
-  SafeAreaView,
   StatusBar,
   Alert,
 } from "react-native";
@@ -94,7 +94,7 @@ export default function RentalDashboardScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8FAFC" />
 
       {/* Header */}

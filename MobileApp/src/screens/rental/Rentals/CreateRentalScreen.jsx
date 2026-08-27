@@ -1,3 +1,4 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -7,7 +8,6 @@ import {
   TextInput,
   Alert,
   ActivityIndicator,
-  SafeAreaView,
   StatusBar,
   KeyboardAvoidingView,
   Platform,
@@ -204,14 +204,14 @@ export default function CreateRentalScreen() {
 
   if (isLoadingVehicles) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
         <RentalStateView type="loading" message="Loading available vehicles..." />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

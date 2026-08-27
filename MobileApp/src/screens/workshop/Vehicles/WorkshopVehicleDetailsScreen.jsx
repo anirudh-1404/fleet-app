@@ -1,3 +1,4 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
@@ -5,7 +6,6 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  SafeAreaView,
   StatusBar,
   Alert,
   RefreshControl,
@@ -83,7 +83,7 @@ export default function WorkshopVehicleDetailsScreen() {
   const invoices = data?.invoices || [];
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

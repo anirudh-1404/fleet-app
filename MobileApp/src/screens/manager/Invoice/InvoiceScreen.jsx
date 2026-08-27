@@ -1,5 +1,10 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -7,7 +12,7 @@ export default function InvoiceScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8FAFC]">
+    <SafeAreaView className="flex-1 bg-[#F8FAFC]" edges={["top"]}>
       {/* Header */}
       <View className="px-6 pt-4 flex-row items-center mb-5">
         <TouchableOpacity

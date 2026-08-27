@@ -1,9 +1,9 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,7 +14,7 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+    <SafeAreaView style={{  flex: 1, backgroundColor: "#FFFFFF"  }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       <View style={{ flex: 1, paddingHorizontal: 28, justifyContent: "space-between", paddingVertical: 20 }}>
