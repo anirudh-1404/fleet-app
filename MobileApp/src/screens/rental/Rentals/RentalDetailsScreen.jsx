@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   StatusBar,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
@@ -70,7 +71,7 @@ export default function RentalDetailsScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
         <RentalStateView type="loading" message="Loading rental details..." />
       </SafeAreaView>
     );
@@ -78,7 +79,7 @@ export default function RentalDetailsScreen() {
 
   if (error || !rental) {
     return (
-      <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
         <RentalStateView type="error" message={error || "Rental not found"} onRetry={fetchDetails} />
       </SafeAreaView>
     );
@@ -89,7 +90,7 @@ export default function RentalDetailsScreen() {
   const isCancellable = rental.status === "UPCOMING";
 
   return (
-    <SafeAreaView style={{  flex: 1, backgroundColor: "#F8FAFC"  }} edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -14,7 +15,7 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={{  flex: 1, backgroundColor: "#FFFFFF"  }} edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       <View style={{ flex: 1, paddingHorizontal: 28, justifyContent: "space-between", paddingVertical: 20 }}>

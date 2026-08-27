@@ -1,5 +1,14 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Platform, Alert, Linking } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+  Alert,
+  Linking,
+  StatusBar,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
