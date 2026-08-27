@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import "./global.css";
 import React from "react";
-import { View, Platform, StatusBar } from "react-native";
+import { View, Platform, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "@navigation/RootNavigator";
@@ -12,14 +12,12 @@ import { FleetDataProvider } from "./src/context/FleetDataContext";
 export default function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" translucent={false} />
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#FFFFFF",
-          paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0,
-        }}
-      >
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#FFFFFF"
+        translucent={false}
+      />
+      <View style={styles.appContainer}>
         <NavigationContainer>
           <AuthProvider>
             <FleetDataProvider>
@@ -33,3 +31,11 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    paddingTop: Platform.OS === "android" ? 54 : 0,
+  },
+});
