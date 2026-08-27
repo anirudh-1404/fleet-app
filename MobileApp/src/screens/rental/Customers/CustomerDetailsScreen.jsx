@@ -46,7 +46,7 @@ export default function CustomerDetailsScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top"]}>
         <RentalStateView type="loading" message="Loading customer profile..." />
       </SafeAreaView>
     );
@@ -54,7 +54,7 @@ export default function CustomerDetailsScreen() {
 
   if (error || !data?.customer) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top"]}>
         <RentalStateView type="error" message={error || "Customer not found"} onRetry={fetchDetails} />
       </SafeAreaView>
     );
@@ -63,7 +63,7 @@ export default function CustomerDetailsScreen() {
   const { customer, rentals = [] } = data;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC", paddingTop: Platform.OS === "android" ? (StatusBar.currentHeight || 28) : 0 }} edges={["top"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Header */}

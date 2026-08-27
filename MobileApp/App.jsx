@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import "./global.css";
 import React from "react";
-import { View, Platform, StatusBar, StyleSheet } from "react-native";
+import { View, StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import RootNavigator from "@navigation/RootNavigator";
@@ -15,7 +15,6 @@ export default function App() {
       <StatusBar
         barStyle="dark-content"
         backgroundColor="#FFFFFF"
-        translucent={false}
       />
       <View style={styles.appContainer}>
         <NavigationContainer>
@@ -36,6 +35,5 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-    paddingTop: Platform.OS === "android" ? 54 : 0,
   },
 });

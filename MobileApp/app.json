@@ -18,11 +18,6 @@
       },
       "package": "com.anirudh.joshi.fleev"
     },
-    "androidStatusBar": {
-      "barStyle": "dark-content",
-      "backgroundColor": "#FFFFFF",
-      "translucent": false
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
