@@ -5,6 +5,10 @@ import StatusBadge from "./StatusBadge";
 import { normalizeImageUrl } from "../../services/uploadService";
 
 export default function VehicleCard({ vehicle, onPress }) {
+  const isTrailer =
+    vehicle.type === "Trailers" ||
+    vehicle.type === "Trailer" ||
+    vehicle.vehicleType === "Trailer";
   const isTruck =
     vehicle.type === "Trucks" ||
     vehicle.type === "Truck" ||
@@ -21,6 +25,8 @@ export default function VehicleCard({ vehicle, onPress }) {
   let vehicleIcon = "car-sport-outline";
   if (isTruck) {
     vehicleIcon = "bus-outline";
+  } else if (isTrailer) {
+    vehicleIcon = "layers-outline";
   } else if (isVan || isUte) {
     vehicleIcon = "car-outline";
   }

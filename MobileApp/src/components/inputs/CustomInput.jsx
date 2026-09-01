@@ -34,7 +34,7 @@ const CustomInput = ({
             <TextInput
                 className="flex-1 text-gray-900"
                 style={{
-                    fontSize: 15,
+                    fontSize: 16.5,
                     height: 56,
                     paddingTop: 0,
                     paddingBottom: 0,

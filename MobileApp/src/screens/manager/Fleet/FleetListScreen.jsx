@@ -22,7 +22,7 @@ import EmptyState from "@components/fleet/EmptyState";
 
 import { vehicleService } from "../../../services/vehicleService";
 
-const VEHICLE_TYPES = ["All", "Trucks", "Cars", "Vans", "Utes"];
+const VEHICLE_TYPES = ["All", "Trucks", "Trailers", "Cars", "Vans", "Utes"];
 
 export default function FleetListScreen() {
   const navigation = useNavigation();
@@ -76,10 +76,18 @@ export default function FleetListScreen() {
   // Filtering logic
   const filteredVehicles = useMemo(() => {
     return formattedVehicles.filter((vehicle) => {
+      const vType = (vehicle.type || "").toLowerCase();
+      const filter = activeFilter.toLowerCase();
+
       const matchesType =
         activeFilter === "All" ||
-        vehicle.type.toLowerCase().includes(activeFilter.toLowerCase()) ||
-        (activeFilter === "Trucks" && vehicle.type === "Truck");
+        vType === filter ||
+        vType.includes(filter.replace(/s$/, "")) ||
+        (activeFilter === "Trucks" && vType === "truck") ||
+        (activeFilter === "Trailers" && vType === "trailer") ||
+        (activeFilter === "Cars" && vType === "car") ||
+        (activeFilter === "Vans" && vType === "van") ||
+        (activeFilter === "Utes" && vType === "ute");
 
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =

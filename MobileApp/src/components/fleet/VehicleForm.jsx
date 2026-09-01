@@ -20,6 +20,7 @@ import { driverService } from "../../services/driverService";
 
 const VEHICLE_TYPES = [
   { label: "Truck", value: "Truck" },
+  { label: "Trailer", value: "Trailer" },
   { label: "Car", value: "Car" },
   { label: "Van", value: "Van" },
   { label: "Ute", value: "Ute" }
