@@ -2,6 +2,7 @@
   "expo": {
     "name": "Fleev",
     "slug": "fleev-app",
+    "owner": "fleev",
     "version": "1.0.0",
     "sdkVersion": "57.0.0",
     "privacy": "public",
@@ -29,7 +30,7 @@
       [
         "expo-updates",
         {
-          "username": "anirudh.joshi"
+          "username": "fleev"
         }
       ],
       "expo-status-bar"
