@@ -30,7 +30,8 @@
         {
           "username": "anirudh.joshi"
         }
-      ]
+      ],
+      "expo-status-bar"
     ],
     "extra": {
       "eas": {
