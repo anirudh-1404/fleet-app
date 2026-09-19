@@ -28,7 +28,7 @@ export default function AssignedVehicleCard({
       >
         <View className="flex-row items-center flex-1">
           <View className="w-14 h-14 rounded-[18px] bg-[#F8FAFC] items-center justify-center mr-4 border border-[#E2E8F0]">
-            <Ionicons name="bus-outline" size={26} color="#94A3B8" />
+            <Ionicons name="car-outline" size={26} color="#94A3B8" />
           </View>
           <View className="flex-1">
             <View className="flex-row justify-between items-center mr-1">
@@ -71,7 +71,7 @@ export default function AssignedVehicleCard({
               resizeMode="cover"
             />
           ) : (
-            <Ionicons name="bus-outline" size={26} color="#2563EB" />
+            <Ionicons name="car-outline" size={26} color="#2563EB" />
           )}
         </View>
 

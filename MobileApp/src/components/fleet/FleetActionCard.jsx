@@ -2,17 +2,21 @@ import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-// Color mapping for premium visual hierarchy
+// Clean, minimal visual hierarchy for simplicity
 const ICON_THEMES = {
-  "car-sport-outline": { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" },
-  "people-outline": { bg: "#ECFDF5", icon: "#059669", border: "#A7F3D0" },
-  "checkbox-outline": { bg: "#F5F3FF", icon: "#7C3AED", border: "#DDD6FE" },
-  "construct-outline": { bg: "#FFFBEB", icon: "#D97706", border: "#FDE68A" },
-  "receipt-outline": { bg: "#F3F4F6", icon: "#4B5563", border: "#E5E7EB" },
-  "flash-outline": { bg: "#EFF6FF", icon: "#0284C7", border: "#BAE6FD" },
-  "call-outline": { bg: "#ECFEFF", icon: "#0891B2", border: "#A5F3FC" },
-  "document-text-outline": { bg: "#EEF2FF", icon: "#4F46E5", border: "#C7D2FE" },
-  "notifications-outline": { bg: "#FFF1F2", icon: "#E11D48", border: "#FECDD3" },
+  "car-outline": { bg: "#F0F7FF", icon: "#2563EB", border: "#DBEAFE" },
+  "car-sport-outline": { bg: "#F0F7FF", icon: "#2563EB", border: "#DBEAFE" },
+  "people-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "clipboard-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "checkbox-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "build-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "construct-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "receipt-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "water-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "flash-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "call-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "document-text-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "notifications-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
 };
 
 export default function FleetActionCard({ title, subtitle, icon, isFeatured, onPress }) {

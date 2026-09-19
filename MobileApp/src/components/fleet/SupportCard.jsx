@@ -55,7 +55,7 @@ export default function SupportCard() {
           onPress={() => handleSupportPress("Message")}
           className="flex-1 h-12 rounded-[16px] bg-[#F8FAFC] border border-[#E8EDF3] flex-row items-center justify-center gap-2"
         >
-          <Ionicons name="chatbubble-ellipses-outline" size={18} color="#2563EB" />
+          <Ionicons name="chatbubble-outline" size={18} color="#2563EB" />
           <Text className="text-sm font-bold text-[#2563EB]">Message Manager</Text>
         </TouchableOpacity>
       </View>

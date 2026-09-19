@@ -73,7 +73,7 @@ export default function EndJourneyModal({
           <View className="flex-row justify-between items-start mb-5">
             <View className="flex-row items-center flex-1 mr-3">
               <View className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 items-center justify-center mr-3.5 shadow-sm">
-                <Ionicons name="flag" size={24} color="#E11D48" />
+                <Ionicons name="flag-outline" size={24} color="#E11D48" />
               </View>
               <View className="flex-1">
                 <Text className="text-xl font-extrabold text-slate-900 tracking-tight">
@@ -148,7 +148,7 @@ export default function EndJourneyModal({
 
             {errorMsg ? (
               <View className="mt-2 bg-rose-50 border border-rose-200 rounded-xl p-2.5 flex-row items-center gap-2">
-                <Ionicons name="alert-circle" size={16} color="#E11D48" />
+                <Ionicons name="alert-circle-outline" size={16} color="#E11D48" />
                 <Text className="text-xs font-semibold text-[#E11D48] flex-1">{errorMsg}</Text>
               </View>
             ) : null}

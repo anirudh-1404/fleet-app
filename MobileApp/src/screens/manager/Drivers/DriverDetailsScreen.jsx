@@ -177,13 +177,13 @@ export default function DriverDetailsScreen() {
               <QuickActionCard
                 title="Driver Pre Check"
                 description="View latest reports"
-                icon="checkbox-outline"
+                icon="clipboard-outline"
                 onPress={() => navigation.navigate(ROUTES.DRIVER_INSPECTIONS)}
               />
               <QuickActionCard
                 title="Assign / Change Vehicle"
                 description={isUnassigned ? "Click to assign vehicle" : vehicleName}
-                icon="car-sport-outline"
+                icon="car-outline"
                 onPress={() => {
                   navigation.navigate(ROUTES.ASSIGN_DRIVER, {
                     driverId: driver?._id || driver?.id || driverId,
@@ -202,7 +202,7 @@ export default function DriverDetailsScreen() {
               <QuickActionCard
                 title="Contact Driver"
                 description="Send message or call"
-                icon="chatbubble-ellipses-outline"
+                icon="chatbubble-outline"
                 onPress={() => handleActionPress("Contact")}
               />
             </View>
@@ -235,7 +235,7 @@ export default function DriverDetailsScreen() {
             >
               <View className="flex-row items-center flex-1 mr-3">
                 <View className="w-12 h-12 rounded-full bg-[#2563EB] items-center justify-center mr-3">
-                  <Ionicons name="bus-outline" size={22} color="white" />
+                  <Ionicons name="car-outline" size={22} color="white" />
                 </View>
                 <View className="flex-1">
                   <Text className="text-base font-bold text-[#111827]">No Vehicle Assigned</Text>
@@ -271,7 +271,7 @@ export default function DriverDetailsScreen() {
             <RecentActivityCard
               title={`Vehicle Status: ${vehicleName}`}
               subtitle="Updated"
-              icon="car-sport-outline"
+              icon="car-outline"
               isLast={true}
             />
           </View>

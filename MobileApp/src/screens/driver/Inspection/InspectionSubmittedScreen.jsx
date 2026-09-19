@@ -53,7 +53,7 @@ export default function InspectionSubmittedScreen() {
       <View className="px-6 items-center">
         {/* Checkmark Icon container */}
         <View className="w-20 h-20 bg-[#ECFDF5] border border-[#A7F3D0] rounded-full items-center justify-center mb-6">
-          <Ionicons name="checkmark-circle" size={48} color="#10B981" />
+          <Ionicons name="checkmark-circle-outline" size={48} color="#10B981" />
         </View>
 
         <Text className="text-2xl font-bold text-[#111827] text-center mb-2">

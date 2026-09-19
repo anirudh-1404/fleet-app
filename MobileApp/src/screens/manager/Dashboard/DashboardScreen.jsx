@@ -152,7 +152,7 @@ export default function DashboardScreen() {
           <FleetActionCard
             title="Fleet List"
             subtitle="Manage all vehicles"
-            icon="car-sport-outline"
+            icon="car-outline"
             isFeatured={true}
             onPress={() => handleAction(ROUTES.FLEET_LIST)}
           />
@@ -169,7 +169,7 @@ export default function DashboardScreen() {
               <FleetActionCard
                 title="Driver Inspections"
                 subtitle="Review daily inspection reports"
-                icon="checkbox-outline"
+                icon="clipboard-outline"
                 onPress={() => handleAction(ROUTES.DRIVER_INSPECTIONS)}
               />
             </View>
@@ -179,7 +179,7 @@ export default function DashboardScreen() {
               <FleetActionCard
                 title="Due Service"
                 subtitle="Track maintenance"
-                icon="construct-outline"
+                icon="build-outline"
                 onPress={() => handleAction(ROUTES.DUE_SERVICE)}
               />
               <FleetActionCard
@@ -195,7 +195,7 @@ export default function DashboardScreen() {
               <FleetActionCard
                 title="Fuel Data"
                 subtitle="Fuel logs & entries"
-                icon="flash-outline"
+                icon="water-outline"
                 onPress={() => handleAction(ROUTES.FUEL_DATA)}
               />
               <FleetActionCard
@@ -234,9 +234,9 @@ export default function DashboardScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingHorizontal: 24 }}
           >
-            <FleetSummaryCard label="Total Vehicles" value={String(vehicles.length)} icon="car-sport-outline" />
+            <FleetSummaryCard label="Total Vehicles" value={String(vehicles.length)} icon="car-outline" />
             <FleetSummaryCard label="Active Drivers" value={String(drivers.length)} icon="people-outline" />
-            <FleetSummaryCard label="Due Services" value={String(services?.length || 0)} icon="construct-outline" />
+            <FleetSummaryCard label="Due Services" value={String(services?.length || 0)} icon="build-outline" />
             <FleetSummaryCard label="Upcoming Rego" value={String(reminders?.length || 0)} icon="calendar-outline" />
           </ScrollView>
         </View>

@@ -171,7 +171,7 @@ export default function RentalDashboardScreen() {
               >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <Text style={{ fontSize: 13, color: "#64748B", fontWeight: "600" }}>Total Fleet</Text>
-                  <Ionicons name="car" size={18} color="#64748B" />
+                  <Ionicons name="car-outline" size={18} color="#64748B" />
                 </View>
                 <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A" }}>{summary.totalVehicles}</Text>
               </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function RentalDashboardScreen() {
               >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <Text style={{ fontSize: 13, color: "#059669", fontWeight: "700" }}>Available</Text>
-                  <Ionicons name="checkmark-circle" size={18} color="#059669" />
+                  <Ionicons name="checkmark-circle-outline" size={18} color="#059669" />
                 </View>
                 <Text style={{ fontSize: 24, fontWeight: "800", color: "#059669" }}>{summary.available}</Text>
               </TouchableOpacity>
@@ -277,7 +277,7 @@ export default function RentalDashboardScreen() {
                 gap: 8,
               }}
             >
-              <Ionicons name="key" size={18} color="#FFFFFF" />
+              <Ionicons name="key-outline" size={18} color="#FFFFFF" />
               <Text style={{ color: "#FFFFFF", fontWeight: "700", fontSize: 14 }}>New Rental</Text>
             </TouchableOpacity>
 

@@ -97,7 +97,7 @@ export default function LogFuelModal({ visible, onClose, onSuccess }) {
               <View className="flex-row justify-between items-center pb-4 border-b border-[#E8EDF3] mb-4">
                 <View className="flex-row items-center">
                   <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center mr-3">
-                    <Ionicons name="color-fill" size={20} color="#2563EB" />
+                    <Ionicons name="water-outline" size={20} color="#2563EB" />
                   </View>
                   <View>
                     <Text className="text-lg font-bold text-[#111827]">Log Fuel Entry</Text>

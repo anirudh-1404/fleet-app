@@ -345,7 +345,7 @@ export default function DriverHomeScreen() {
               elevation: 1,
             }}
           >
-            <Ionicons name="color-fill-outline" size={20} color="#2563EB" />
+            <Ionicons name="water-outline" size={20} color="#2563EB" />
             <Text className="text-[#2563EB] text-base font-bold ml-2">
               Log Fuel Entry
             </Text>
@@ -371,7 +371,7 @@ export default function DriverHomeScreen() {
                 >
                   <View className="flex-row items-center flex-1 mr-2">
                     <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center mr-3">
-                      <Ionicons name="color-fill" size={18} color="#2563EB" />
+                      <Ionicons name="water-outline" size={18} color="#2563EB" />
                     </View>
                     <View className="flex-1">
                       <Text className="text-sm font-bold text-[#111827]">

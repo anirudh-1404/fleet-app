@@ -262,7 +262,7 @@ export default function WorkshopDashboardScreen() {
             >
               <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <Text style={{ fontSize: 12, fontWeight: "700", color: "#64748B" }}>In Progress</Text>
-                <Ionicons name="construct-outline" size={16} color="#059669" />
+                <Ionicons name="build-outline" size={16} color="#059669" />
               </View>
               <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A", marginTop: 8 }}>
                 {summary.servicesInProgress}
@@ -350,8 +350,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_CUSTOMER_LIST)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="people" size={22} color="#2563EB" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="people-outline" size={22} color="#2563EB" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Customers</Text>
               </TouchableOpacity>
@@ -361,8 +361,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_VEHICLE_LIST)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#FEF3C7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="car" size={22} color="#D97706" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEF3C7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="car-outline" size={22} color="#D97706" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Vehicles</Text>
               </TouchableOpacity>
@@ -372,8 +372,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#E0F2FE", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="clipboard" size={22} color="#0284C7" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#E0F2FE", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="clipboard-outline" size={22} color="#0284C7" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Work Orders</Text>
               </TouchableOpacity>
@@ -383,8 +383,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_INSPECTION_LIST)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="search" size={22} color="#7C3AED" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="search-outline" size={22} color="#7C3AED" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Inspection</Text>
               </TouchableOpacity>
@@ -394,8 +394,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_TRUCK_SERVICES)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="construct" size={22} color="#15803D" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="build-outline" size={22} color="#15803D" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Truck Serv</Text>
               </TouchableOpacity>
@@ -405,8 +405,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_TRAILER_SERVICES)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#FEE2E2", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="bus" size={22} color="#DC2626" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEE2E2", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="bus-outline" size={22} color="#DC2626" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Trailer Serv</Text>
               </TouchableOpacity>
@@ -416,8 +416,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_DUE_SERVICE)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#FFEDD5", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="time" size={22} color="#C2410C" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FFEDD5", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="time-outline" size={22} color="#C2410C" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Due Serv</Text>
               </TouchableOpacity>
@@ -427,8 +427,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_SCHEDULE)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#F1F5F9", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="calendar" size={22} color="#475569" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F1F5F9", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="calendar-outline" size={22} color="#475569" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Schedule</Text>
               </TouchableOpacity>
@@ -438,8 +438,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_INVOICE_LIST)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="receipt" size={22} color="#16A34A" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="receipt-outline" size={22} color="#16A34A" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Invoices</Text>
               </TouchableOpacity>
@@ -449,8 +449,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_CONTACTS)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="call" size={22} color="#2563EB" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="call-outline" size={22} color="#2563EB" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Contacts</Text>
               </TouchableOpacity>
@@ -460,8 +460,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_NOTES)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#FEF9C3", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="document-text" size={22} color="#CA8A04" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEF9C3", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="document-text-outline" size={22} color="#CA8A04" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Notes</Text>
               </TouchableOpacity>
@@ -471,8 +471,8 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.WORKSHOP_REMINDERS)}
                 style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
               >
-                <View style={{ width: 44, height: 44, borderRadius: 10, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="alarm" size={22} color="#7C3AED" />
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="notifications-outline" size={22} color="#7C3AED" />
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Reminders</Text>
               </TouchableOpacity>

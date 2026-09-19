@@ -100,7 +100,7 @@ export default function InspectionVehicleCard({
         {/* Validation Status Notice Banner */}
         {validationStatus === "INVALID" && (
           <View className="bg-[#FEF2F2] border border-[#FCA5A5] rounded-xl p-3 flex-row items-center gap-2">
-            <Ionicons name="alert-circle" size={18} color="#DC2626" />
+            <Ionicons name="alert-circle-outline" size={18} color="#DC2626" />
             <Text className="text-xs font-semibold text-[#DC2626] flex-1">
               Vehicle with registration "{registrationInput}" does not exist in the fleet.
             </Text>
@@ -109,7 +109,7 @@ export default function InspectionVehicleCard({
 
         {validationStatus === "ASSIGNED_OTHER" && (
           <View className="bg-[#FEF2F2] border border-[#FCA5A5] rounded-xl p-3 flex-row items-center gap-2">
-            <Ionicons name="alert-circle" size={18} color="#DC2626" />
+            <Ionicons name="alert-circle-outline" size={18} color="#DC2626" />
             <Text className="text-xs font-semibold text-[#DC2626] flex-1">
               This vehicle is already assigned to {assignedDriverName || "another driver"}.
             </Text>
@@ -118,7 +118,7 @@ export default function InspectionVehicleCard({
 
         {validationStatus === "ASSIGNED_SELF" && (
           <View className="bg-[#EFF6FF] border border-[#93C5FD] rounded-xl p-3 flex-row items-center gap-2">
-            <Ionicons name="checkmark-circle" size={18} color="#2563EB" />
+            <Ionicons name="checkmark-circle-outline" size={18} color="#2563EB" />
             <Text className="text-xs font-semibold text-[#2563EB] flex-1">
               Currently assigned to you. Ready for inspection.
             </Text>
@@ -127,7 +127,7 @@ export default function InspectionVehicleCard({
 
         {validationStatus === "VALID" && (
           <View className="bg-[#ECFDF5] border border-[#6EE7B7] rounded-xl p-3 flex-row items-center gap-2">
-            <Ionicons name="checkmark-circle" size={18} color="#16A34A" />
+            <Ionicons name="checkmark-circle-outline" size={18} color="#16A34A" />
             <Text className="text-xs font-semibold text-[#16A34A] flex-1">
               Vehicle is available. Completing inspection will assign it to you.
             </Text>

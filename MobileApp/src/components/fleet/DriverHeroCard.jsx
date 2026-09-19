@@ -29,7 +29,7 @@ export default function DriverHeroCard({ name, status, licence, vehicle, phone, 
           <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Licence: {licence || "-"}</Text>
         </View>
         <View className="flex-row items-center justify-center">
-          <Ionicons name="car-sport-outline" size={14} color="#6B7280" />
+          <Ionicons name="car-outline" size={14} color="#6B7280" />
           <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">Vehicle: {vehicle || "Unassigned"}</Text>
         </View>
         <View className="flex-row items-center justify-center">

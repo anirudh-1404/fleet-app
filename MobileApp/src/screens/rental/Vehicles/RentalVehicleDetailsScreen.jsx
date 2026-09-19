@@ -150,7 +150,7 @@ export default function RentalVehicleDetailsScreen() {
             {vehicle.photo ? (
               <Image source={{ uri: vehicle.photo }} style={{ width: "100%", height: "100%" }} resizeMode="cover" />
             ) : (
-              <Ionicons name="car-sport" size={64} color="#94A3B8" />
+              <Ionicons name="car-outline" size={64} color="#94A3B8" />
             )}
           </View>
 

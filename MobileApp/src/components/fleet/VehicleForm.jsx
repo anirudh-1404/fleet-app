@@ -240,7 +240,7 @@ export default function VehicleForm({
             options={VEHICLE_TYPES}
             placeholder="Select vehicle type"
             error={errors.vehicleType}
-            leftIcon="car-sport-outline"
+            leftIcon="car-outline"
           />
 
           <View className="mb-4">

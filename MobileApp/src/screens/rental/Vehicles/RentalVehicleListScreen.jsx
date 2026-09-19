@@ -251,7 +251,7 @@ export default function RentalVehicleListScreen() {
               ? "Try adjusting your filters or search term."
               : "Register your first rental vehicle to start renting."
           }
-          icon="car-sport-outline"
+          icon="car-outline"
           onRetry={
             searchQuery || selectedTab !== "ALL"
               ? () => {

@@ -22,7 +22,7 @@ export default function VehicleCard({ vehicle, onPress }) {
     vehicle.type === "Ute" ||
     vehicle.vehicleType === "Ute";
 
-  let vehicleIcon = "car-sport-outline";
+  let vehicleIcon = "car-outline";
   if (isTruck) {
     vehicleIcon = "bus-outline";
   } else if (isTrailer) {

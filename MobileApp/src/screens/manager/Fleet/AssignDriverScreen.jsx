@@ -215,7 +215,7 @@ export default function AssignDriverScreen() {
             >
               <View className="flex-row items-center flex-1 mr-4">
                 <View className="w-12 h-12 rounded-full bg-[#2563EB] items-center justify-center mr-4">
-                  <Ionicons name="person" size={22} color="white" />
+                  <Ionicons name="person-outline" size={22} color="white" />
                 </View>
                 <View className="flex-1">
                   <Text className="text-base font-bold text-[#111827]">{targetDriver.name}</Text>

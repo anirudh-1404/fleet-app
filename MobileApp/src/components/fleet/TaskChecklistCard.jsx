@@ -20,7 +20,7 @@ export default function TaskChecklistCard({ isInspectionCompleted, isJourneyStar
       <View className="flex-row items-center py-3 border-b border-[#F1F5F9]">
         <View className="mr-3">
           {isInspectionCompleted ? (
-            <Ionicons name="checkbox" size={20} color="#16A34A" />
+            <Ionicons name="checkmark-circle-outline" size={20} color="#16A34A" />
           ) : (
             <View className="w-5 h-5 rounded-md border-2 border-[#CBD5E1]" style={{ borderWidth: 2 }} />
           )}
@@ -34,7 +34,7 @@ export default function TaskChecklistCard({ isInspectionCompleted, isJourneyStar
       <View className="flex-row items-center py-3 border-b border-[#F1F5F9]">
         <View className="mr-3">
           {isJourneyStarted ? (
-            <Ionicons name="checkbox" size={20} color="#16A34A" />
+            <Ionicons name="checkmark-circle-outline" size={20} color="#16A34A" />
           ) : (
             <View className="w-5 h-5 rounded-md border-2 border-[#CBD5E1]" style={{ borderWidth: 2 }} />
           )}
@@ -48,7 +48,7 @@ export default function TaskChecklistCard({ isInspectionCompleted, isJourneyStar
       <View className="flex-row items-center py-3">
         <View className="mr-3">
           <View className="w-5 h-5 rounded-md border-2 border-[#E2E8F0] bg-[#F8FAFC] items-center justify-center" style={{ borderWidth: 2 }}>
-            <Ionicons name="lock-closed" size={10} color="#94A3B8" />
+            <Ionicons name="lock-closed-outline" size={10} color="#94A3B8" />
           </View>
         </View>
         <Text className="text-sm font-semibold text-[#94A3B8]">

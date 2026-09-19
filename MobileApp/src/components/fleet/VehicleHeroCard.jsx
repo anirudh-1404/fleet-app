@@ -30,7 +30,7 @@ export default function VehicleHeroCard({ name, registration, fleetNumber, type,
         ) : (
           <View className="flex-1 items-center justify-center">
             <View className="w-16 h-16 rounded-full bg-white items-center justify-center shadow-sm border border-[#E8EDF3]/30">
-              <Ionicons name={isTruck ? "bus-outline" : "car-sport-outline"} size={32} color="#2563EB" />
+              <Ionicons name={isTruck ? "bus-outline" : "car-outline"} size={32} color="#2563EB" />
             </View>
           </View>
         )}
