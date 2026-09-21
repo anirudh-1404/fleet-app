@@ -5,6 +5,7 @@ import WorkshopInspection from "../models/WorkshopInspection.js";
 import WorkshopService from "../models/WorkshopService.js";
 import WorkshopInvoice from "../models/WorkshopInvoice.js";
 import WorkshopNote from "../models/WorkshopNote.js";
+import User from "../models/User.js";
 
 // Helper to generate next unique Job Number
 const generateJobNumber = async (owner) => {
@@ -13,12 +14,12 @@ const generateJobNumber = async (owner) => {
   return `WO-${year}-${String(count + 1).padStart(4, "0")}`;
 };
 
-// @desc    Get all workshop work orders
+// @desc    Get all workshop work orders (manager)
 // @route   GET /api/workshop/work-orders
 export const getWorkshopWorkOrders = async (req, res) => {
   try {
-    const owner = req.user._id;
-    const { status, priority, jobType, vehicleId, customerId, search } = req.query;
+    const owner = req.user.role === "workshop_employee" ? req.user.workshopManager : req.user._id;
+    const { status, priority, jobType, vehicleId, customerId, assignedTo, search } = req.query;
 
     let query = { owner };
     if (status && status !== "ALL") query.status = status;
@@ -26,6 +27,7 @@ export const getWorkshopWorkOrders = async (req, res) => {
     if (jobType && jobType !== "ALL") query.jobType = jobType;
     if (vehicleId) query.vehicle = vehicleId;
     if (customerId) query.customer = customerId;
+    if (assignedTo) query.assignedTo = assignedTo;
 
     if (search && search.trim()) {
       const s = search.trim();
@@ -39,6 +41,7 @@ export const getWorkshopWorkOrders = async (req, res) => {
     const workOrders = await WorkshopWorkOrder.find(query)
       .populate("customer", "fullName companyName phone")
       .populate("vehicle", "make model registration vehicleType status odometer")
+      .populate("assignedTo", "name email designation phone")
       .sort({ createdAt: -1 })
       .lean();
 
@@ -49,19 +52,87 @@ export const getWorkshopWorkOrders = async (req, res) => {
   }
 };
 
+// @desc    Get assigned jobs for logged-in workshop employee
+// @route   GET /api/workshop/my-jobs
+// @access  Private (workshop_employee)
+export const getMyAssignedJobs = async (req, res) => {
+  try {
+    const employeeId = req.user._id;
+    const { status, priority } = req.query;
+
+    let query = { assignedTo: employeeId };
+    if (status && status !== "ALL") {
+      query.status = status;
+    }
+    if (priority && priority !== "ALL") {
+      query.priority = priority;
+    }
+
+    const jobs = await WorkshopWorkOrder.find(query)
+      .populate("customer", "fullName companyName phone email")
+      .populate("vehicle", "make model registration vehicleType status odometer vin photo")
+      .sort({ updatedAt: -1 })
+      .lean();
+
+    // Summary counts for employee tabs
+    const assignedCount = await WorkshopWorkOrder.countDocuments({
+      assignedTo: employeeId,
+      status: { $in: ["OPEN", "INSPECTION_PENDING"] },
+    });
+    const inProgressCount = await WorkshopWorkOrder.countDocuments({
+      assignedTo: employeeId,
+      status: "IN_PROGRESS",
+    });
+    const waitingPartsCount = await WorkshopWorkOrder.countDocuments({
+      assignedTo: employeeId,
+      status: "WAITING_FOR_PARTS",
+    });
+    const completedCount = await WorkshopWorkOrder.countDocuments({
+      assignedTo: employeeId,
+      status: "COMPLETED",
+    });
+
+    return res.status(200).json({
+      jobs,
+      counts: {
+        all: jobs.length,
+        assigned: assignedCount,
+        inProgress: inProgressCount,
+        waitingParts: waitingPartsCount,
+        completed: completedCount,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching employee assigned jobs:", error);
+    return res.status(500).json({ message: "Server error fetching assigned jobs" });
+  }
+};
+
 // @desc    Get single work order by ID with linked inspections, services, invoices, notes
 // @route   GET /api/workshop/work-orders/:id
 export const getWorkshopWorkOrderById = async (req, res) => {
   try {
-    const owner = req.user._id;
-    const workOrder = await WorkshopWorkOrder.findOne({ _id: req.params.id, owner })
+    const isEmployee = req.user.role === "workshop_employee";
+    const ownerId = isEmployee ? req.user.workshopManager : req.user._id;
+
+    let query = { _id: req.params.id };
+    if (isEmployee) {
+      // Employee must be assigned to this job or work for the workshop manager
+      query.$or = [{ assignedTo: req.user._id }, { owner: ownerId }];
+    } else {
+      query.owner = ownerId;
+    }
+
+    const workOrder = await WorkshopWorkOrder.findOne(query)
       .populate("customer", "fullName companyName phone email address")
-      .populate("vehicle", "make model registration vehicleType status odometer vin photo");
+      .populate("vehicle", "make model registration vehicleType status odometer vin photo")
+      .populate("assignedTo", "name email designation phone specialization");
 
     if (!workOrder) {
       return res.status(404).json({ message: "Work order not found" });
     }
 
+    const owner = workOrder.owner;
     const inspections = await WorkshopInspection.find({ owner, workOrder: workOrder._id }).sort({ date: -1 });
     const services = await WorkshopService.find({ owner, workOrder: workOrder._id }).sort({ date: -1 });
     const invoices = await WorkshopInvoice.find({ owner, workOrder: workOrder._id }).sort({ date: -1 });
@@ -96,6 +167,7 @@ export const createWorkshopWorkOrder = async (req, res) => {
       dateReceived,
       expectedCompletionDate,
       assignedMechanic,
+      assignedTo,
       priority,
       status,
       notes,
@@ -112,8 +184,17 @@ export const createWorkshopWorkOrder = async (req, res) => {
     if (!vehicle) return res.status(400).json({ message: "Invalid vehicle selected" });
 
     const jobNumber = await generateJobNumber(owner);
-
     const initialStatus = status || "OPEN";
+
+    let mechanicName = assignedMechanic ? assignedMechanic.trim() : "";
+    let assignedUserId = assignedTo || null;
+
+    if (assignedUserId) {
+      const emp = await User.findById(assignedUserId);
+      if (emp) {
+        mechanicName = emp.name;
+      }
+    }
 
     const workOrder = await WorkshopWorkOrder.create({
       owner,
@@ -124,7 +205,8 @@ export const createWorkshopWorkOrder = async (req, res) => {
       description: description ? description.trim() : "",
       dateReceived: dateReceived ? new Date(dateReceived) : new Date(),
       expectedCompletionDate: expectedCompletionDate ? new Date(expectedCompletionDate) : undefined,
-      assignedMechanic: assignedMechanic ? assignedMechanic.trim() : "",
+      assignedMechanic: mechanicName,
+      assignedTo: assignedUserId,
       priority: priority || "Normal",
       status: initialStatus,
       notes: notes ? notes.trim() : "",
@@ -138,7 +220,8 @@ export const createWorkshopWorkOrder = async (req, res) => {
 
     const populated = await WorkshopWorkOrder.findById(workOrder._id)
       .populate("customer", "fullName companyName phone")
-      .populate("vehicle", "make model registration vehicleType status");
+      .populate("vehicle", "make model registration vehicleType status")
+      .populate("assignedTo", "name email designation phone");
 
     res.status(201).json(populated);
   } catch (error) {
@@ -151,10 +234,19 @@ export const createWorkshopWorkOrder = async (req, res) => {
 // @route   PATCH /api/workshop/work-orders/:id
 export const updateWorkshopWorkOrder = async (req, res) => {
   try {
-    const owner = req.user._id;
-    const workOrder = await WorkshopWorkOrder.findOne({ _id: req.params.id, owner });
+    const isEmployee = req.user.role === "workshop_employee";
+    const ownerId = isEmployee ? req.user.workshopManager : req.user._id;
+
+    let query = { _id: req.params.id };
+    if (isEmployee) {
+      query.assignedTo = req.user._id;
+    } else {
+      query.owner = ownerId;
+    }
+
+    const workOrder = await WorkshopWorkOrder.findOne(query);
     if (!workOrder) {
-      return res.status(404).json({ message: "Work order not found" });
+      return res.status(404).json({ message: "Work order not found or unauthorized" });
     }
 
     const {
@@ -163,6 +255,7 @@ export const updateWorkshopWorkOrder = async (req, res) => {
       dateReceived,
       expectedCompletionDate,
       assignedMechanic,
+      assignedTo,
       priority,
       status,
       notes,
@@ -174,7 +267,19 @@ export const updateWorkshopWorkOrder = async (req, res) => {
     if (expectedCompletionDate !== undefined) {
       workOrder.expectedCompletionDate = expectedCompletionDate ? new Date(expectedCompletionDate) : undefined;
     }
-    if (assignedMechanic !== undefined) workOrder.assignedMechanic = assignedMechanic.trim();
+
+    if (assignedTo !== undefined) {
+      workOrder.assignedTo = assignedTo || null;
+      if (assignedTo) {
+        const emp = await User.findById(assignedTo);
+        if (emp) workOrder.assignedMechanic = emp.name;
+      } else {
+        workOrder.assignedMechanic = "";
+      }
+    } else if (assignedMechanic !== undefined) {
+      workOrder.assignedMechanic = assignedMechanic.trim();
+    }
+
     if (priority) workOrder.priority = priority;
     if (notes !== undefined) workOrder.notes = notes.trim();
 
@@ -182,16 +287,14 @@ export const updateWorkshopWorkOrder = async (req, res) => {
     if (status && status !== workOrder.status) {
       workOrder.status = status;
 
-      const vehicle = await WorkshopVehicle.findOne({ _id: workOrder.vehicle, owner });
+      const vehicle = await WorkshopVehicle.findOne({ _id: workOrder.vehicle });
       if (vehicle) {
         if (status === "READY_FOR_COLLECTION") {
           vehicle.status = "READY_FOR_COLLECTION";
           await vehicle.save();
         } else if (status === "COMPLETED") {
           workOrder.actualCompletionDate = new Date();
-          // If no other open jobs for this vehicle, set to OUTSIDE_WORKSHOP
           const otherOpenJobs = await WorkshopWorkOrder.countDocuments({
-            owner,
             vehicle: vehicle._id,
             _id: { $ne: workOrder._id },
             status: { $in: ["OPEN", "INSPECTION_PENDING", "IN_PROGRESS", "WAITING_FOR_PARTS", "READY_FOR_COLLECTION"] },
@@ -211,12 +314,118 @@ export const updateWorkshopWorkOrder = async (req, res) => {
 
     const updated = await WorkshopWorkOrder.findById(workOrder._id)
       .populate("customer", "fullName companyName phone")
-      .populate("vehicle", "make model registration vehicleType status");
+      .populate("vehicle", "make model registration vehicleType status")
+      .populate("assignedTo", "name email designation phone");
 
     res.json(updated);
   } catch (error) {
     console.error("Error updating work order:", error);
     res.status(500).json({ message: "Server error updating work order" });
+  }
+};
+
+// @desc    Submit / Save digital checklist for a work order
+// @route   POST /api/workshop/work-orders/:id/checklist
+// @access  Private (workshop_employee, workshop_manager)
+export const submitJobChecklist = async (req, res) => {
+  try {
+    const isEmployee = req.user.role === "workshop_employee";
+    const query = isEmployee
+      ? { _id: req.params.id, assignedTo: req.user._id }
+      : { _id: req.params.id, owner: req.user._id };
+
+    const workOrder = await WorkshopWorkOrder.findOne(query);
+    if (!workOrder) {
+      return res.status(404).json({ message: "Work order not found" });
+    }
+
+    const { checklistType, items, isCompleted } = req.body;
+
+    workOrder.checklist = {
+      checklistType: checklistType || workOrder.checklist?.checklistType || "BASIC_INSPECTION",
+      items: Array.isArray(items) ? items : workOrder.checklist?.items || [],
+      completedAt: isCompleted ? new Date() : workOrder.checklist?.completedAt,
+      completedBy: isCompleted ? req.user._id : workOrder.checklist?.completedBy,
+    };
+
+    await workOrder.save();
+    return res.status(200).json({ message: "Checklist saved successfully", checklist: workOrder.checklist });
+  } catch (error) {
+    console.error("Error saving checklist:", error);
+    return res.status(500).json({ message: "Server error saving checklist" });
+  }
+};
+
+// @desc    Upload / Add photo evidence to a work order (before/during/after)
+// @route   POST /api/workshop/work-orders/:id/photos
+// @access  Private (workshop_employee, workshop_manager)
+export const uploadJobPhotos = async (req, res) => {
+  try {
+    const isEmployee = req.user.role === "workshop_employee";
+    const query = isEmployee
+      ? { _id: req.params.id, assignedTo: req.user._id }
+      : { _id: req.params.id, owner: req.user._id };
+
+    const workOrder = await WorkshopWorkOrder.findOne(query);
+    if (!workOrder) {
+      return res.status(404).json({ message: "Work order not found" });
+    }
+
+    const { type, url, caption } = req.body; // type: "before" | "during" | "after"
+    if (!type || !["before", "during", "after"].includes(type) || !url) {
+      return res.status(400).json({ message: "Valid type (before/during/after) and url are required" });
+    }
+
+    if (!workOrder.photos) {
+      workOrder.photos = { before: [], during: [], after: [] };
+    }
+
+    workOrder.photos[type].push({
+      url,
+      caption: caption || "",
+      uploadedAt: new Date(),
+    });
+
+    await workOrder.save();
+    return res.status(200).json({ message: "Photo added successfully", photos: workOrder.photos });
+  } catch (error) {
+    console.error("Error saving photo evidence:", error);
+    return res.status(500).json({ message: "Server error saving photo evidence" });
+  }
+};
+
+// @desc    Add work note to a work order
+// @route   POST /api/workshop/work-orders/:id/notes
+// @access  Private (workshop_employee, workshop_manager)
+export const addJobWorkNote = async (req, res) => {
+  try {
+    const isEmployee = req.user.role === "workshop_employee";
+    const query = isEmployee
+      ? { _id: req.params.id, assignedTo: req.user._id }
+      : { _id: req.params.id, owner: req.user._id };
+
+    const workOrder = await WorkshopWorkOrder.findOne(query);
+    if (!workOrder) {
+      return res.status(404).json({ message: "Work order not found" });
+    }
+
+    const { text } = req.body;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ message: "Note text is required" });
+    }
+
+    workOrder.workNotes.push({
+      author: req.user._id,
+      authorName: req.user.name,
+      text: text.trim(),
+      createdAt: new Date(),
+    });
+
+    await workOrder.save();
+    return res.status(200).json({ message: "Note added successfully", workNotes: workOrder.workNotes });
+  } catch (error) {
+    console.error("Error adding work note:", error);
+    return res.status(500).json({ message: "Server error adding work note" });
   }
 };
 

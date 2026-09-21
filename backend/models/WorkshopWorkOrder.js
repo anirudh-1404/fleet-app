@@ -51,6 +51,11 @@ const workshopWorkOrderSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
+    assignedTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      index: true,
+    },
     priority: {
       type: String,
       enum: ["Normal", "Urgent", "Critical"],
@@ -75,6 +80,68 @@ const workshopWorkOrderSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    checklist: {
+      checklistType: {
+        type: String,
+        enum: ["LUBE_SERVICE", "BASIC_INSPECTION", "ANNUAL_INSPECTION", "CUSTOM"],
+        default: "BASIC_INSPECTION",
+      },
+      items: [
+        {
+          id: { type: String },
+          label: { type: String, required: true },
+          category: { type: String, default: "General" },
+          status: {
+            type: String,
+            enum: ["PASS", "FAIL", "N/A", "PENDING"],
+            default: "PENDING",
+          },
+          measurement: { type: String, default: "" },
+          observation: { type: String, default: "" },
+        },
+      ],
+      completedAt: { type: Date },
+      completedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    },
+    photos: {
+      before: [
+        {
+          url: { type: String, required: true },
+          caption: { type: String, default: "" },
+          uploadedAt: { type: Date, default: Date.now },
+        },
+      ],
+      during: [
+        {
+          url: { type: String, required: true },
+          caption: { type: String, default: "" },
+          uploadedAt: { type: Date, default: Date.now },
+        },
+      ],
+      after: [
+        {
+          url: { type: String, required: true },
+          caption: { type: String, default: "" },
+          uploadedAt: { type: Date, default: Date.now },
+        },
+      ],
+    },
+    partsUsed: [
+      {
+        partName: { type: String, required: true },
+        partNumber: { type: String, default: "" },
+        quantity: { type: Number, default: 1 },
+        notes: { type: String, default: "" },
+      },
+    ],
+    workNotes: [
+      {
+        author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        authorName: { type: String, default: "" },
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -83,5 +150,6 @@ workshopWorkOrderSchema.index({ owner: 1, jobNumber: 1 });
 workshopWorkOrderSchema.index({ owner: 1, status: 1 });
 workshopWorkOrderSchema.index({ owner: 1, vehicle: 1 });
 workshopWorkOrderSchema.index({ owner: 1, customer: 1 });
+workshopWorkOrderSchema.index({ assignedTo: 1, status: 1 });
 
 export default mongoose.model("WorkshopWorkOrder", workshopWorkOrderSchema);

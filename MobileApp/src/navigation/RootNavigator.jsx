@@ -14,6 +14,7 @@ import ManagerNavigator from "./ManagerNavigator";
 import DriverNavigator from "./DriverNavigator";
 import RentalNavigator from "./RentalNavigator";
 import WorkshopNavigator from "./WorkshopNavigator";
+import WorkshopEmployeeNavigator from "./WorkshopEmployeeNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ export default function RootNavigator() {
       <Stack.Screen name="DriverStack" component={DriverNavigator} />
       <Stack.Screen name="RentalStack" component={RentalNavigator} />
       <Stack.Screen name="WorkshopStack" component={WorkshopNavigator} />
+      <Stack.Screen name="WorkshopEmployeeStack" component={WorkshopEmployeeNavigator} />
     </Stack.Navigator>
   );
 }

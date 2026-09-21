@@ -17,6 +17,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { workshopWorkOrderService } from "../../../services/workshopWorkOrderService";
 import { workshopCustomerService } from "../../../services/workshopCustomerService";
 import { workshopVehicleService } from "../../../services/workshopVehicleService";
+import { workshopEmployeeService } from "../../../services/workshopEmployeeService";
 
 const JOB_TYPES = ["Basic Service", "Annual Service", "Lube Service", "Inspection", "Repair", "Other"];
 const PRIORITIES = ["Normal", "Urgent", "Critical"];
@@ -30,8 +31,10 @@ export default function CreateWorkOrderScreen() {
 
   const [customers, setCustomers] = useState([]);
   const [vehicles, setVehicles] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState(prefilledCustomerId || "");
   const [selectedVehicleId, setSelectedVehicleId] = useState(prefilledVehicleId || "");
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
 
   const [jobType, setJobType] = useState("Basic Service");
   const [priority, setPriority] = useState("Normal");
@@ -41,7 +44,7 @@ export default function CreateWorkOrderScreen() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchCustomersAndVehicles();
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
@@ -50,15 +53,19 @@ export default function CreateWorkOrderScreen() {
     }
   }, [selectedCustomerId]);
 
-  const fetchCustomersAndVehicles = async () => {
+  const fetchInitialData = async () => {
     try {
-      const custData = await workshopCustomerService.getCustomers();
-      setCustomers(custData);
-      if (!selectedCustomerId && custData.length > 0) {
+      const [custData, empData] = await Promise.all([
+        workshopCustomerService.getCustomers(),
+        workshopEmployeeService.getEmployees().catch(() => []),
+      ]);
+      setCustomers(custData || []);
+      setEmployees(empData || []);
+      if (!selectedCustomerId && custData && custData.length > 0) {
         setSelectedCustomerId(custData[0]._id);
       }
     } catch (err) {
-      console.error("Error fetching customers:", err);
+      console.error("Error fetching initial data:", err);
     }
   };
 
@@ -90,6 +97,7 @@ export default function CreateWorkOrderScreen() {
         jobType,
         priority,
         assignedMechanic: assignedMechanic.trim(),
+        assignedTo: selectedEmployeeId || undefined,
         description: description.trim(),
         notes: notes.trim(),
       });
@@ -255,15 +263,58 @@ export default function CreateWorkOrderScreen() {
               </View>
             </View>
 
-            {/* Assigned Mechanic */}
+            {/* Assigned Mechanic / Employee */}
             <View>
               <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", marginBottom: 6 }}>
-                Assigned Mechanic / Lead
+                Assign to Workshop Employee / Mechanic
               </Text>
+              {employees.length > 0 ? (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 8 }}>
+                  {employees.map((emp) => {
+                    const isSelected = selectedEmployeeId === emp._id;
+                    return (
+                      <TouchableOpacity
+                        key={emp._id}
+                        onPress={() => {
+                          if (isSelected) {
+                            setSelectedEmployeeId("");
+                            setAssignedMechanic("");
+                          } else {
+                            setSelectedEmployeeId(emp._id);
+                            setAssignedMechanic(emp.name);
+                          }
+                        }}
+                        style={{
+                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          paddingHorizontal: 12,
+                          paddingVertical: 6,
+                          borderRadius: 8,
+                          marginRight: 8,
+                          borderWidth: 1,
+                          borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "700",
+                            color: isSelected ? "#FFFFFF" : "#334155",
+                          }}
+                        >
+                          {emp.name} {emp.designation ? `(${emp.designation})` : ""}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+              ) : null}
               <TextInput
                 value={assignedMechanic}
-                onChangeText={setAssignedMechanic}
-                placeholder="e.g. Raj / Dave"
+                onChangeText={(text) => {
+                  setAssignedMechanic(text);
+                  setSelectedEmployeeId("");
+                }}
+                placeholder="Mechanic name or select from team above..."
                 placeholderTextColor="#94A3B8"
                 style={{
                   backgroundColor: "#F8FAFC",

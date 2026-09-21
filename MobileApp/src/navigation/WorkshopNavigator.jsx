@@ -65,6 +65,16 @@ import WorkshopRemindersScreen from "../screens/workshop/Reminders/WorkshopRemin
 import AddReminderScreen from "../screens/workshop/Reminders/AddReminderScreen";
 import ReminderDetailsScreen from "../screens/workshop/Reminders/ReminderDetailsScreen";
 
+// Employees (Admin Management)
+import EmployeeListScreen from "../screens/workshop/Employees/EmployeeListScreen";
+import AddEmployeeScreen from "../screens/workshop/Employees/AddEmployeeScreen";
+import EmployeeDetailsScreen from "../screens/workshop/Employees/EmployeeDetailsScreen";
+
+// Job Details Sub-Screens (Checklist, Photos, Chat)
+import DigitalChecklistScreen from "../screens/workshop/EmployeePortal/DigitalChecklistScreen";
+import JobPhotosEvidenceScreen from "../screens/workshop/EmployeePortal/JobPhotosEvidenceScreen";
+import JobMessagesScreen from "../screens/workshop/EmployeePortal/JobMessagesScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function WorkshopNavigator() {
@@ -135,6 +145,16 @@ export default function WorkshopNavigator() {
       <Stack.Screen name={ROUTES.WORKSHOP_REMINDERS} component={WorkshopRemindersScreen} />
       <Stack.Screen name={ROUTES.ADD_WORKSHOP_REMINDER} component={AddReminderScreen} />
       <Stack.Screen name={ROUTES.WORKSHOP_REMINDER_DETAILS} component={ReminderDetailsScreen} />
+
+      {/* 14. Employees (Admin) */}
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_LIST} component={EmployeeListScreen} />
+      <Stack.Screen name={ROUTES.ADD_WORKSHOP_EMPLOYEE} component={AddEmployeeScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_DETAILS} component={EmployeeDetailsScreen} />
+
+      {/* 15. Job Detail Modals & Subscreens */}
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHECKLIST} component={DigitalChecklistScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_PHOTOS} component={JobPhotosEvidenceScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHAT} component={JobMessagesScreen} />
     </Stack.Navigator>
   );
 }

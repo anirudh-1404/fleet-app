@@ -97,6 +97,19 @@ const ROUTES = {
   WORKSHOP_REMINDERS: "WorkshopReminders",
   ADD_WORKSHOP_REMINDER: "AddWorkshopReminder",
   WORKSHOP_REMINDER_DETAILS: "WorkshopReminderDetails",
+
+  // Workshop Employee Management (Admin)
+  WORKSHOP_EMPLOYEE_LIST: "WorkshopEmployeeList",
+  ADD_WORKSHOP_EMPLOYEE: "AddWorkshopEmployee",
+  WORKSHOP_EMPLOYEE_DETAILS: "WorkshopEmployeeDetails",
+
+  // Workshop Employee Portal (Mechanic)
+  WORKSHOP_EMPLOYEE_HOME: "WorkshopEmployeeHome",
+  WORKSHOP_EMPLOYEE_JOB_DETAILS: "WorkshopEmployeeJobDetails",
+  WORKSHOP_EMPLOYEE_CHECKLIST: "WorkshopEmployeeChecklist",
+  WORKSHOP_EMPLOYEE_PHOTOS: "WorkshopEmployeePhotos",
+  WORKSHOP_EMPLOYEE_CHAT: "WorkshopEmployeeChat",
+  WORKSHOP_EMPLOYEE_HISTORY: "WorkshopEmployeeHistory",
 };
 
 export default ROUTES;

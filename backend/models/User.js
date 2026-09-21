@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["manager", "driver", "rental_owner", "workshop_manager"], default: "driver", required: true },
+    role: { type: String, enum: ["manager", "driver", "rental_owner", "workshop_manager", "workshop_employee"], default: "driver", required: true },
     phone: { type: String, default: "" },
     status: { type: String, enum: ["Active", "Inactive"], default: "Active" },
     photo: { type: String, default: "" },
@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
     issueDate: { type: String, default: "" },
     emergencyContact: { type: String, default: "" },
     employmentStatus: { type: String, default: "" },
+    // Workshop Employee fields
+    workshopManager: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
+    designation: { type: String, default: "Technician" },
+    specialization: { type: [String], default: [] },
   },
   { timestamps: true }
 );

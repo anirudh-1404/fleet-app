@@ -476,6 +476,17 @@ export default function WorkshopDashboardScreen() {
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Reminders</Text>
               </TouchableOpacity>
+
+              {/* Employees */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_LIST)}
+                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
+              >
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#E0E7FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="people-outline" size={22} color="#4338CA" />
+                </View>
+                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Employees</Text>
+              </TouchableOpacity>
             </View>
           </View>
 

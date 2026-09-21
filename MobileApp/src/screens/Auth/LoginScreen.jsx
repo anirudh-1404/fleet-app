@@ -39,6 +39,8 @@ export default function LoginScreen() {
       const data = await login(emailTrim, password);
       if (data.role === "workshop_manager") {
         navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
+      } else if (data.role === "workshop_employee") {
+        navigation.reset({ index: 0, routes: [{ name: "WorkshopEmployeeStack" }] });
       } else if (data.role === "manager") {
         navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
       } else if (data.role === "rental_owner") {

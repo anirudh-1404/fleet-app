@@ -24,7 +24,24 @@ import {
   createWorkshopWorkOrder,
   updateWorkshopWorkOrder,
   deleteWorkshopWorkOrder,
+  getMyAssignedJobs,
+  submitJobChecklist,
+  uploadJobPhotos,
+  addJobWorkNote,
 } from "../controllers/workshopWorkOrderController.js";
+
+import {
+  getWorkshopEmployees,
+  getWorkshopEmployeeById,
+  createWorkshopEmployee,
+  updateWorkshopEmployee,
+  deleteWorkshopEmployee,
+} from "../controllers/workshopEmployeeController.js";
+
+import {
+  getJobMessages,
+  sendJobMessage,
+} from "../controllers/workshopJobMessageController.js";
 
 import {
   getWorkshopInspections,
@@ -114,6 +131,21 @@ router.post("/work-orders", createWorkshopWorkOrder);
 router.get("/work-orders/:id", getWorkshopWorkOrderById);
 router.patch("/work-orders/:id", updateWorkshopWorkOrder);
 router.delete("/work-orders/:id", deleteWorkshopWorkOrder);
+
+// Work Order Job Actions (Mechanic / Admin)
+router.get("/my-jobs", getMyAssignedJobs);
+router.post("/work-orders/:id/checklist", submitJobChecklist);
+router.post("/work-orders/:id/photos", uploadJobPhotos);
+router.post("/work-orders/:id/notes", addJobWorkNote);
+router.get("/work-orders/:id/messages", getJobMessages);
+router.post("/work-orders/:id/messages", sendJobMessage);
+
+// Employee Management (Admin)
+router.get("/employees", getWorkshopEmployees);
+router.post("/employees", createWorkshopEmployee);
+router.get("/employees/:id", getWorkshopEmployeeById);
+router.patch("/employees/:id", updateWorkshopEmployee);
+router.delete("/employees/:id", deleteWorkshopEmployee);
 
 // 5. Inspections (Truck & Trailer)
 router.get("/inspections", getWorkshopInspections);

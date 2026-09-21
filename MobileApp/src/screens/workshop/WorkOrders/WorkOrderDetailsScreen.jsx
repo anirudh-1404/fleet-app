@@ -199,6 +199,72 @@ export default function WorkOrderDetailsScreen() {
                   Expected Delivery: <Text style={{ fontWeight: "600", color: "#334155" }}>{new Date(workOrder.expectedCompletionDate).toLocaleDateString()}</Text>
                 </Text>
               ) : null}
+
+              {/* Quick Action Tools for Manager & Mechanic Collaboration */}
+              <View style={{ flexDirection: "row", gap: 6, marginTop: 10 }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHECKLIST, {
+                      id: workOrder._id,
+                      existingChecklist: workOrder.checklist,
+                    })
+                  }
+                  style={{
+                    flex: 1,
+                    backgroundColor: "#EFF6FF",
+                    borderRadius: 8,
+                    paddingVertical: 8,
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderColor: "#BFDBFE",
+                  }}
+                >
+                  <Ionicons name="checkbox-outline" size={16} color="#2563EB" style={{ marginBottom: 2 }} />
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB" }}>Checklist</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_PHOTOS, {
+                      id: workOrder._id,
+                      existingPhotos: workOrder.photos,
+                    })
+                  }
+                  style={{
+                    flex: 1,
+                    backgroundColor: "#FEF2F2",
+                    borderRadius: 8,
+                    paddingVertical: 8,
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderColor: "#FECACA",
+                  }}
+                >
+                  <Ionicons name="camera-outline" size={16} color="#DC2626" style={{ marginBottom: 2 }} />
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#DC2626" }}>Photos</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT, {
+                      id: workOrder._id,
+                      jobNumber: workOrder.jobNumber,
+                    })
+                  }
+                  style={{
+                    flex: 1,
+                    backgroundColor: "#F0FDF4",
+                    borderRadius: 8,
+                    paddingVertical: 8,
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderColor: "#BBF7D0",
+                  }}
+                >
+                  <Ionicons name="chatbubbles-outline" size={16} color="#16A34A" style={{ marginBottom: 2 }} />
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#16A34A" }}>Team Chat</Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             {/* Lifecycle Transition Buttons */}

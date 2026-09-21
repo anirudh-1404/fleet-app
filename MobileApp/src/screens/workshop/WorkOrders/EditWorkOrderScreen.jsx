@@ -15,24 +15,19 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { workshopWorkOrderService } from "../../../services/workshopWorkOrderService";
+import { workshopEmployeeService } from "../../../services/workshopEmployeeService";
 
+const STATUS_OPTIONS = ["OPEN", "INSPECTION_PENDING", "IN_PROGRESS", "WAITING_FOR_PARTS", "COMPLETED", "CANCELLED"];
 const JOB_TYPES = ["Basic Service", "Annual Service", "Lube Service", "Inspection", "Repair", "Other"];
 const PRIORITIES = ["Normal", "Urgent", "Critical"];
-const STATUS_OPTIONS = [
-  "OPEN",
-  "INSPECTION_PENDING",
-  "IN_PROGRESS",
-  "WAITING_FOR_PARTS",
-  "READY_FOR_COLLECTION",
-  "COMPLETED",
-  "CANCELLED",
-];
 
 export default function EditWorkOrderScreen() {
   const navigation = useNavigation();
   const route = useRoute();
   const { workOrder } = route.params;
 
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(workOrder?.assignedTo?._id || workOrder?.assignedTo || "");
   const [jobType, setJobType] = useState(workOrder?.jobType || "Basic Service");
   const [priority, setPriority] = useState(workOrder?.priority || "Normal");
   const [status, setStatus] = useState(workOrder?.status || "OPEN");
@@ -40,6 +35,19 @@ export default function EditWorkOrderScreen() {
   const [description, setDescription] = useState(workOrder?.description || "");
   const [notes, setNotes] = useState(workOrder?.notes || "");
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const data = await workshopEmployeeService.getEmployees();
+      setEmployees(data || []);
+    } catch (err) {
+      console.error("Error fetching employees:", err);
+    }
+  };
 
   const handleUpdate = async () => {
     setSubmitting(true);
@@ -49,6 +57,7 @@ export default function EditWorkOrderScreen() {
         priority,
         status,
         assignedMechanic: assignedMechanic.trim(),
+        assignedTo: selectedEmployeeId || undefined,
         description: description.trim(),
         notes: notes.trim(),
       });
@@ -180,15 +189,58 @@ export default function EditWorkOrderScreen() {
               </View>
             </View>
 
-            {/* Assigned Mechanic */}
+            {/* Assigned Mechanic / Employee */}
             <View>
               <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", marginBottom: 6 }}>
-                Assigned Mechanic
+                Assign to Workshop Employee / Mechanic
               </Text>
+              {employees.length > 0 ? (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 8 }}>
+                  {employees.map((emp) => {
+                    const isSelected = selectedEmployeeId === emp._id;
+                    return (
+                      <TouchableOpacity
+                        key={emp._id}
+                        onPress={() => {
+                          if (isSelected) {
+                            setSelectedEmployeeId("");
+                            setAssignedMechanic("");
+                          } else {
+                            setSelectedEmployeeId(emp._id);
+                            setAssignedMechanic(emp.name);
+                          }
+                        }}
+                        style={{
+                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          paddingHorizontal: 12,
+                          paddingVertical: 6,
+                          borderRadius: 8,
+                          marginRight: 8,
+                          borderWidth: 1,
+                          borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "700",
+                            color: isSelected ? "#FFFFFF" : "#334155",
+                          }}
+                        >
+                          {emp.name} {emp.designation ? `(${emp.designation})` : ""}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+              ) : null}
               <TextInput
                 value={assignedMechanic}
-                onChangeText={setAssignedMechanic}
-                placeholder="e.g. Raj / Dave"
+                onChangeText={(text) => {
+                  setAssignedMechanic(text);
+                  setSelectedEmployeeId("");
+                }}
+                placeholder="Mechanic name or select from team above..."
                 placeholderTextColor="#94A3B8"
                 style={{
                   backgroundColor: "#F8FAFC",
