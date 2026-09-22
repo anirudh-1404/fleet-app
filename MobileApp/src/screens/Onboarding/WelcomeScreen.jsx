@@ -3,6 +3,7 @@ import React from "react";
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StatusBar,
   Platform,
@@ -10,6 +11,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
+
+const logoImg = require("../../../assets/logo.png");
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
@@ -20,20 +23,13 @@ export default function WelcomeScreen() {
 
       <View style={{ flex: 1, paddingHorizontal: 28, justifyContent: "space-between", paddingVertical: 20 }}>
         
-        {/* Top Logo Row (Single row, brought down nicely) */}
-        <View style={{ paddingTop: 28, flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <View
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              backgroundColor: "#2563EB",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="car" size={20} color="#FFFFFF" />
-          </View>
+        {/* Top Logo Row */}
+        <View style={{ paddingTop: 28, flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <Image
+            source={logoImg}
+            style={{ width: 44, height: 44, borderRadius: 12 }}
+            resizeMode="contain"
+          />
           <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A", letterSpacing: -0.5 }}>
             Fleev
           </Text>

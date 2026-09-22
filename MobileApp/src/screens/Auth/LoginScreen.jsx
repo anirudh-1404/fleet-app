@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   View,
   Text,
+  Image,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
@@ -16,6 +17,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
 import { useAuth } from "../../context/AuthContext";
+
+const logoImg = require("../../../assets/logo.png");
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -90,19 +93,16 @@ export default function LoginScreen() {
           <View>
             {/* Header */}
             <View style={{ marginBottom: 28 }}>
-              <View
+              <Image
+                source={logoImg}
                 style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12,
-                  backgroundColor: "#2563EB",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: 56,
+                  height: 56,
+                  borderRadius: 14,
                   marginBottom: 16,
                 }}
-              >
-                <Ionicons name="car" size={26} color="#FFFFFF" />
-              </View>
+                resizeMode="contain"
+              />
               <Text style={{ fontSize: 28, fontWeight: "800", color: "#0F172A", letterSpacing: -0.5 }}>
                 Sign In
               </Text>
