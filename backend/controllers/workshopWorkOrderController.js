@@ -337,7 +337,13 @@ export const submitJobChecklist = async (req, res) => {
   try {
     const isEmployee = req.user.role === "workshop_employee";
     const query = isEmployee
-      ? { _id: req.params.id, assignedTo: req.user._id }
+      ? {
+          _id: req.params.id,
+          $or: [
+            { assignedTo: req.user._id },
+            { owner: req.user.workshopManager },
+          ],
+        }
       : { _id: req.params.id, owner: req.user._id };
 
     const workOrder = await WorkshopWorkOrder.findOne(query);
@@ -349,7 +355,19 @@ export const submitJobChecklist = async (req, res) => {
 
     workOrder.checklist = {
       checklistType: checklistType || workOrder.checklist?.checklistType || "BASIC_INSPECTION",
-      items: Array.isArray(items) ? items : workOrder.checklist?.items || [],
+      items: Array.isArray(items)
+        ? items.map((it, idx) => ({
+            id: it.id || it._id || `item_${idx}_${Date.now()}`,
+            title: it.title || it.label || `Check Item #${idx + 1}`,
+            label: it.label || it.title || `Check Item #${idx + 1}`,
+            category: it.category || "General",
+            status: it.status || "PASS",
+            measurement: it.measurement || "",
+            measurementUnit: it.measurementUnit || "",
+            notes: it.notes || it.observation || "",
+            observation: it.observation || it.notes || "",
+          }))
+        : workOrder.checklist?.items || [],
       completedAt: isCompleted ? new Date() : workOrder.checklist?.completedAt,
       completedBy: isCompleted ? req.user._id : workOrder.checklist?.completedBy,
     };

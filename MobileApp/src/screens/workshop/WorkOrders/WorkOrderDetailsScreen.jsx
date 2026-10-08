@@ -342,6 +342,161 @@ export default function WorkOrderDetailsScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Digital Checklist Card (Manager View) */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 14,
+              padding: 16,
+              marginBottom: 16,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.05,
+              shadowRadius: 2,
+              elevation: 1,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 10,
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    backgroundColor: "#EFF6FF",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: 8,
+                  }}
+                >
+                  <Ionicons name="checkbox-outline" size={18} color="#2563EB" />
+                </View>
+                <View>
+                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                    Digital Checklist
+                  </Text>
+                  <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                    {workOrder?.checklist?.checklistType
+                      ? workOrder.checklist.checklistType.replace(/_/g, " ")
+                      : "Inspection & Service Checklist"}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHECKLIST, {
+                    id: workOrder._id,
+                    existingChecklist: workOrder.checklist,
+                  })
+                }
+                style={{
+                  backgroundColor: "#2563EB",
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 8,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Ionicons name="create-outline" size={14} color="#FFFFFF" style={{ marginRight: 4 }} />
+                <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "700" }}>
+                  {workOrder?.checklist?.items?.length ? "View / Edit" : "+ Start"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {workOrder?.checklist?.items?.length ? (
+              <View>
+                {/* Stats Bar */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    backgroundColor: "#F8FAFC",
+                    borderRadius: 10,
+                    padding: 10,
+                    marginBottom: 10,
+                    justifyContent: "space-around",
+                    borderWidth: 1,
+                    borderColor: "#E2E8F0",
+                  }}
+                >
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#10B981" }}>
+                      {workOrder.checklist.items.filter((i) => i.status === "PASS").length}
+                    </Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>PASSED</Text>
+                  </View>
+                  <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#EF4444" }}>
+                      {workOrder.checklist.items.filter((i) => i.status === "FAIL").length}
+                    </Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>FAILED</Text>
+                  </View>
+                  <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#64748B" }}>
+                      {workOrder.checklist.items.filter((i) => i.status === "NA" || i.status === "N/A").length}
+                    </Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>N/A</Text>
+                  </View>
+                  <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#2563EB" }}>
+                      {workOrder.checklist.items.length}
+                    </Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>TOTAL</Text>
+                  </View>
+                </View>
+
+                {/* Status completion note */}
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Ionicons
+                      name={workOrder.checklist.completedAt ? "checkmark-circle" : "time-outline"}
+                      size={16}
+                      color={workOrder.checklist.completedAt ? "#10B981" : "#F59E0B"}
+                      style={{ marginRight: 4 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: "700",
+                        color: workOrder.checklist.completedAt ? "#15803D" : "#B45309",
+                      }}
+                    >
+                      {workOrder.checklist.completedAt
+                        ? `Verified on ${new Date(workOrder.checklist.completedAt).toLocaleDateString()}`
+                        : "Checklist Draft / In Progress"}
+                    </Text>
+                  </View>
+
+                  {workOrder.checklist.items.some((i) => i.status === "FAIL") && (
+                    <View style={{ backgroundColor: "#FEE2E2", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+                      <Text style={{ fontSize: 10, fontWeight: "800", color: "#DC2626" }}>Defects Found</Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            ) : (
+              <View style={{ backgroundColor: "#F8FAFC", borderRadius: 8, padding: 12, alignItems: "center" }}>
+                <Text style={{ fontSize: 12, color: "#64748B" }}>
+                  No digital checklist submitted yet for this work order.
+                </Text>
+              </View>
+            )}
+          </View>
+
           {/* Section 1: Linked Inspections */}
           <View style={{ marginBottom: 16 }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>

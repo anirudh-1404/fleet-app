@@ -83,21 +83,22 @@ const workshopWorkOrderSchema = new mongoose.Schema(
     checklist: {
       checklistType: {
         type: String,
-        enum: ["LUBE_SERVICE", "BASIC_INSPECTION", "ANNUAL_INSPECTION", "CUSTOM"],
         default: "BASIC_INSPECTION",
       },
       items: [
         {
           id: { type: String },
-          label: { type: String, required: true },
+          title: { type: String },
+          label: { type: String },
           category: { type: String, default: "General" },
           status: {
             type: String,
-            enum: ["PASS", "FAIL", "N/A", "PENDING"],
-            default: "PENDING",
+            default: "PASS",
           },
           measurement: { type: String, default: "" },
+          measurementUnit: { type: String, default: "" },
           observation: { type: String, default: "" },
+          notes: { type: String, default: "" },
         },
       ],
       completedAt: { type: Date },
