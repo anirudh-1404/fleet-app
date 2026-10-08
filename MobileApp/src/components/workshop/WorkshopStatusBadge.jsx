@@ -61,9 +61,11 @@ export default function WorkshopStatusBadge({ status, type = "status", size = "n
         paddingVertical: isSmall ? 2 : 4,
         borderRadius: 6,
         alignSelf: "flex-start",
+        flexShrink: 0,
       }}
     >
       <Text
+        numberOfLines={1}
         style={{
           color: text,
           fontSize: isSmall ? 10 : 12,

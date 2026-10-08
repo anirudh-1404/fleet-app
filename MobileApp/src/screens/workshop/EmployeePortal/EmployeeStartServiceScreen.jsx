@@ -270,28 +270,44 @@ export default function EmployeeStartServiceScreen() {
                   Search workshop records to see previous services or add a new truck.
                 </Text>
 
-                <View style={{ flexDirection: "row", gap: 8 }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                   <View
                     style={{
                       flex: 1,
+                      height: 48,
                       flexDirection: "row",
                       alignItems: "center",
                       backgroundColor: "#F8FAFC",
                       borderWidth: 1.5,
-                      borderColor: "#CBD5E1",
-                      borderRadius: 10,
-                      paddingHorizontal: 12,
+                      borderColor: searchRego ? "#2563EB" : "#CBD5E1",
+                      borderRadius: 12,
+                      paddingLeft: 12,
+                      paddingRight: 10,
                     }}
                   >
-                    <Ionicons name="search" size={18} color="#64748B" style={{ marginRight: 6 }} />
+                    <View
+                      style={{
+                        width: 24,
+                        height: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginRight: 6,
+                      }}
+                    >
+                      <Ionicons name="search" size={19} color="#64748B" />
+                    </View>
                     <TextInput
                       style={{
                         flex: 1,
-                        height: 44,
+                        height: "100%",
                         fontSize: 15,
                         fontWeight: "700",
                         color: "#0F172A",
                         textTransform: "uppercase",
+                        paddingVertical: 0,
+                        paddingHorizontal: 0,
+                        margin: 0,
+                        textAlignVertical: "center",
                       }}
                       placeholder="e.g. TRK-104 or VIC-992"
                       placeholderTextColor="#94A3B8"
@@ -316,6 +332,13 @@ export default function EmployeeStartServiceScreen() {
                           setSelectedVehicle(null);
                           setVehicleHistory(null);
                         }}
+                        hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                        style={{
+                          width: 26,
+                          height: "100%",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
                       >
                         <Ionicons name="close-circle" size={18} color="#94A3B8" />
                       </TouchableOpacity>
@@ -325,18 +348,21 @@ export default function EmployeeStartServiceScreen() {
                   <TouchableOpacity
                     disabled={searching || !searchRego.trim()}
                     onPress={() => handleSearch(searchRego)}
+                    activeOpacity={0.8}
                     style={{
+                      height: 48,
+                      paddingHorizontal: 18,
                       backgroundColor: searchRego.trim() ? "#2563EB" : "#94A3B8",
-                      borderRadius: 10,
-                      paddingHorizontal: 16,
+                      borderRadius: 12,
                       justifyContent: "center",
                       alignItems: "center",
+                      minWidth: 80,
                     }}
                   >
                     {searching ? (
                       <ActivityIndicator size="small" color="#FFFFFF" />
                     ) : (
-                      <Text style={{ fontSize: 13, fontWeight: "700", color: "#FFFFFF" }}>
+                      <Text style={{ fontSize: 14, fontWeight: "700", color: "#FFFFFF" }}>
                         Search
                       </Text>
                     )}
@@ -367,7 +393,7 @@ export default function EmployeeStartServiceScreen() {
                         alignItems: "center",
                       }}
                     >
-                      <View>
+                      <View style={{ flex: 1, marginRight: 10 }}>
                         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                           <View
                             style={{
@@ -416,84 +442,120 @@ export default function EmployeeStartServiceScreen() {
               {/* TRUCK FOUND CARD & FULL PAST SERVICE HISTORY */}
               {selectedVehicle && !isNewTruckMode && (
                 <View style={{ marginBottom: 16 }}>
-                  {/* Found Header Banner */}
-                  <View
-                    style={{
-                      backgroundColor: "#ECFDF5",
-                      borderWidth: 1,
-                      borderColor: "#A7F3D0",
-                      borderRadius: 12,
-                      padding: 12,
-                      marginBottom: 12,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-                      <Ionicons name="checkmark-circle" size={22} color="#10B981" style={{ marginRight: 8 }} />
-                      <View>
-                        <Text style={{ fontSize: 13, fontWeight: "800", color: "#065F46" }}>
-                          Truck Found in Workshop Records
-                        </Text>
-                        <Text style={{ fontSize: 11, color: "#047857" }}>
-                          Registration: {selectedVehicle.registration}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <TouchableOpacity
-                      onPress={() => {
-                        setSelectedVehicle(null);
-                        setVehicleHistory(null);
-                      }}
-                      style={{ paddingHorizontal: 8, paddingVertical: 4 }}
-                    >
-                      <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>
-                        Change
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  {/* Vehicle Specs Summary Card */}
+                  {/* Unified Vehicle Summary Card */}
                   <View
                     style={{
                       backgroundColor: "#FFFFFF",
                       borderRadius: 14,
-                      padding: 16,
                       marginBottom: 14,
                       borderWidth: 1,
                       borderColor: "#E2E8F0",
+                      overflow: "hidden",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.05,
+                      shadowRadius: 3,
+                      elevation: 2,
                     }}
                   >
-                    <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A", marginBottom: 10 }}>
-                      {selectedVehicle.make} {selectedVehicle.model} {selectedVehicle.year ? `(${selectedVehicle.year})` : ""}
-                    </Text>
+                    {/* Header Bar with Verified Status */}
+                    <View
+                      style={{
+                        backgroundColor: "#F0FDF4",
+                        paddingHorizontal: 14,
+                        paddingVertical: 10,
+                        borderBottomWidth: 1,
+                        borderBottomColor: "#DCFCE7",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Ionicons name="checkmark-circle" size={18} color="#16A34A" style={{ marginRight: 6 }} />
+                        <Text style={{ fontSize: 13, fontWeight: "800", color: "#166534" }}>
+                          Vehicle Verified in Workshop
+                        </Text>
+                      </View>
 
-                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
-                      <View style={{ width: "48%" }}>
-                        <Text style={{ fontSize: 11, color: "#64748B" }}>Vehicle Type:</Text>
-                        <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E293B" }}>
-                          {selectedVehicle.vehicleType}
-                        </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setSelectedVehicle(null);
+                          setVehicleHistory(null);
+                        }}
+                        style={{
+                          backgroundColor: "#DCFCE7",
+                          paddingHorizontal: 10,
+                          paddingVertical: 4,
+                          borderRadius: 6,
+                        }}
+                      >
+                        <Text style={{ fontSize: 11, fontWeight: "700", color: "#15803D" }}>Change</Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    {/* Body */}
+                    <View style={{ padding: 14 }}>
+                      {/* Plate Badge & Title */}
+                      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
+                        <View
+                          style={{
+                            backgroundColor: "#F8FAFC",
+                            borderWidth: 1.5,
+                            borderColor: "#CBD5E1",
+                            borderRadius: 8,
+                            paddingHorizontal: 10,
+                            paddingVertical: 6,
+                            marginRight: 10,
+                          }}
+                        >
+                          <Text style={{ fontSize: 15, fontWeight: "900", color: "#0F172A", letterSpacing: 0.5 }}>
+                            {selectedVehicle.registration}
+                          </Text>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }} numberOfLines={1}>
+                            {selectedVehicle.make} {selectedVehicle.model} {selectedVehicle.year ? `(${selectedVehicle.year})` : ""}
+                          </Text>
+                          <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600", marginTop: 2 }}>
+                            Type: {selectedVehicle.vehicleType || "Truck"}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={{ width: "48%" }}>
-                        <Text style={{ fontSize: 11, color: "#64748B" }}>Last Odometer:</Text>
-                        <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>
-                          {selectedVehicle.odometer ? `${selectedVehicle.odometer.toLocaleString()} km` : "N/A"}
-                        </Text>
-                      </View>
-                      <View style={{ width: "48%" }}>
-                        <Text style={{ fontSize: 11, color: "#64748B" }}>VIN / Chassis:</Text>
-                        <Text style={{ fontSize: 12, fontWeight: "600", color: "#334155" }}>
-                          {selectedVehicle.vin || "Not recorded"}
-                        </Text>
-                      </View>
-                      <View style={{ width: "48%" }}>
-                        <Text style={{ fontSize: 11, color: "#64748B" }}>Customer / Fleet:</Text>
-                        <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155" }}>
-                          {selectedVehicle.customer?.companyName || selectedVehicle.customer?.fullName || "General"}
-                        </Text>
+
+                      {/* Specs 2-Column Grid */}
+                      <View
+                        style={{
+                          backgroundColor: "#F8FAFC",
+                          borderRadius: 10,
+                          padding: 12,
+                          gap: 8,
+                        }}
+                      >
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                          <View style={{ flex: 1 }}>
+                            <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>Last Odometer</Text>
+                            <Text style={{ fontSize: 14, fontWeight: "800", color: "#2563EB", marginTop: 2 }}>
+                              {selectedVehicle.odometer ? `${selectedVehicle.odometer.toLocaleString()} km` : "N/A"}
+                            </Text>
+                          </View>
+                          <View style={{ flex: 1, paddingLeft: 12 }}>
+                            <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>Customer / Fleet</Text>
+                            <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", marginTop: 2 }} numberOfLines={1}>
+                              {selectedVehicle.customer?.companyName || selectedVehicle.customer?.fullName || "Direct Customer"}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {selectedVehicle.vin ? (
+                          <View style={{ borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 8, marginTop: 4 }}>
+                            <Text style={{ fontSize: 10, color: "#94A3B8", fontWeight: "600" }}>VIN / Chassis Number</Text>
+                            <Text style={{ fontSize: 11, fontWeight: "600", color: "#475569", marginTop: 1 }}>
+                              {selectedVehicle.vin}
+                            </Text>
+                          </View>
+                        ) : null}
                       </View>
                     </View>
                   </View>
@@ -507,29 +569,44 @@ export default function EmployeeStartServiceScreen() {
                       marginBottom: 16,
                       borderWidth: 1,
                       borderColor: "#E2E8F0",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.05,
+                      shadowRadius: 2,
+                      elevation: 1,
                     }}
                   >
-                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
-                      <View
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 8,
-                          backgroundColor: "#FEF3C7",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginRight: 8,
-                        }}
-                      >
-                        <Ionicons name="time" size={18} color="#D97706" />
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <View
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 8,
+                            backgroundColor: "#FEF3C7",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginRight: 8,
+                          }}
+                        >
+                          <Ionicons name="time" size={18} color="#D97706" />
+                        </View>
+                        <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                          Past Service & Repair Records
+                        </Text>
                       </View>
-                      <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
-                        Past Service & Repair Records
-                      </Text>
+
+                      {vehicleHistory?.workOrders?.length ? (
+                        <View style={{ backgroundColor: "#F1F5F9", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 12 }}>
+                          <Text style={{ fontSize: 11, fontWeight: "700", color: "#475569" }}>
+                            {vehicleHistory.workOrders.length} {vehicleHistory.workOrders.length === 1 ? "Job" : "Jobs"}
+                          </Text>
+                        </View>
+                      ) : null}
                     </View>
 
                     {loadingHistory ? (
-                      <ActivityIndicator size="small" color="#2563EB" style={{ marginVertical: 16 }} />
+                      <ActivityIndicator size="small" color="#2563EB" style={{ marginVertical: 20 }} />
                     ) : (
                       (() => {
                         const pastWorkOrders = vehicleHistory?.workOrders || [];
@@ -538,9 +615,13 @@ export default function EmployeeStartServiceScreen() {
 
                         if (pastWorkOrders.length === 0 && pastServices.length === 0 && pastInspections.length === 0) {
                           return (
-                            <View style={{ backgroundColor: "#F8FAFC", padding: 14, borderRadius: 8, alignItems: "center" }}>
-                              <Text style={{ fontSize: 12, color: "#64748B", fontStyle: "italic" }}>
-                                No previous services logged for this vehicle yet.
+                            <View style={{ backgroundColor: "#F8FAFC", padding: 16, borderRadius: 10, alignItems: "center", borderWidth: 1, borderColor: "#E2E8F0" }}>
+                              <Ionicons name="document-text-outline" size={28} color="#94A3B8" style={{ marginBottom: 4 }} />
+                              <Text style={{ fontSize: 13, fontWeight: "600", color: "#64748B" }}>
+                                No previous services logged for this truck yet.
+                              </Text>
+                              <Text style={{ fontSize: 11, color: "#94A3B8", marginTop: 2 }}>
+                                This will be the first service recorded in the workshop.
                               </Text>
                             </View>
                           );
@@ -548,68 +629,140 @@ export default function EmployeeStartServiceScreen() {
 
                         return (
                           <View style={{ gap: 10 }}>
-                            {pastWorkOrders.map((wo, idx) => (
-                              <View
-                                key={wo._id || idx}
-                                style={{
-                                  backgroundColor: "#F8FAFC",
-                                  borderRadius: 10,
-                                  padding: 12,
-                                  borderLeftWidth: 3,
-                                  borderLeftColor: wo.status === "COMPLETED" ? "#10B981" : "#2563EB",
-                                }}
-                              >
-                                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                                  <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A" }}>
-                                    {wo.jobNumber}: {wo.jobType}
-                                  </Text>
-                                  <WorkshopStatusBadge status={wo.status} />
-                                </View>
+                            {pastWorkOrders.map((wo, idx) => {
+                              const isCompleted = wo.status === "COMPLETED";
+                              const isWaitingParts = wo.status === "WAITING_FOR_PARTS";
+                              const accentColor = isCompleted ? "#10B981" : isWaitingParts ? "#F97316" : "#2563EB";
 
-                                <Text style={{ fontSize: 11, color: "#64748B", marginBottom: 4 }}>
-                                  Date: {new Date(wo.dateReceived || wo.createdAt).toLocaleDateString()}
-                                  {wo.assignedMechanic ? ` • Tech: ${wo.assignedMechanic}` : ""}
-                                </Text>
+                              return (
+                                <View
+                                  key={wo._id || idx}
+                                  style={{
+                                    backgroundColor: "#FFFFFF",
+                                    borderRadius: 12,
+                                    padding: 12,
+                                    borderWidth: 1,
+                                    borderColor: "#E2E8F0",
+                                    borderLeftWidth: 4,
+                                    borderLeftColor: accentColor,
+                                    shadowColor: "#000",
+                                    shadowOffset: { width: 0, height: 1 },
+                                    shadowOpacity: 0.04,
+                                    shadowRadius: 2,
+                                    elevation: 1,
+                                  }}
+                                >
+                                  {/* Top Header Row with guaranteed flex protection so badge never overflows */}
+                                  <View
+                                    style={{
+                                      flexDirection: "row",
+                                      alignItems: "flex-start",
+                                      justifyContent: "space-between",
+                                      marginBottom: 6,
+                                      gap: 8,
+                                    }}
+                                  >
+                                    <View style={{ flex: 1, marginRight: 4 }}>
+                                      <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+                                        <View
+                                          style={{
+                                            backgroundColor: "#EFF6FF",
+                                            paddingHorizontal: 6,
+                                            paddingVertical: 2,
+                                            borderRadius: 4,
+                                          }}
+                                        >
+                                          <Text style={{ fontSize: 11, fontWeight: "800", color: "#1D4ED8" }}>
+                                            {wo.jobNumber}
+                                          </Text>
+                                        </View>
+                                        <Text
+                                          style={{ fontSize: 13, fontWeight: "700", color: "#0F172A", flexShrink: 1 }}
+                                          numberOfLines={1}
+                                        >
+                                          {wo.jobType}
+                                        </Text>
+                                      </View>
+                                    </View>
 
-                                {wo.description ? (
-                                  <Text style={{ fontSize: 12, color: "#334155", marginBottom: 4 }} numberOfLines={2}>
-                                    {wo.description}
-                                  </Text>
-                                ) : null}
-
-                                {wo.checklist?.isCompleted ? (
-                                  <View style={{ flexDirection: "row", alignItems: "center", marginTop: 2 }}>
-                                    <Ionicons name="checkmark-done" size={14} color="#10B981" style={{ marginRight: 4 }} />
-                                    <Text style={{ fontSize: 11, color: "#059669", fontWeight: "700" }}>
-                                      {wo.checklist.checklistType?.replace(/_/g, " ")} Checklist Completed
-                                    </Text>
+                                    {/* Status Badge with fixed sizing */}
+                                    <WorkshopStatusBadge status={wo.status} size="small" />
                                   </View>
-                                ) : null}
-                              </View>
-                            ))}
+
+                                  {/* Metadata: Date, Tech, Odometer */}
+                                  <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 6 }}>
+                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                      <Ionicons name="calendar-outline" size={12} color="#64748B" style={{ marginRight: 3 }} />
+                                      <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                                        {new Date(wo.dateReceived || wo.createdAt).toLocaleDateString()}
+                                      </Text>
+                                    </View>
+                                    {wo.assignedMechanic ? (
+                                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <Ionicons name="person-outline" size={12} color="#64748B" style={{ marginRight: 3 }} />
+                                        <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                                          {wo.assignedMechanic}
+                                        </Text>
+                                      </View>
+                                    ) : null}
+                                    {wo.odometer ? (
+                                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <Ionicons name="speedometer-outline" size={12} color="#64748B" style={{ marginRight: 3 }} />
+                                        <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                                          {wo.odometer.toLocaleString()} km
+                                        </Text>
+                                      </View>
+                                    ) : null}
+                                  </View>
+
+                                  {/* Work Scope / Description Card */}
+                                  {wo.description ? (
+                                    <View
+                                      style={{
+                                        backgroundColor: "#F8FAFC",
+                                        borderRadius: 8,
+                                        paddingHorizontal: 10,
+                                        paddingVertical: 8,
+                                        borderWidth: 1,
+                                        borderColor: "#F1F5F9",
+                                        marginTop: 2,
+                                        marginBottom: 4,
+                                      }}
+                                    >
+                                      <Text style={{ fontSize: 12, color: "#334155", lineHeight: 17 }} numberOfLines={3}>
+                                        {wo.description}
+                                      </Text>
+                                    </View>
+                                  ) : null}
+
+                                  {/* Checklist Status */}
+                                  {wo.checklist?.isCompleted ? (
+                                    <View
+                                      style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        marginTop: 4,
+                                        backgroundColor: "#F0FDF4",
+                                        paddingHorizontal: 8,
+                                        paddingVertical: 4,
+                                        borderRadius: 6,
+                                        alignSelf: "flex-start",
+                                      }}
+                                    >
+                                      <Ionicons name="checkmark-done-circle" size={14} color="#16A34A" style={{ marginRight: 4 }} />
+                                      <Text style={{ fontSize: 11, color: "#15803D", fontWeight: "700" }}>
+                                        {wo.checklist.checklistType?.replace(/_/g, " ")} Checklist Done
+                                      </Text>
+                                    </View>
+                                  ) : null}
+                                </View>
+                              );
+                            })}
                           </View>
                         );
                       })()
                     )}
                   </View>
-
-                  {/* Button to proceed to service */}
-                  <TouchableOpacity
-                    onPress={handleProceedToService}
-                    style={{
-                      backgroundColor: "#2563EB",
-                      borderRadius: 12,
-                      paddingVertical: 14,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#FFFFFF", marginRight: 6 }}>
-                      Start Next Service on this Truck
-                    </Text>
-                    <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
-                  </TouchableOpacity>
                 </View>
               )}
 
@@ -1108,6 +1261,48 @@ export default function EmployeeStartServiceScreen() {
             </View>
           )}
         </ScrollView>
+
+        {/* Sticky Bottom Action Footer (Step 1 with Selected Vehicle) */}
+        {step === 1 && selectedVehicle && !isNewTruckMode && (
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              paddingHorizontal: 16,
+              paddingTop: 12,
+              paddingBottom: Platform.OS === "ios" ? 14 : 12,
+              borderTopWidth: 1,
+              borderTopColor: "#E2E8F0",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: -3 },
+              shadowOpacity: 0.05,
+              shadowRadius: 5,
+              elevation: 8,
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={0.88}
+              onPress={handleProceedToService}
+              style={{
+                backgroundColor: "#2563EB",
+                borderRadius: 12,
+                height: 48,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                shadowColor: "#2563EB",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 3,
+              }}
+            >
+              <Text style={{ fontSize: 15, fontWeight: "800", color: "#FFFFFF", marginRight: 6 }}>
+                Start Next Service on this Truck
+              </Text>
+              <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
