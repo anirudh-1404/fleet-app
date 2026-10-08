@@ -110,6 +110,7 @@ const ROUTES = {
   WORKSHOP_EMPLOYEE_PHOTOS: "WorkshopEmployeePhotos",
   WORKSHOP_EMPLOYEE_CHAT: "WorkshopEmployeeChat",
   WORKSHOP_EMPLOYEE_HISTORY: "WorkshopEmployeeHistory",
+  WORKSHOP_EMPLOYEE_START_SERVICE: "WorkshopEmployeeStartService",
 };
 
 export default ROUTES;

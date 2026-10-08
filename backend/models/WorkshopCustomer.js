@@ -20,8 +20,8 @@ const workshopCustomerSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
       trim: true,
+      default: "N/A",
     },
     email: {
       type: String,

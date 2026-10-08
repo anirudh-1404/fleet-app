@@ -78,4 +78,32 @@ export const workshopEmployeeService = {
     });
     return res.data;
   },
+
+  // Mechanic Truck Intake & Service Flow
+  searchVehicles: async (query = "") => {
+    const res = await api.get("/workshop/vehicles", {
+      params: { search: query },
+    });
+    return res.data;
+  },
+
+  getVehicleHistory: async (vehicleId) => {
+    const res = await api.get(`/workshop/vehicles/${vehicleId}`);
+    return res.data;
+  },
+
+  addVehicle: async (vehicleData) => {
+    const res = await api.post("/workshop/vehicles", vehicleData);
+    return res.data;
+  },
+
+  startVehicleService: async (serviceData) => {
+    const res = await api.post("/workshop/work-orders", serviceData);
+    return res.data;
+  },
+
+  getWorkshopCustomers: async () => {
+    const res = await api.get("/workshop/customers");
+    return res.data;
+  },
 };

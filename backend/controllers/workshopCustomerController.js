@@ -6,7 +6,8 @@ import WorkshopWorkOrder from "../models/WorkshopWorkOrder.js";
 // @route   GET /api/workshop/customers
 export const getWorkshopCustomers = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const { search } = req.query;
 
     let query = { owner };

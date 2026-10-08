@@ -8,6 +8,8 @@ import DigitalChecklistScreen from "../screens/workshop/EmployeePortal/DigitalCh
 import JobPhotosEvidenceScreen from "../screens/workshop/EmployeePortal/JobPhotosEvidenceScreen";
 import JobMessagesScreen from "../screens/workshop/EmployeePortal/JobMessagesScreen";
 
+import EmployeeStartServiceScreen from "../screens/workshop/EmployeePortal/EmployeeStartServiceScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function WorkshopEmployeeNavigator() {
@@ -19,6 +21,10 @@ export default function WorkshopEmployeeNavigator() {
       <Stack.Screen
         name={ROUTES.WORKSHOP_EMPLOYEE_HOME}
         component={EmployeeHomeScreen}
+      />
+      <Stack.Screen
+        name={ROUTES.WORKSHOP_EMPLOYEE_START_SERVICE}
+        component={EmployeeStartServiceScreen}
       />
       <Stack.Screen
         name={ROUTES.WORKSHOP_EMPLOYEE_JOB_DETAILS}

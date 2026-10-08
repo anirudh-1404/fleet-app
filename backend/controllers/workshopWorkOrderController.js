@@ -158,7 +158,8 @@ export const getWorkshopWorkOrderById = async (req, res) => {
 // @route   POST /api/workshop/work-orders
 export const createWorkshopWorkOrder = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const {
       customerId,
       vehicleId,
@@ -171,29 +172,33 @@ export const createWorkshopWorkOrder = async (req, res) => {
       priority,
       status,
       notes,
+      odometer,
     } = req.body;
 
-    if (!customerId || !vehicleId) {
-      return res.status(400).json({ message: "Customer and Vehicle are required to create a Work Order" });
+    if (!vehicleId) {
+      return res.status(400).json({ message: "Vehicle is required to create a Work Order" });
     }
-
-    const customer = await WorkshopCustomer.findOne({ _id: customerId, owner });
-    if (!customer) return res.status(400).json({ message: "Invalid customer selected" });
 
     const vehicle = await WorkshopVehicle.findOne({ _id: vehicleId, owner });
     if (!vehicle) return res.status(400).json({ message: "Invalid vehicle selected" });
 
+    let resolvedCustomerId = customerId || vehicle.customer;
+    const customer = await WorkshopCustomer.findOne({ _id: resolvedCustomerId, owner });
+    if (!customer) return res.status(400).json({ message: "Invalid customer selected" });
+
     const jobNumber = await generateJobNumber(owner);
-    const initialStatus = status || "OPEN";
+    const initialStatus = status || (isEmployee ? "IN_PROGRESS" : "OPEN");
 
     let mechanicName = assignedMechanic ? assignedMechanic.trim() : "";
-    let assignedUserId = assignedTo || null;
+    let assignedUserId = assignedTo || (isEmployee ? req.user._id : null);
 
     if (assignedUserId) {
       const emp = await User.findById(assignedUserId);
       if (emp) {
         mechanicName = emp.name;
       }
+    } else if (isEmployee) {
+      mechanicName = req.user.name;
     }
 
     const workOrder = await WorkshopWorkOrder.create({
@@ -212,15 +217,16 @@ export const createWorkshopWorkOrder = async (req, res) => {
       notes: notes ? notes.trim() : "",
     });
 
-    // Automatically update vehicle status if in workshop
-    if (initialStatus === "OPEN" || initialStatus === "IN_PROGRESS" || initialStatus === "INSPECTION_PENDING") {
-      vehicle.status = "IN_WORKSHOP";
-      await vehicle.save();
+    // Automatically update vehicle status if in workshop and odometer if provided
+    vehicle.status = "IN_WORKSHOP";
+    if (odometer && !isNaN(Number(odometer)) && Number(odometer) > 0) {
+      vehicle.odometer = Number(odometer);
     }
+    await vehicle.save();
 
     const populated = await WorkshopWorkOrder.findById(workOrder._id)
       .populate("customer", "fullName companyName phone")
-      .populate("vehicle", "make model registration vehicleType status")
+      .populate("vehicle", "make model registration vehicleType status odometer")
       .populate("assignedTo", "name email designation phone");
 
     res.status(201).json(populated);

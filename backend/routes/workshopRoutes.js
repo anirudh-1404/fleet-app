@@ -12,6 +12,7 @@ import {
 
 import {
   getWorkshopVehicles,
+  searchWorkshopVehicles,
   getWorkshopVehicleById,
   createWorkshopVehicle,
   updateWorkshopVehicle,
@@ -120,6 +121,7 @@ router.delete("/customers/:id", deleteWorkshopCustomer);
 
 // 3. Vehicles
 router.get("/vehicles", getWorkshopVehicles);
+router.get("/vehicles/search", searchWorkshopVehicles);
 router.post("/vehicles", createWorkshopVehicle);
 router.get("/vehicles/:id", getWorkshopVehicleById);
 router.patch("/vehicles/:id", updateWorkshopVehicle);

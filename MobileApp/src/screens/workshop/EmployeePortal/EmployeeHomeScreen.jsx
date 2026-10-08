@@ -209,6 +209,66 @@ export default function EmployeeHomeScreen() {
         </TouchableOpacity>
       </View>
 
+      {/* Quick Action: Start Service / Add Truck */}
+      <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 10, backgroundColor: "#FFFFFF" }}>
+        <TouchableOpacity
+          activeOpacity={0.88}
+          onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_START_SERVICE)}
+          style={{
+            backgroundColor: "#2563EB",
+            borderRadius: 14,
+            paddingVertical: 13,
+            paddingHorizontal: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            shadowColor: "#2563EB",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.22,
+            shadowRadius: 6,
+            elevation: 4,
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "center", flex: 1, marginRight: 8 }}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 12,
+              }}
+            >
+              <Ionicons name="construct" size={20} color="#FFFFFF" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: "800", color: "#FFFFFF" }}>
+                Start Service / Add Truck
+              </Text>
+              <Text style={{ fontSize: 12, color: "#DBEAFE", fontWeight: "500", marginTop: 2 }}>
+                Search truck #, see past history, or add new
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              paddingHorizontal: 12,
+              paddingVertical: 7,
+              borderRadius: 8,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Ionicons name="add" size={16} color="#2563EB" style={{ marginRight: 2 }} />
+            <Text style={{ fontSize: 12, fontWeight: "800", color: "#2563EB" }}>New</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
       {/* Filter Tabs */}
       <View style={{ backgroundColor: "#FFFFFF", borderBottomWidth: 1, borderBottomColor: "#E2E8F0" }}>
         <FlatList
@@ -257,7 +317,7 @@ export default function EmployeeHomeScreen() {
             title="No Jobs In This Tab"
             message={
               activeTab === "ALL"
-                ? "You currently have no jobs assigned to you. When the workshop admin assigns work orders, they will appear right here."
+                ? "You currently have no jobs assigned to you. Tap 'Start Service / Add Truck' above to search past history or add a new truck to begin work."
                 : `No jobs currently matching "${TABS.find((t) => t.key === activeTab)?.label}".`
             }
           />

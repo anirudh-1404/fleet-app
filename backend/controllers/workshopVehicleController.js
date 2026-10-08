@@ -9,7 +9,8 @@ import WorkshopInvoice from "../models/WorkshopInvoice.js";
 // @route   GET /api/workshop/vehicles
 export const getWorkshopVehicles = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const { search, status, vehicleType, customerId } = req.query;
 
     let query = { owner };
@@ -44,19 +45,58 @@ export const getWorkshopVehicles = async (req, res) => {
   }
 };
 
+// @desc    Search workshop vehicles
+// @route   GET /api/workshop/vehicles/search
+export const searchWorkshopVehicles = async (req, res) => {
+  try {
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
+    const q = req.query.q || req.query.search || "";
+
+    let query = { owner };
+    if (q && q.trim()) {
+      const s = q.trim();
+      query.$or = [
+        { registration: { $regex: s, $options: "i" } },
+        { make: { $regex: s, $options: "i" } },
+        { model: { $regex: s, $options: "i" } },
+        { vin: { $regex: s, $options: "i" } },
+      ];
+    }
+
+    const vehicles = await WorkshopVehicle.find(query)
+      .populate("customer", "fullName companyName phone email")
+      .sort({ updatedAt: -1 })
+      .lean();
+
+    res.json(vehicles);
+  } catch (error) {
+    console.error("Error searching workshop vehicles:", error);
+    res.status(500).json({ message: "Server error searching vehicles" });
+  }
+};
+
 // @desc    Get single workshop vehicle by ID with full job & service history
 // @route   GET /api/workshop/vehicles/:id
 export const getWorkshopVehicleById = async (req, res) => {
   try {
-    const owner = req.user._id;
-    const vehicle = await WorkshopVehicle.findOne({ _id: req.params.id, owner })
+    const { id } = req.params;
+    if (!id || id.length !== 24) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
+    const vehicle = await WorkshopVehicle.findOne({ _id: id, owner })
       .populate("customer", "fullName companyName phone email address");
 
     if (!vehicle) {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
-    const workOrders = await WorkshopWorkOrder.find({ owner, vehicle: vehicle._id }).sort({ dateReceived: -1 });
+    const workOrders = await WorkshopWorkOrder.find({ owner, vehicle: vehicle._id })
+      .populate("assignedTo", "name designation")
+      .sort({ createdAt: -1 });
     const inspections = await WorkshopInspection.find({ owner, vehicle: vehicle._id }).sort({ date: -1 });
     const services = await WorkshopService.find({ owner, vehicle: vehicle._id }).sort({ date: -1 });
     const invoices = await WorkshopInvoice.find({ owner, vehicle: vehicle._id }).sort({ date: -1 });
@@ -78,9 +118,13 @@ export const getWorkshopVehicleById = async (req, res) => {
 // @route   POST /api/workshop/vehicles
 export const createWorkshopVehicle = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const {
       customerId,
+      customerName,
+      companyName,
+      customerPhone,
       vehicleType,
       registration,
       make,
@@ -93,21 +137,46 @@ export const createWorkshopVehicle = async (req, res) => {
       notes,
     } = req.body;
 
-    if (!customerId || !registration) {
-      return res.status(400).json({ message: "Customer and Registration number are required" });
-    }
-
-    // Verify customer exists and belongs to owner
-    const customer = await WorkshopCustomer.findOne({ _id: customerId, owner });
-    if (!customer) {
-      return res.status(400).json({ message: "Invalid customer selected" });
+    if (!registration || !registration.trim()) {
+      return res.status(400).json({ message: "Vehicle registration / number is required" });
     }
 
     const regUpper = registration.trim().toUpperCase();
 
+    // Check if vehicle with this registration already exists for this workshop owner
+    const existingVehicle = await WorkshopVehicle.findOne({ owner, registration: regUpper });
+    if (existingVehicle) {
+      const populated = await WorkshopVehicle.findById(existingVehicle._id).populate("customer", "fullName companyName phone email");
+      return res.status(200).json(populated);
+    }
+
+    let resolvedCustomerId = customerId;
+    if (resolvedCustomerId) {
+      const customer = await WorkshopCustomer.findOne({ _id: resolvedCustomerId, owner });
+      if (!customer) resolvedCustomerId = null;
+    }
+
+    // Auto-create or resolve default customer if not explicitly passed
+    if (!resolvedCustomerId) {
+      const cName = customerName?.trim() || companyName?.trim() || "Fleet / Direct Customer";
+      let cust = await WorkshopCustomer.findOne({ owner, companyName: cName });
+      if (!cust) {
+        cust = await WorkshopCustomer.findOne({ owner, fullName: cName });
+      }
+      if (!cust) {
+        cust = await WorkshopCustomer.create({
+          owner,
+          fullName: cName,
+          companyName: cName,
+          phone: customerPhone?.trim() || "N/A",
+        });
+      }
+      resolvedCustomerId = cust._id;
+    }
+
     const vehicle = await WorkshopVehicle.create({
       owner,
-      customer: customer._id,
+      customer: resolvedCustomerId,
       vehicleType: vehicleType || "Truck",
       registration: regUpper,
       make: make ? make.trim() : "",
@@ -115,7 +184,7 @@ export const createWorkshopVehicle = async (req, res) => {
       year: year ? Number(year) : new Date().getFullYear(),
       vin: vin ? vin.trim() : "",
       odometer: odometer ? Number(odometer) : 0,
-      status: status || "OUTSIDE_WORKSHOP",
+      status: status || "IN_WORKSHOP",
       photo: photo ? photo.trim() : "",
       notes: notes ? notes.trim() : "",
     });
@@ -132,7 +201,8 @@ export const createWorkshopVehicle = async (req, res) => {
 // @route   PATCH /api/workshop/vehicles/:id
 export const updateWorkshopVehicle = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const vehicle = await WorkshopVehicle.findOne({ _id: req.params.id, owner });
     if (!vehicle) {
       return res.status(404).json({ message: "Vehicle not found" });
@@ -182,7 +252,8 @@ export const updateWorkshopVehicle = async (req, res) => {
 // @route   DELETE /api/workshop/vehicles/:id
 export const deleteWorkshopVehicle = async (req, res) => {
   try {
-    const owner = req.user._id;
+    const isEmployee = req.user.role === "workshop_employee";
+    const owner = isEmployee ? req.user.workshopManager : req.user._id;
     const vehicle = await WorkshopVehicle.findOne({ _id: req.params.id, owner });
     if (!vehicle) {
       return res.status(404).json({ message: "Vehicle not found" });
