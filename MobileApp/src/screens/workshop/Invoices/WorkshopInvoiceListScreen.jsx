@@ -16,6 +16,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import ROUTES from "../../../constants/routes";
 import { workshopInvoiceService } from "../../../services/workshopInvoiceService";
 import WorkshopStateView from "../../../components/workshop/WorkshopStateView";
+import { downloadAndSaveInvoicePdf } from "../../../utils/invoicePdfHelper";
 
 const CATEGORY_TABS = ["ALL", "Parts", "Insurances", "Other Expenses"];
 
@@ -58,6 +59,15 @@ export default function WorkshopInvoiceListScreen() {
     fetchInvoices();
   };
 
+  const handleDownloadItemPdf = async (item, e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    try {
+      await downloadAndSaveInvoicePdf(item);
+    } catch (err) {
+      console.error("Error downloading item PDF:", err);
+    }
+  };
+
   const renderInvoiceItem = ({ item }) => (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -87,12 +97,32 @@ export default function WorkshopInvoiceListScreen() {
       </View>
 
       <View style={{ borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 10, marginTop: 4, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <Text style={{ fontSize: 12, color: "#64748B" }}>
+        <Text style={{ fontSize: 12, color: "#64748B", flex: 1, marginRight: 8 }} numberOfLines={1}>
           {item.vehicle?.registration ? `Vehicle: ${item.vehicle.registration}` : item.customer?.fullName ? `Customer: ${item.customer.fullName}` : "General Expense"}
         </Text>
-        <Text style={{ fontSize: 11, color: "#94A3B8" }}>
-          {new Date(item.date || item.createdAt).toLocaleDateString()}
-        </Text>
+
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <Text style={{ fontSize: 11, color: "#94A3B8" }}>
+            {new Date(item.date || item.createdAt).toLocaleDateString()}
+          </Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={(e) => handleDownloadItemPdf(item, e)}
+            style={{
+              paddingHorizontal: 8,
+              paddingVertical: 3.5,
+              backgroundColor: "#EFF6FF",
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: "#BFDBFE",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Ionicons name="cloud-download-outline" size={13} color="#2563EB" style={{ marginRight: 3 }} />
+            <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB" }}>PDF</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );

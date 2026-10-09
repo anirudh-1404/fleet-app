@@ -74,3 +74,31 @@ export const deleteInvoice = async (req, res) => {
     return res.status(500).json({ message: "Server error deleting invoice" });
   }
 };
+
+export const downloadInvoicePdf = async (req, res) => {
+  try {
+    const { streamInvoicePdf } = await import("../utils/invoicePdfGenerator.js");
+    const invoice = await Invoice.findById(req.params.id).populate("vehicle");
+    if (!invoice) return res.status(404).send("Invoice not found");
+
+    // Format fields for generator
+    const cleanAmount = Number(String(invoice.amount).replace(/[^0-9.]/g, "")) || 0;
+    const formatted = {
+      ...invoice.toObject(),
+      amount: cleanAmount,
+      vehicle: invoice.vehicle ? {
+        registration: invoice.vehicle.registration,
+        make: invoice.vehicle.make || "Fleet Vehicle",
+        model: invoice.vehicle.model || "",
+        year: invoice.vehicle.year || "",
+        odometer: invoice.vehicle.odometer || "",
+      } : null,
+    };
+
+    streamInvoicePdf(formatted, res);
+  } catch (error) {
+    console.error("Error generating invoice PDF:", error);
+    res.status(500).send("Error generating invoice PDF");
+  }
+};
+

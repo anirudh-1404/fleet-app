@@ -17,6 +17,7 @@ import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/nativ
 import ROUTES from "../../../constants/routes";
 import { workshopInvoiceService } from "../../../services/workshopInvoiceService";
 import WorkshopStateView from "../../../components/workshop/WorkshopStateView";
+import { downloadAndSaveInvoicePdf, printInvoicePdf } from "../../../utils/invoicePdfHelper";
 
 export default function WorkshopInvoiceDetailsScreen() {
   const navigation = useNavigation();
@@ -27,6 +28,7 @@ export default function WorkshopInvoiceDetailsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
   const [invoice, setInvoice] = useState(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   const fetchInvoice = async () => {
     try {
@@ -51,6 +53,28 @@ export default function WorkshopInvoiceDetailsScreen() {
   const onRefresh = () => {
     setRefreshing(true);
     fetchInvoice();
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!invoice) return;
+    setDownloadingPdf(true);
+    try {
+      await downloadAndSaveInvoicePdf(invoice);
+    } catch (err) {
+      console.error("PDF download error:", err);
+      Alert.alert("PDF Error", "Could not generate or save PDF. Please check device permissions.");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  const handlePrint = async () => {
+    if (!invoice) return;
+    try {
+      await printInvoicePdf(invoice);
+    } catch (err) {
+      console.error("Print error:", err);
+    }
   };
 
   const handleDelete = () => {
@@ -102,9 +126,36 @@ export default function WorkshopInvoiceDetailsScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity onPress={handleDelete} style={{ padding: 6, backgroundColor: "#FEE2E2", borderRadius: 8 }}>
-          <Ionicons name="trash-outline" size={18} color="#DC2626" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            disabled={downloadingPdf}
+            onPress={handleDownloadPdf}
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 6,
+              backgroundColor: "#EFF6FF",
+              borderRadius: 8,
+              flexDirection: "row",
+              alignItems: "center",
+              borderWidth: 1,
+              borderColor: "#BFDBFE",
+            }}
+          >
+            {downloadingPdf ? (
+              <ActivityIndicator size="small" color="#2563EB" />
+            ) : (
+              <>
+                <Ionicons name="cloud-download-outline" size={16} color="#2563EB" style={{ marginRight: 4 }} />
+                <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>PDF</Text>
+              </>
+            )}
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleDelete} style={{ padding: 6, backgroundColor: "#FEE2E2", borderRadius: 8 }}>
+            <Ionicons name="trash-outline" size={18} color="#DC2626" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {loading && !refreshing ? (
@@ -114,7 +165,7 @@ export default function WorkshopInvoiceDetailsScreen() {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+          contentContainerStyle={{ padding: 16, paddingBottom: 60 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
           {/* Main Invoice Card */}
@@ -166,6 +217,88 @@ export default function WorkshopInvoiceDetailsScreen() {
                 <Text style={{ fontSize: 13, color: "#334155" }}>{invoice.notes}</Text>
               </View>
             ) : null}
+          </View>
+
+          {/* Download & Save PDF Action Card */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 14,
+              padding: 16,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              marginBottom: 16,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+              <View
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 8,
+                  backgroundColor: "#EFF6FF",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 10,
+                }}
+              >
+                <Ionicons name="document-text-outline" size={18} color="#2563EB" />
+              </View>
+              <View>
+                <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>Tax Invoice PDF</Text>
+                <Text style={{ fontSize: 11, color: "#64748B" }}>Download directly or save to phone storage</Text>
+              </View>
+            </View>
+
+            <Text style={{ fontSize: 12, color: "#64748B", lineHeight: 18, marginBottom: 14 }}>
+              Generate an official NHVR-compliant Tax Invoice PDF. Tap below to download and save directly to your phone's Files or Downloads folder, or share via WhatsApp.
+            </Text>
+
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <TouchableOpacity
+                activeOpacity={0.85}
+                disabled={downloadingPdf}
+                onPress={handleDownloadPdf}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#2563EB",
+                  borderRadius: 10,
+                  paddingVertical: 12,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  shadowColor: "#2563EB",
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 6,
+                  elevation: 3,
+                }}
+              >
+                {downloadingPdf ? (
+                  <ActivityIndicator color="#FFFFFF" style={{ marginRight: 8 }} />
+                ) : (
+                  <Ionicons name="cloud-download-outline" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
+                )}
+                <Text style={{ fontSize: 14, fontWeight: "800", color: "#FFFFFF" }}>
+                  {downloadingPdf ? "Generating PDF..." : "Download & Save PDF"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={handlePrint}
+                style={{
+                  backgroundColor: "#F1F5F9",
+                  borderRadius: 10,
+                  paddingHorizontal: 14,
+                  paddingVertical: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="print-outline" size={18} color="#334155" />
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       )}

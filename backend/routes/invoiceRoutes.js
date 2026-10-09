@@ -5,11 +5,13 @@ import {
   createInvoice,
   updateInvoice,
   deleteInvoice,
+  downloadInvoicePdf,
 } from "../controllers/invoiceController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+router.get("/:id/pdf", downloadInvoicePdf);
 router.get("/", protect, getInvoices);
 router.get("/:id", protect, getInvoiceById);
 router.post("/", protect, createInvoice);

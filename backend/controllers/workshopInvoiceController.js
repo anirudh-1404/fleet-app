@@ -178,3 +178,24 @@ export const deleteWorkshopInvoice = async (req, res) => {
     res.status(500).json({ message: "Server error deleting invoice" });
   }
 };
+
+// @desc    Download and stream Invoice PDF
+// @route   GET /api/workshop/invoices/:id/pdf
+export const downloadWorkshopInvoicePdf = async (req, res) => {
+  try {
+    const { streamInvoicePdf } = await import("../utils/invoicePdfGenerator.js");
+    const invoice = await WorkshopInvoice.findById(req.params.id)
+      .populate("customer", "fullName companyName phone email")
+      .populate("vehicle", "make model registration vehicleType status vin odometer")
+      .populate("workOrder", "jobNumber jobType status");
+
+    if (!invoice) {
+      return res.status(404).send("Invoice not found");
+    }
+
+    streamInvoicePdf(invoice, res);
+  } catch (error) {
+    console.error("Error generating invoice PDF:", error);
+    res.status(500).send("Error generating invoice PDF");
+  }
+};

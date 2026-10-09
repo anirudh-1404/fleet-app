@@ -16,6 +16,7 @@ import InfoCard from "@components/common/InfoCard";
 import DetailRow from "@components/common/DetailRow";
 import StatusBadge from "@components/fleet/StatusBadge";
 import { useFleetData } from "../../../context/FleetDataContext";
+import { downloadAndSaveInvoicePdf, printInvoicePdf } from "../../../utils/invoicePdfHelper";
 
 export default function InvoiceDetailsScreen() {
   const navigation = useNavigation();
@@ -24,6 +25,20 @@ export default function InvoiceDetailsScreen() {
   const { invoiceId } = route.params || {};
 
   const invoice = invoices.find((i) => i.id === invoiceId) || invoices[0];
+  const [downloadingPdf, setDownloadingPdf] = React.useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!invoice) return;
+    setDownloadingPdf(true);
+    try {
+      await downloadAndSaveInvoicePdf(invoice);
+    } catch (err) {
+      console.error("PDF download error:", err);
+      Alert.alert("PDF Error", "Could not generate or save PDF to device.");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
   const handleDelete = () => {
     Alert.alert("Delete Invoice", "Are you sure you want to delete this invoice?", [
@@ -74,10 +89,18 @@ export default function InvoiceDetailsScreen() {
 
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation.navigate(ROUTES.EDIT_INVOICE, { invoiceId: invoice.id })}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] items-center justify-center mr-2"
+          disabled={downloadingPdf}
+          onPress={handleDownloadPdf}
+          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] items-center justify-center mr-2"
         >
-          <Ionicons name="create-outline" size={18} color="#2563EB" />
+          <Ionicons name="cloud-download-outline" size={18} color="#2563EB" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate(ROUTES.EDIT_INVOICE, { invoiceId: invoice.id })}
+          className="w-10 h-10 rounded-full bg-[#F1F5F9] border border-[#E2E8F0] items-center justify-center mr-2"
+        >
+          <Ionicons name="create-outline" size={18} color="#475569" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -92,9 +115,33 @@ export default function InvoiceDetailsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 24,
-          paddingBottom: Platform.OS === "ios" ? 40 : 24,
+          paddingBottom: Platform.OS === "ios" ? 60 : 40,
         }}
       >
+        {/* PDF Download Card */}
+        <View className="bg-white rounded-2xl p-4 border border-[#E2E8F0] mb-4">
+          <View className="flex-row items-center mb-3">
+            <View className="w-8 h-8 rounded-lg bg-[#EFF6FF] items-center justify-center mr-2.5">
+              <Ionicons name="document-text-outline" size={18} color="#2563EB" />
+            </View>
+            <View className="flex-1">
+              <Text className="text-sm font-bold text-[#0F172A]">Tax Invoice PDF</Text>
+              <Text className="text-xs text-[#64748B]">Save directly to your phone or share</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.85}
+            disabled={downloadingPdf}
+            onPress={handleDownloadPdf}
+            className="bg-[#2563EB] rounded-xl py-3 flex-row items-center justify-center"
+          >
+            <Ionicons name="cloud-download-outline" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
+            <Text className="text-sm font-bold text-white">
+              {downloadingPdf ? "Generating PDF..." : "Download & Save PDF"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <InfoCard title="Invoice Information" icon="receipt-outline">
           <DetailRow label="Invoice Number" value={invoice.invoiceNumber} />
           <DetailRow label="Vehicle" value={invoice.vehicleName} />

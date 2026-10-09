@@ -76,6 +76,7 @@ import {
   createWorkshopInvoice,
   updateWorkshopInvoice,
   deleteWorkshopInvoice,
+  downloadWorkshopInvoicePdf,
 } from "../controllers/workshopInvoiceController.js";
 
 import {
@@ -184,6 +185,7 @@ router.delete("/schedule/:id", deleteWorkshopSchedule);
 // 10. Invoices (Parts, Insurances, Other Expenses)
 router.get("/invoices", getWorkshopInvoices);
 router.post("/invoices", createWorkshopInvoice);
+router.get("/invoices/:id/pdf", downloadWorkshopInvoicePdf);
 router.get("/invoices/:id", getWorkshopInvoiceById);
 router.patch("/invoices/:id", updateWorkshopInvoice);
 router.delete("/invoices/:id", deleteWorkshopInvoice);
