@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Platform,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
@@ -342,6 +343,133 @@ export default function WorkOrderDetailsScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* QUICK JOB INTAKE REPORT CARD */}
+          {workOrder?.intakeDetails && (
+            <View
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: 14,
+                padding: 16,
+                marginBottom: 16,
+                borderWidth: 1,
+                borderColor: "#E2E8F0",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.04,
+                shadowRadius: 2,
+                elevation: 1,
+              }}
+            >
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      backgroundColor: "#EFF6FF",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                    }}
+                  >
+                    <Ionicons name="clipboard-outline" size={18} color="#2563EB" />
+                  </View>
+                  <View>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                      Quick Job Intake Report
+                    </Text>
+                    <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                      Logged by {workOrder.intakeDetails.createdByName || workOrder.assignedMechanic || "Floor Mechanic"}
+                    </Text>
+                  </View>
+                </View>
+
+                {workOrder.intakeDetails.vehicleOffRoad && (
+                  <View style={{ backgroundColor: "#FEE2E2", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
+                    <Text style={{ fontSize: 10, fontWeight: "800", color: "#DC2626" }}>VOR - CRITICAL</Text>
+                  </View>
+                )}
+              </View>
+
+              {/* Work Types Chips */}
+              {workOrder.intakeDetails.workTypes?.length > 0 && (
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+                  {workOrder.intakeDetails.workTypes.map((wt, i) => (
+                    <View key={i} style={{ backgroundColor: "#F1F5F9", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
+                      <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155" }}>{wt}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              {/* Details Box */}
+              <View style={{ backgroundColor: "#F8FAFC", borderRadius: 10, padding: 10, gap: 6, borderWidth: 1, borderColor: "#F1F5F9" }}>
+                {workOrder.intakeDetails.customerComplaint ? (
+                  <View>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B", textTransform: "uppercase" }}>
+                      Customer Complaint:
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: "600", color: "#0F172A", marginTop: 1 }}>
+                      {workOrder.intakeDetails.customerComplaint}
+                    </Text>
+                  </View>
+                ) : null}
+
+                {workOrder.intakeDetails.workRequired ? (
+                  <View style={{ borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 4, marginTop: 2 }}>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B", textTransform: "uppercase" }}>
+                      Work Required:
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: "600", color: "#0F172A", marginTop: 1 }}>
+                      {workOrder.intakeDetails.workRequired}
+                    </Text>
+                  </View>
+                ) : null}
+
+                {workOrder.intakeDetails.faultCodes ? (
+                  <View style={{ borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 4, marginTop: 2 }}>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B", textTransform: "uppercase" }}>
+                      Warning / Fault Codes:
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: "#DC2626", marginTop: 1 }}>
+                      {workOrder.intakeDetails.faultCodes}
+                    </Text>
+                  </View>
+                ) : null}
+
+                {workOrder.intakeDetails.additionalNotes ? (
+                  <View style={{ borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 4, marginTop: 2 }}>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B", textTransform: "uppercase" }}>
+                      Additional Notes:
+                    </Text>
+                    <Text style={{ fontSize: 12, color: "#475569", marginTop: 1 }}>
+                      {workOrder.intakeDetails.additionalNotes}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+
+              {/* Intake Photos */}
+              {workOrder.intakeDetails.intakePhotos?.length > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#475569", marginBottom: 6 }}>
+                    Attached Photos ({workOrder.intakeDetails.intakePhotos.length})
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                    {workOrder.intakeDetails.intakePhotos.map((uri, idx) => (
+                      <Image
+                        key={idx}
+                        source={{ uri }}
+                        style={{ width: 64, height: 64, borderRadius: 8, borderWidth: 1, borderColor: "#CBD5E1" }}
+                      />
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+          )}
+
           {/* Digital Checklist Card (Manager View) */}
           <View
             style={{
@@ -366,7 +494,7 @@ export default function WorkOrderDetailsScreen() {
                 marginBottom: 10,
               }}
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: "row", alignItems: "center", flex: 1, marginRight: 8 }}>
                 <View
                   style={{
                     width: 32,
@@ -380,11 +508,11 @@ export default function WorkOrderDetailsScreen() {
                 >
                   <Ionicons name="checkbox-outline" size={18} color="#2563EB" />
                 </View>
-                <View>
+                <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
                     Digital Checklist
                   </Text>
-                  <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                  <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }} numberOfLines={1}>
                     {workOrder?.checklist?.checklistType
                       ? workOrder.checklist.checklistType.replace(/_/g, " ")
                       : "Inspection & Service Checklist"}
@@ -439,9 +567,9 @@ export default function WorkOrderDetailsScreen() {
                   <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
                   <View style={{ alignItems: "center" }}>
                     <Text style={{ fontSize: 15, fontWeight: "800", color: "#EF4444" }}>
-                      {workOrder.checklist.items.filter((i) => i.status === "FAIL").length}
+                      {workOrder.checklist.items.filter((i) => i.status === "FAIL" || i.status === "DEFECT").length}
                     </Text>
-                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>FAILED</Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>DEFECTS</Text>
                   </View>
                   <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
                   <View style={{ alignItems: "center" }}>
@@ -459,8 +587,8 @@ export default function WorkOrderDetailsScreen() {
                   </View>
                 </View>
 
-                {/* Status completion note */}
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                {/* Overall Outcome & Verified badge */}
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Ionicons
                       name={workOrder.checklist.completedAt ? "checkmark-circle" : "time-outline"}
@@ -476,17 +604,125 @@ export default function WorkOrderDetailsScreen() {
                       }}
                     >
                       {workOrder.checklist.completedAt
-                        ? `Verified on ${new Date(workOrder.checklist.completedAt).toLocaleDateString()}`
-                        : "Checklist Draft / In Progress"}
+                        ? `Completed on ${new Date(workOrder.checklist.completedAt).toLocaleDateString()}`
+                        : "Draft in Progress"}
                     </Text>
                   </View>
 
-                  {workOrder.checklist.items.some((i) => i.status === "FAIL") && (
-                    <View style={{ backgroundColor: "#FEE2E2", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
-                      <Text style={{ fontSize: 10, fontWeight: "800", color: "#DC2626" }}>Defects Found</Text>
+                  {workOrder.checklist.overallOutcome && (
+                    <View
+                      style={{
+                        backgroundColor:
+                          workOrder.checklist.overallOutcome === "Pass" || workOrder.checklist.overallOutcome === "Satisfactory"
+                            ? "#F0FDF4"
+                            : "#FEE2E2",
+                        paddingHorizontal: 8,
+                        paddingVertical: 2,
+                        borderRadius: 6,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          fontWeight: "800",
+                          color:
+                            workOrder.checklist.overallOutcome === "Pass" || workOrder.checklist.overallOutcome === "Satisfactory"
+                              ? "#16A34A"
+                              : "#DC2626",
+                        }}
+                      >
+                        {workOrder.checklist.overallOutcome}
+                      </Text>
                     </View>
                   )}
                 </View>
+
+                {/* Axle Brake Measurements Summary (if recorded) */}
+                {workOrder.checklist.axleMeasurements?.some((a) => a.rhsMm || a.lhsMm) && (
+                  <View
+                    style={{
+                      backgroundColor: "#F8FAFC",
+                      borderRadius: 8,
+                      padding: 8,
+                      marginBottom: 8,
+                      borderWidth: 1,
+                      borderColor: "#E2E8F0",
+                    }}
+                  >
+                    <Text style={{ fontSize: 11, fontWeight: "800", color: "#1E293B", marginBottom: 4 }}>
+                      Brake Linings / Shoes Thickness:
+                    </Text>
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+                      {workOrder.checklist.axleMeasurements.map((ax, idx) => (
+                        <View key={idx} style={{ backgroundColor: "#FFFFFF", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: "#CBD5E1" }}>
+                          <Text style={{ fontSize: 10, fontWeight: "700", color: "#334155" }}>
+                            {ax.axleNumber}: R {ax.rhsMm || "-"}mm / L {ax.lhsMm || "-"}mm
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
+
+                {/* Service Completion Record Summary (if present) */}
+                {workOrder.checklist.serviceRecord?.nextServiceDueKm && (
+                  <View
+                    style={{
+                      backgroundColor: "#EFF6FF",
+                      borderRadius: 8,
+                      padding: 8,
+                      marginBottom: 8,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: 11, fontWeight: "700", color: "#1E40AF" }}>
+                      Next Service Due:
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: "800", color: "#1D4ED8" }}>
+                      {Number(workOrder.checklist.serviceRecord.nextServiceDueKm).toLocaleString()} km
+                    </Text>
+                  </View>
+                )}
+
+                {/* Defects Breakdown */}
+                {workOrder.checklist.items
+                  .filter((i) => i.status === "FAIL" || i.status === "DEFECT")
+                  .map((defect, dIdx) => (
+                    <View
+                      key={dIdx}
+                      style={{
+                        backgroundColor: "#FEF2F2",
+                        borderRadius: 8,
+                        padding: 8,
+                        marginTop: 4,
+                        borderLeftWidth: 3,
+                        borderLeftColor: defect.severity === "Critical" ? "#DC2626" : "#F59E0B",
+                      }}
+                    >
+                      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                        <Text style={{ fontSize: 12, fontWeight: "800", color: "#991B1B", flex: 1 }}>
+                          ⚠️ {defect.title || defect.label}
+                        </Text>
+                        <View style={{ backgroundColor: "#FFFFFF", paddingHorizontal: 6, paddingVertical: 1, borderRadius: 4 }}>
+                          <Text style={{ fontSize: 10, fontWeight: "800", color: defect.severity === "Critical" ? "#DC2626" : "#D97706" }}>
+                            {defect.severity || "Minor"}
+                          </Text>
+                        </View>
+                      </View>
+                      {defect.defectDescription ? (
+                        <Text style={{ fontSize: 11, color: "#475569", marginTop: 2 }}>
+                          {defect.defectDescription}
+                        </Text>
+                      ) : null}
+                      {defect.recommendedRepair ? (
+                        <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                          Action: {defect.recommendedRepair}
+                        </Text>
+                      ) : null}
+                    </View>
+                  ))}
               </View>
             ) : (
               <View style={{ backgroundColor: "#F8FAFC", borderRadius: 8, padding: 12, alignItems: "center" }}>

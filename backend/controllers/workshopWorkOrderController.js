@@ -173,6 +173,7 @@ export const createWorkshopWorkOrder = async (req, res) => {
       status,
       notes,
       odometer,
+      intakeDetails,
     } = req.body;
 
     if (!vehicleId) {
@@ -212,9 +213,22 @@ export const createWorkshopWorkOrder = async (req, res) => {
       expectedCompletionDate: expectedCompletionDate ? new Date(expectedCompletionDate) : undefined,
       assignedMechanic: mechanicName,
       assignedTo: assignedUserId,
-      priority: priority || "Normal",
+      priority: priority || (intakeDetails?.vehicleOffRoad ? "Critical" : "Normal"),
       status: initialStatus,
       notes: notes ? notes.trim() : "",
+      intakeDetails: intakeDetails
+        ? {
+            workTypes: Array.isArray(intakeDetails.workTypes) ? intakeDetails.workTypes : [],
+            customerComplaint: intakeDetails.customerComplaint || "",
+            workRequired: intakeDetails.workRequired || "",
+            faultCodes: intakeDetails.faultCodes || "",
+            additionalNotes: intakeDetails.additionalNotes || "",
+            vehicleOffRoad: !!intakeDetails.vehicleOffRoad,
+            intakePhotos: Array.isArray(intakeDetails.intakePhotos) ? intakeDetails.intakePhotos : [],
+            createdByName: req.user.name,
+            intakeDate: new Date(),
+          }
+        : undefined,
     });
 
     // Automatically update vehicle status if in workshop and odometer if provided
@@ -351,7 +365,22 @@ export const submitJobChecklist = async (req, res) => {
       return res.status(404).json({ message: "Work order not found" });
     }
 
-    const { checklistType, items, isCompleted } = req.body;
+    const {
+      checklistType,
+      items,
+      axleMeasurements,
+      tyreTreadMeasurements,
+      serviceRecord,
+      overallOutcome,
+      safetyCriticalDefects,
+      repairsRecommended,
+      immediateActionRequired,
+      inspectorComments,
+      inspectorName,
+      inspectorSignature,
+      customerAcknowledgement,
+      isCompleted,
+    } = req.body;
 
     workOrder.checklist = {
       checklistType: checklistType || workOrder.checklist?.checklistType || "BASIC_INSPECTION",
@@ -362,15 +391,51 @@ export const submitJobChecklist = async (req, res) => {
             label: it.label || it.title || `Check Item #${idx + 1}`,
             category: it.category || "General",
             status: it.status || "PASS",
+            severity: it.severity || "Minor",
             measurement: it.measurement || "",
             measurementUnit: it.measurementUnit || "",
+            defectDescription: it.defectDescription || "",
+            recommendedRepair: it.recommendedRepair || "",
+            repairPriority: it.repairPriority || "Normal",
             notes: it.notes || it.observation || "",
             observation: it.observation || it.notes || "",
+            photos: Array.isArray(it.photos) ? it.photos : [],
           }))
         : workOrder.checklist?.items || [],
+      axleMeasurements: Array.isArray(axleMeasurements)
+        ? axleMeasurements
+        : workOrder.checklist?.axleMeasurements || [],
+      tyreTreadMeasurements: (tyreTreadMeasurements && typeof tyreTreadMeasurements === "object")
+        ? tyreTreadMeasurements
+        : (workOrder.checklist?.tyreTreadMeasurements || {}),
+      serviceRecord: (serviceRecord && typeof serviceRecord === "object")
+        ? serviceRecord
+        : (workOrder.checklist?.serviceRecord || {}),
+      overallOutcome: overallOutcome || workOrder.checklist?.overallOutcome || "Pass",
+      safetyCriticalDefects: safetyCriticalDefects || workOrder.checklist?.safetyCriticalDefects || "",
+      repairsRecommended: repairsRecommended || workOrder.checklist?.repairsRecommended || "",
+      immediateActionRequired: immediateActionRequired || workOrder.checklist?.immediateActionRequired || "",
+      inspectorComments: inspectorComments || workOrder.checklist?.inspectorComments || "",
+      inspectorName: inspectorName || workOrder.checklist?.inspectorName || (isEmployee ? req.user.name : ""),
+      inspectorSignature: inspectorSignature || workOrder.checklist?.inspectorSignature || "",
+      customerAcknowledgement: (customerAcknowledgement && typeof customerAcknowledgement === "object")
+        ? customerAcknowledgement
+        : (workOrder.checklist?.customerAcknowledgement || {}),
       completedAt: isCompleted ? new Date() : workOrder.checklist?.completedAt,
       completedBy: isCompleted ? req.user._id : workOrder.checklist?.completedBy,
     };
+
+    // If next service km is provided in service record, update vehicle
+    if (serviceRecord?.nextServiceDueKm && !isNaN(Number(serviceRecord.nextServiceDueKm))) {
+      const vehicle = await WorkshopVehicle.findById(workOrder.vehicle);
+      if (vehicle) {
+        vehicle.nextServiceDueKm = Number(serviceRecord.nextServiceDueKm);
+        if (serviceRecord.nextServiceDueDate) {
+          vehicle.nextServiceDueDate = new Date(serviceRecord.nextServiceDueDate);
+        }
+        await vehicle.save();
+      }
+    }
 
     await workOrder.save();
     return res.status(200).json({ message: "Checklist saved successfully", checklist: workOrder.checklist });

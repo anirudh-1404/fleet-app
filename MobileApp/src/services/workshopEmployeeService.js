@@ -43,12 +43,8 @@ export const workshopEmployeeService = {
     return res.data;
   },
 
-  submitChecklist: async (id, { checklistType, items, isCompleted }) => {
-    const res = await api.post(`/workshop/work-orders/${id}/checklist`, {
-      checklistType,
-      items,
-      isCompleted,
-    });
+  submitChecklist: async (id, checklistPayload) => {
+    const res = await api.post(`/workshop/work-orders/${id}/checklist`, checklistPayload);
     return res.data;
   },
 

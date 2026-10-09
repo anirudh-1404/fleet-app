@@ -11,26 +11,25 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 import ROUTES from "../../../constants/routes";
+import { useAuth } from "../../../context/AuthContext";
 import { workshopEmployeeService } from "../../../services/workshopEmployeeService";
 import WorkshopStatusBadge from "../../../components/workshop/WorkshopStatusBadge";
+import {
+  INTAKE_WORK_TYPES,
+  JOB_PRIORITIES,
+} from "../../../constants/checklistTemplates";
 
 const VEHICLE_TYPES = ["Truck", "Trailer", "Van", "Ute", "Car", "Other"];
-const SERVICE_TYPES = [
-  "Lube Service",
-  "Basic Service",
-  "Annual Service",
-  "Inspection",
-  "Repair",
-  "Other",
-];
-const PRIORITIES = ["Normal", "Urgent", "Critical"];
 
 export default function EmployeeStartServiceScreen() {
   const navigation = useNavigation();
+  const { user } = useAuth();
 
   // Search state
   const [searchRego, setSearchRego] = useState("");
@@ -54,12 +53,16 @@ export default function EmployeeStartServiceScreen() {
   const [newOdometer, setNewOdometer] = useState("");
   const [newCustomerName, setNewCustomerName] = useState("");
 
-  // Service Intake Form State
-  const [step, setStep] = useState(1); // 1: Search/Select/Add Truck, 2: Service Intake Details
-  const [serviceType, setServiceType] = useState("Lube Service");
-  const [priority, setPriority] = useState("Normal");
+  // Quick Job Intake Form State (Step 2)
+  const [step, setStep] = useState(1); // 1: Search/Select/Add Truck, 2: Quick Job Intake Details
+  const [selectedWorkTypes, setSelectedWorkTypes] = useState(["General Service"]);
+  const [customerComplaint, setCustomerComplaint] = useState("");
+  const [workRequired, setWorkRequired] = useState("");
+  const [faultCodes, setFaultCodes] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState("");
+  const [jobPriority, setJobPriority] = useState("Normal");
   const [serviceOdometer, setServiceOdometer] = useState("");
-  const [description, setDescription] = useState("");
+  const [intakePhotos, setIntakePhotos] = useState([]);
   const [submittingService, setSubmittingService] = useState(false);
 
   // Search for trucks by registration
@@ -116,6 +119,58 @@ export default function EmployeeStartServiceScreen() {
     setNewCustomerName("");
   };
 
+  const handlePickIntakePhoto = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 0.7,
+      });
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setIntakePhotos((prev) => [...prev, result.assets[0].uri]);
+      }
+    } catch (e) {
+      console.error("Photo picker error:", e);
+      Alert.alert("Photo Error", "Could not select photo.");
+    }
+  };
+
+  const handleTakeIntakePhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Camera Permission", "Camera permission is required to capture photos.");
+        return;
+      }
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: false,
+        quality: 0.7,
+      });
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        setIntakePhotos((prev) => [...prev, result.assets[0].uri]);
+      }
+    } catch (e) {
+      console.error("Camera error:", e);
+      Alert.alert("Camera Error", "Could not take photo.");
+    }
+  };
+
+  const handleRemovePhoto = (idx) => {
+    setIntakePhotos((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const toggleWorkType = (wt) => {
+    if (selectedWorkTypes.includes(wt)) {
+      if (selectedWorkTypes.length === 1) {
+        Alert.alert("Selection Required", "Please select at least one type of work.");
+        return;
+      }
+      setSelectedWorkTypes(selectedWorkTypes.filter((t) => t !== wt));
+    } else {
+      setSelectedWorkTypes([...selectedWorkTypes, wt]);
+    }
+  };
+
   const handleProceedToService = () => {
     if (isNewTruckMode) {
       if (!newRego.trim()) {
@@ -126,11 +181,17 @@ export default function EmployeeStartServiceScreen() {
     } else if (!selectedVehicle) {
       Alert.alert("Selection Required", "Please select a truck or add a new one.");
       return;
+    } else {
+      setServiceOdometer(selectedVehicle.odometer ? selectedVehicle.odometer.toString() : "");
     }
     setStep(2);
   };
 
   const handleLaunchService = async () => {
+    if (selectedWorkTypes.length === 0) {
+      Alert.alert("Type of Work Required", "Please select at least one type of work.");
+      return;
+    }
     setSubmittingService(true);
     try {
       let vehicleId = selectedVehicle?._id;
@@ -145,7 +206,7 @@ export default function EmployeeStartServiceScreen() {
           model: newModel.trim(),
           year: newYear ? Number(newYear) : undefined,
           vin: newVin.trim(),
-          odometer: newOdometer ? Number(newOdometer) : 0,
+          odometer: serviceOdometer ? Number(serviceOdometer) : (newOdometer ? Number(newOdometer) : 0),
           customerName: newCustomerName.trim() || undefined,
           status: "IN_WORKSHOP",
         });
@@ -153,23 +214,43 @@ export default function EmployeeStartServiceScreen() {
         customerId = createdVehicle.customer?._id || createdVehicle.customer;
       }
 
+      const primaryJobType = selectedWorkTypes.includes("General Service")
+        ? "General Service"
+        : selectedWorkTypes[0] || "Repair";
+
+      const priorityValue = jobPriority === "Vehicle Off Road" ? "Critical" : jobPriority;
+
+      const intakePayload = {
+        workTypes: selectedWorkTypes,
+        customerComplaint: customerComplaint.trim(),
+        workRequired: workRequired.trim(),
+        faultCodes: faultCodes.trim(),
+        additionalNotes: additionalNotes.trim(),
+        vehicleOffRoad: jobPriority === "Vehicle Off Road",
+        intakePhotos: intakePhotos,
+      };
+
       // 2. Launch the work order / service intake
       const workOrder = await workshopEmployeeService.startVehicleService({
         vehicleId,
         customerId,
-        jobType: serviceType,
-        priority,
+        jobType: primaryJobType,
+        priority: priorityValue,
         odometer: serviceOdometer ? Number(serviceOdometer) : undefined,
-        description: description.trim() || `${serviceType} started by mechanic`,
+        description:
+          workRequired.trim() ||
+          customerComplaint.trim() ||
+          selectedWorkTypes.join(", "),
+        intakeDetails: intakePayload,
         status: "IN_PROGRESS",
       });
 
       Alert.alert(
-        "Service Started! 🚀",
-        `Job ${workOrder.jobNumber} for ${workOrder.vehicle?.registration || "truck"} is now active in workshop.`,
+        "Job Card Created! 🎉",
+        `Job Card ${workOrder.jobNumber} for ${workOrder.vehicle?.registration || "truck"} is created and active in workshop.`,
         [
           {
-            text: "Open Job Details",
+            text: "Open Job Card",
             onPress: () => {
               navigation.replace(ROUTES.WORKSHOP_EMPLOYEE_JOB_DETAILS, {
                 id: workOrder._id,
@@ -179,8 +260,8 @@ export default function EmployeeStartServiceScreen() {
         ]
       );
     } catch (err) {
-      console.error("Error launching service:", err);
-      Alert.alert("Error", err.response?.data?.message || "Failed to start service.");
+      console.error("Error creating job card:", err);
+      Alert.alert("Error", err.response?.data?.message || "Failed to create job card.");
     } finally {
       setSubmittingService(false);
     }
@@ -1044,51 +1125,50 @@ export default function EmployeeStartServiceScreen() {
             </View>
           )}
 
-          {/* STEP 2: SERVICE INTAKE DETAILS */}
+          {/* STEP 2: TRUCK REPAIR – QUICK JOB INTAKE FORM */}
           {step === 2 && (
             <View>
-              {/* Selected Truck Banner */}
+              {/* Form Title Banner */}
               <View
                 style={{
-                  backgroundColor: "#EFF6FF",
-                  borderRadius: 12,
-                  padding: 12,
+                  backgroundColor: "#1E293B",
+                  borderRadius: 14,
+                  padding: 16,
                   marginBottom: 16,
-                  borderWidth: 1,
-                  borderColor: "#BFDBFE",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.15,
+                  shadowRadius: 4,
+                  elevation: 3,
                 }}
               >
-                <View>
-                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB", textTransform: "uppercase" }}>
-                    Service For Vehicle
-                  </Text>
-                  <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
-                    {isNewTruckMode ? newRego.toUpperCase() : selectedVehicle?.registration}
-                  </Text>
-                  <Text style={{ fontSize: 12, color: "#64748B" }}>
-                    {isNewTruckMode
-                      ? `${newMake} ${newModel} (${newVehicleType})`
-                      : `${selectedVehicle?.make} ${selectedVehicle?.model} (${selectedVehicle?.vehicleType})`}
-                  </Text>
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 11, fontWeight: "800", color: "#60A5FA", textTransform: "uppercase", letterSpacing: 0.8 }}>
+                      Workshop Floor Intake
+                    </Text>
+                    <Text style={{ fontSize: 17, fontWeight: "900", color: "#FFFFFF", marginTop: 2 }}>
+                      TRUCK REPAIR – QUICK JOB INTAKE
+                    </Text>
+                    <Text style={{ fontSize: 12, color: "#94A3B8", marginTop: 2 }}>
+                      Enter truck details and repair problem before starting work
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setStep(1)}
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.12)",
+                      paddingHorizontal: 10,
+                      paddingVertical: 6,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: "#F8FAFC" }}>Change Truck</Text>
+                  </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity
-                  onPress={() => setStep(1)}
-                  style={{
-                    backgroundColor: "#DBEAFE",
-                    paddingHorizontal: 8,
-                    paddingVertical: 4,
-                    borderRadius: 6,
-                  }}
-                >
-                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#1D4ED8" }}>Change</Text>
-                </TouchableOpacity>
               </View>
 
-              {/* Service Form */}
+              {/* SECTION 1: TRUCK DETAILS */}
               <View
                 style={{
                   backgroundColor: "#FFFFFF",
@@ -1099,89 +1179,68 @@ export default function EmployeeStartServiceScreen() {
                   borderColor: "#E2E8F0",
                 }}
               >
-                {/* Service Type Selection */}
-                <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A", marginBottom: 8 }}>
-                    Select Service / Job Type *
-                  </Text>
-                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-                    {SERVICE_TYPES.map((st) => {
-                      const isSelected = serviceType === st;
-                      return (
-                        <TouchableOpacity
-                          key={st}
-                          onPress={() => setServiceType(st)}
-                          style={{
-                            backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
-                            paddingHorizontal: 12,
-                            paddingVertical: 8,
-                            borderRadius: 8,
-                            borderWidth: 1,
-                            borderColor: isSelected ? "#2563EB" : "#E2E8F0",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              fontWeight: "700",
-                              color: isSelected ? "#FFFFFF" : "#334155",
-                            }}
-                          >
-                            {st}
-                          </Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 7,
+                      backgroundColor: "#EFF6FF",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                    }}
+                  >
+                    <Ionicons name="bus-outline" size={16} color="#2563EB" />
                   </View>
+                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                    1. Truck Details
+                  </Text>
                 </View>
 
-                {/* Priority Selection */}
-                <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A", marginBottom: 8 }}>
-                    Priority Level
-                  </Text>
-                  <View style={{ flexDirection: "row", gap: 8 }}>
-                    {PRIORITIES.map((pr) => {
-                      const isSelected = priority === pr;
-                      return (
-                        <TouchableOpacity
-                          key={pr}
-                          onPress={() => setPriority(pr)}
-                          style={{
-                            flex: 1,
-                            backgroundColor: isSelected
-                              ? pr === "Critical"
-                                ? "#DC2626"
-                                : pr === "Urgent"
-                                ? "#EA580C"
-                                : "#2563EB"
-                              : "#F1F5F9",
-                            paddingVertical: 8,
-                            borderRadius: 8,
-                            alignItems: "center",
-                            borderWidth: 1,
-                            borderColor: isSelected ? "transparent" : "#E2E8F0",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              fontWeight: "700",
-                              color: isSelected ? "#FFFFFF" : "#475569",
-                            }}
-                          >
-                            {pr}
-                          </Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                {/* Truck Badge & Summary */}
+                <View
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    borderRadius: 10,
+                    padding: 12,
+                    borderWidth: 1,
+                    borderColor: "#E2E8F0",
+                    marginBottom: 12,
+                  }}
+                >
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "700" }}>Registration *</Text>
+                    <View style={{ backgroundColor: "#0F172A", paddingHorizontal: 10, paddingVertical: 3, borderRadius: 6 }}>
+                      <Text style={{ fontSize: 14, fontWeight: "900", color: "#FFFFFF", letterSpacing: 0.5 }}>
+                        {isNewTruckMode ? newRego.toUpperCase() : selectedVehicle?.registration}
+                      </Text>
+                    </View>
                   </View>
+
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 6, marginTop: 4 }}>
+                    <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>Make & Model *</Text>
+                    <Text style={{ fontSize: 13, fontWeight: "700", color: "#0F172A" }}>
+                      {isNewTruckMode
+                        ? `${newMake || "Custom"} ${newModel || "Truck"} ${newYear ? `(${newYear})` : ""}`
+                        : `${selectedVehicle?.make} ${selectedVehicle?.model} ${selectedVehicle?.year ? `(${selectedVehicle?.year})` : ""}`}
+                    </Text>
+                  </View>
+
+                  {((isNewTruckMode ? newVin : selectedVehicle?.vin)) ? (
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", borderTopWidth: 1, borderTopColor: "#E2E8F0", paddingTop: 6, marginTop: 4 }}>
+                      <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>VIN / Chassis</Text>
+                      <Text style={{ fontSize: 12, fontWeight: "600", color: "#334155" }}>
+                        {isNewTruckMode ? newVin : selectedVehicle?.vin}
+                      </Text>
+                    </View>
+                  ) : null}
                 </View>
 
-                {/* Service Odometer */}
-                <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A", marginBottom: 6 }}>
-                    Odometer at Service (km)
+                {/* Odometer Input */}
+                <View>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155", marginBottom: 4 }}>
+                    Odometer (km) *
                   </Text>
                   <TextInput
                     style={{
@@ -1190,22 +1249,126 @@ export default function EmployeeStartServiceScreen() {
                       borderColor: "#CBD5E1",
                       borderRadius: 8,
                       paddingHorizontal: 12,
-                      height: 44,
+                      height: 42,
                       fontSize: 14,
+                      fontWeight: "700",
                       color: "#0F172A",
                     }}
-                    placeholder="e.g. 152000"
+                    placeholder="e.g. 154200"
                     placeholderTextColor="#94A3B8"
                     keyboardType="numeric"
                     value={serviceOdometer}
                     onChangeText={setServiceOdometer}
                   />
                 </View>
+              </View>
 
-                {/* Fault / Service Scope Description */}
-                <View style={{ marginBottom: 16 }}>
-                  <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A", marginBottom: 6 }}>
-                    Work Required / Customer Issue
+              {/* SECTION 2: TYPE OF WORK (Multi-Select) */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 14,
+                  padding: 16,
+                  marginBottom: 16,
+                  borderWidth: 1,
+                  borderColor: "#E2E8F0",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: 7,
+                        backgroundColor: "#FEF3C7",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginRight: 8,
+                      }}
+                    >
+                      <Ionicons name="construct-outline" size={16} color="#D97706" />
+                    </View>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                      2. Type of Work *
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>Select one or more</Text>
+                </View>
+
+                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+                  {INTAKE_WORK_TYPES.map((wt) => {
+                    const isSelected = selectedWorkTypes.includes(wt);
+                    return (
+                      <TouchableOpacity
+                        key={wt}
+                        activeOpacity={0.7}
+                        onPress={() => toggleWorkType(wt)}
+                        style={{
+                          backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                          paddingHorizontal: 12,
+                          paddingVertical: 8,
+                          borderRadius: 8,
+                          borderWidth: 1.5,
+                          borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        {isSelected ? (
+                          <Ionicons name="checkmark-circle" size={14} color="#FFFFFF" style={{ marginRight: 6 }} />
+                        ) : (
+                          <Ionicons name="square-outline" size={14} color="#94A3B8" style={{ marginRight: 6 }} />
+                        )}
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "700",
+                            color: isSelected ? "#FFFFFF" : "#334155",
+                          }}
+                        >
+                          {wt}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              {/* SECTION 3: REPAIR DETAILS */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 14,
+                  padding: 16,
+                  marginBottom: 16,
+                  borderWidth: 1,
+                  borderColor: "#E2E8F0",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 7,
+                      backgroundColor: "#FEE2E2",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                    }}
+                  >
+                    <Ionicons name="chatbox-ellipses-outline" size={16} color="#DC2626" />
+                  </View>
+                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                    3. Repair Details
+                  </Text>
+                </View>
+
+                {/* Customer Complaint */}
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155", marginBottom: 4 }}>
+                    Customer Complaint: What is the problem?
                   </Text>
                   <TextInput
                     style={{
@@ -1214,50 +1377,367 @@ export default function EmployeeStartServiceScreen() {
                       borderColor: "#CBD5E1",
                       borderRadius: 8,
                       paddingHorizontal: 12,
-                      paddingVertical: 10,
-                      fontSize: 14,
+                      paddingVertical: 8,
+                      fontSize: 13,
                       color: "#0F172A",
-                      minHeight: 80,
+                      minHeight: 56,
                       textAlignVertical: "top",
                     }}
-                    placeholder="e.g. 50,000 km lube service, check air brakes, replace oil and fuel filters..."
+                    placeholder="e.g. Air pressure dropping overnight, grinding sound when braking on steer axle..."
                     placeholderTextColor="#94A3B8"
                     multiline
-                    value={description}
-                    onChangeText={setDescription}
+                    value={customerComplaint}
+                    onChangeText={setCustomerComplaint}
                   />
                 </View>
 
-                {/* Launch Button */}
-                <TouchableOpacity
-                  disabled={submittingService}
-                  onPress={handleLaunchService}
-                  style={{
-                    backgroundColor: "#16A34A",
-                    borderRadius: 12,
-                    paddingVertical: 14,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "row",
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 2,
-                  }}
-                >
-                  {submittingService ? (
-                    <ActivityIndicator size="small" color="#FFFFFF" />
-                  ) : (
-                    <>
-                      <Ionicons name="construct" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-                      <Text style={{ fontSize: 16, fontWeight: "800", color: "#FFFFFF" }}>
-                        Launch Service Job
-                      </Text>
-                    </>
-                  )}
-                </TouchableOpacity>
+                {/* Work Required */}
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155", marginBottom: 4 }}>
+                    Work Required: What needs to be repaired?
+                  </Text>
+                  <TextInput
+                    style={{
+                      backgroundColor: "#F8FAFC",
+                      borderWidth: 1,
+                      borderColor: "#CBD5E1",
+                      borderRadius: 8,
+                      paddingHorizontal: 12,
+                      paddingVertical: 8,
+                      fontSize: 13,
+                      color: "#0F172A",
+                      minHeight: 56,
+                      textAlignVertical: "top",
+                    }}
+                    placeholder="e.g. Inspect air line fittings, replace drive brake linings, complete lube service..."
+                    placeholderTextColor="#94A3B8"
+                    multiline
+                    value={workRequired}
+                    onChangeText={setWorkRequired}
+                  />
+                </View>
+
+                {/* Dashboard Warning / Fault Codes */}
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155", marginBottom: 4 }}>
+                    Dashboard Warning / Fault Codes
+                  </Text>
+                  <TextInput
+                    style={{
+                      backgroundColor: "#F8FAFC",
+                      borderWidth: 1,
+                      borderColor: "#CBD5E1",
+                      borderRadius: 8,
+                      paddingHorizontal: 12,
+                      height: 42,
+                      fontSize: 13,
+                      color: "#0F172A",
+                    }}
+                    placeholder="e.g. ABS Warning Light ON, SPN 3216 FMI 20, P0101"
+                    placeholderTextColor="#94A3B8"
+                    value={faultCodes}
+                    onChangeText={setFaultCodes}
+                  />
+                </View>
+
+                {/* Additional Notes */}
+                <View>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155", marginBottom: 4 }}>
+                    Additional Notes
+                  </Text>
+                  <TextInput
+                    style={{
+                      backgroundColor: "#F8FAFC",
+                      borderWidth: 1,
+                      borderColor: "#CBD5E1",
+                      borderRadius: 8,
+                      paddingHorizontal: 12,
+                      paddingVertical: 8,
+                      fontSize: 13,
+                      color: "#0F172A",
+                      minHeight: 48,
+                      textAlignVertical: "top",
+                    }}
+                    placeholder="Driver mentioned trailer air line fitting is also slightly loose..."
+                    placeholderTextColor="#94A3B8"
+                    multiline
+                    value={additionalNotes}
+                    onChangeText={setAdditionalNotes}
+                  />
+                </View>
               </View>
+
+              {/* SECTION 4: JOB PRIORITY */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 14,
+                  padding: 16,
+                  marginBottom: 16,
+                  borderWidth: 1,
+                  borderColor: "#E2E8F0",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 7,
+                      backgroundColor: "#F3E8FF",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                    }}
+                  >
+                    <Ionicons name="flag-outline" size={16} color="#7C3AED" />
+                  </View>
+                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                    4. Job Priority
+                  </Text>
+                </View>
+
+                <View style={{ flexDirection: "row", gap: 8 }}>
+                  {JOB_PRIORITIES.map((jp) => {
+                    const isSelected = jobPriority === jp.label;
+                    const isVOR = jp.label === "Vehicle Off Road";
+                    return (
+                      <TouchableOpacity
+                        key={jp.label}
+                        onPress={() => setJobPriority(jp.label)}
+                        style={{
+                          flex: 1,
+                          backgroundColor: isSelected
+                            ? isVOR
+                              ? "#FEF2F2"
+                              : jp.label === "Urgent"
+                              ? "#FFFBEB"
+                              : "#F0FDF4"
+                            : "#F8FAFC",
+                          borderWidth: isSelected ? 2 : 1,
+                          borderColor: isSelected ? jp.color : "#E2E8F0",
+                          borderRadius: 10,
+                          paddingVertical: 10,
+                          paddingHorizontal: 6,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Ionicons
+                          name={isVOR ? "warning" : jp.label === "Urgent" ? "alert-circle" : "checkmark-circle"}
+                          size={18}
+                          color={isSelected ? jp.color : "#94A3B8"}
+                          style={{ marginBottom: 4 }}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "800",
+                            color: isSelected ? jp.color : "#64748B",
+                            textAlign: "center",
+                          }}
+                        >
+                          {jp.label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+
+              {/* SECTION 5: PHOTOS / DOCUMENTS */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 14,
+                  padding: 16,
+                  marginBottom: 16,
+                  borderWidth: 1,
+                  borderColor: "#E2E8F0",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: 7,
+                        backgroundColor: "#E0F2FE",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginRight: 8,
+                      }}
+                    >
+                      <Ionicons name="camera-outline" size={16} color="#0284C7" />
+                    </View>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                      5. Photos / Documents
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>
+                    {intakePhotos.length} Attached
+                  </Text>
+                </View>
+                <Text style={{ fontSize: 12, color: "#64748B", marginBottom: 12 }}>
+                  Upload Truck Photos, Damage Photos, Diagnostic Reports
+                </Text>
+
+                <View style={{ flexDirection: "row", gap: 10, marginBottom: 12 }}>
+                  <TouchableOpacity
+                    onPress={handleTakeIntakePhoto}
+                    style={{
+                      flex: 1,
+                      backgroundColor: "#F1F5F9",
+                      borderRadius: 10,
+                      paddingVertical: 12,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      borderWidth: 1,
+                      borderColor: "#CBD5E1",
+                    }}
+                  >
+                    <Ionicons name="camera" size={18} color="#1E293B" style={{ marginRight: 6 }} />
+                    <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E293B" }}>Take Photo</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={handlePickIntakePhoto}
+                    style={{
+                      flex: 1,
+                      backgroundColor: "#F1F5F9",
+                      borderRadius: 10,
+                      paddingVertical: 12,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      borderWidth: 1,
+                      borderColor: "#CBD5E1",
+                    }}
+                  >
+                    <Ionicons name="images" size={18} color="#1E293B" style={{ marginRight: 6 }} />
+                    <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E293B" }}>Upload Files</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Photo Previews Grid */}
+                {intakePhotos.length > 0 && (
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
+                    {intakePhotos.map((uri, idx) => (
+                      <View key={idx} style={{ position: "relative" }}>
+                        <Image
+                          source={{ uri }}
+                          style={{ width: 80, height: 80, borderRadius: 8, borderWidth: 1, borderColor: "#CBD5E1" }}
+                        />
+                        <TouchableOpacity
+                          onPress={() => handleRemovePhoto(idx)}
+                          style={{
+                            position: "absolute",
+                            top: -6,
+                            right: -6,
+                            backgroundColor: "#DC2626",
+                            width: 22,
+                            height: 22,
+                            borderRadius: 11,
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Ionicons name="close" size={14} color="#FFFFFF" />
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </ScrollView>
+                )}
+              </View>
+
+              {/* SECTION 6: EMPLOYEE DETAILS (Auto-Filled) */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 14,
+                  padding: 16,
+                  marginBottom: 20,
+                  borderWidth: 1,
+                  borderColor: "#E2E8F0",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 7,
+                      backgroundColor: "#F1F5F9",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                    }}
+                  >
+                    <Ionicons name="person-circle-outline" size={18} color="#475569" />
+                  </View>
+                  <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
+                    6. Employee Details
+                  </Text>
+                  <View style={{ marginLeft: "auto", backgroundColor: "#F0FDF4", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#16A34A" }}>Auto-filled</Text>
+                  </View>
+                </View>
+
+                <View style={{ backgroundColor: "#F8FAFC", borderRadius: 10, padding: 12, gap: 6, borderWidth: 1, borderColor: "#F1F5F9" }}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>Employee Name</Text>
+                    <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A" }}>
+                      {user?.name || "Workshop Technician"}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>Date</Text>
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155" }}>
+                      {new Date().toLocaleDateString("en-AU", { day: "2-digit", month: "short", year: "numeric" })}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>Time</Text>
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155" }}>
+                      {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* SECTION 7: SUBMIT BUTTON [ CREATE JOB CARD ] */}
+              <TouchableOpacity
+                activeOpacity={0.88}
+                disabled={submittingService}
+                onPress={handleLaunchService}
+                style={{
+                  backgroundColor: "#2563EB",
+                  borderRadius: 14,
+                  paddingVertical: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  shadowColor: "#2563EB",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 8,
+                  elevation: 5,
+                  marginBottom: 30,
+                }}
+              >
+                {submittingService ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <>
+                    <Ionicons name="card-outline" size={22} color="#FFFFFF" style={{ marginRight: 8 }} />
+                    <Text style={{ fontSize: 17, fontWeight: "900", color: "#FFFFFF", letterSpacing: 0.5 }}>
+                      CREATE JOB CARD
+                    </Text>
+                  </>
+                )}
+              </TouchableOpacity>
             </View>
           )}
         </ScrollView>
