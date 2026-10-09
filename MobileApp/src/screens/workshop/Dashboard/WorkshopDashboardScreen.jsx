@@ -17,6 +17,7 @@ import { workshopDashboardService } from "../../../services/workshopDashboardSer
 import { useAuth } from "../../../context/AuthContext";
 import WorkshopStatusBadge from "../../../components/workshop/WorkshopStatusBadge";
 import WorkshopStateView from "../../../components/workshop/WorkshopStateView";
+import WorkshopSidebarDrawer from "../../../components/workshop/WorkshopSidebarDrawer";
 
 export default function WorkshopDashboardScreen() {
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ export default function WorkshopDashboardScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
   const [dashboardData, setDashboardData] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchDashboard = async () => {
     try {
@@ -107,12 +109,12 @@ export default function WorkshopDashboardScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      {/* Header */}
+      {/* Header with Hamburger Menu */}
       <View
         style={{
           backgroundColor: "#FFFFFF",
-          paddingHorizontal: 20,
-          paddingVertical: 14,
+          paddingHorizontal: 16,
+          paddingVertical: 12,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -120,26 +122,65 @@ export default function WorkshopDashboardScreen() {
           borderColor: "#E2E8F0",
         }}
       >
+        {/* Hamburger Icon */}
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => setSidebarOpen(true)}
+          style={{
+            width: 42,
+            height: 42,
+            backgroundColor: "#F8FAFC",
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            alignItems: "center",
+            justifyContent: "center",
+            marginRight: 12,
+          }}
+        >
+          <Ionicons name="menu-outline" size={24} color="#0F172A" />
+        </TouchableOpacity>
+
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 13, fontWeight: "600", color: "#64748B" }}>
+          <Text style={{ fontSize: 11, fontWeight: "600", color: "#64748B" }}>
             {getGreeting()},
           </Text>
-          <Text style={{ fontSize: 21, fontWeight: "800", color: "#0F172A", marginTop: 2 }}>
+          <Text style={{ fontSize: 18, fontWeight: "800", color: "#0F172A", marginTop: 1 }}>
             {formatDisplayName(user?.name)}
           </Text>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={handleLogout}
-          style={{
-            padding: 8,
-            backgroundColor: "#F1F5F9",
-            borderRadius: 8,
-          }}
-        >
-          <Ionicons name="log-out-outline" size={20} color="#64748B" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate(ROUTES.WORKSHOP_INQUIRIES)}
+            style={{
+              width: 38,
+              height: 38,
+              backgroundColor: "#DCFCE7",
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name="mail-unread-outline" size={19} color="#15803D" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={handleLogout}
+            style={{
+              width: 38,
+              height: 38,
+              backgroundColor: "#F1F5F9",
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name="log-out-outline" size={19} color="#64748B" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {loading && !refreshing ? (
@@ -338,178 +379,58 @@ export default function WorkshopDashboardScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Workshop Navigation Hub Grid */}
-          <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
-            Management Hub
-          </Text>
+          {/* Executive Quick Operations Bar */}
+          <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
+            {/* Primary Action: Create Work Order */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER)}
+              style={{
+                flex: 1.2,
+                backgroundColor: "#2563EB",
+                borderRadius: 14,
+                paddingVertical: 14,
+                paddingHorizontal: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                shadowColor: "#2563EB",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.25,
+                shadowRadius: 8,
+                elevation: 4,
+              }}
+            >
+              <Ionicons name="add-circle" size={20} color="#FFFFFF" />
+              <Text style={{ fontSize: 14, fontWeight: "800", color: "#FFFFFF" }}>
+                New Work Order
+              </Text>
+            </TouchableOpacity>
 
-          <View style={{ backgroundColor: "#FFFFFF", borderRadius: 14, borderWidth: 1, borderColor: "#E2E8F0", padding: 12, marginBottom: 20 }}>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
-              {/* Customers */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_CUSTOMER_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="people-outline" size={22} color="#2563EB" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Customers</Text>
-              </TouchableOpacity>
-
-              {/* Vehicles */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_VEHICLE_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEF3C7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="car-outline" size={22} color="#D97706" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Vehicles</Text>
-              </TouchableOpacity>
-
-              {/* Work Orders */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#E0F2FE", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="clipboard-outline" size={22} color="#0284C7" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Work Orders</Text>
-              </TouchableOpacity>
-
-              {/* Inspections */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_INSPECTION_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="search-outline" size={22} color="#7C3AED" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Inspection</Text>
-              </TouchableOpacity>
-
-              {/* Truck Services */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_TRUCK_SERVICES)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="build-outline" size={22} color="#15803D" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Truck Serv</Text>
-              </TouchableOpacity>
-
-              {/* Trailer Services */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_TRAILER_SERVICES)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEE2E2", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="bus-outline" size={22} color="#DC2626" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Trailer Serv</Text>
-              </TouchableOpacity>
-
-              {/* Due Service */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_DUE_SERVICE)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FFEDD5", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="time-outline" size={22} color="#C2410C" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Due Serv</Text>
-              </TouchableOpacity>
-
-              {/* Schedule */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_SCHEDULE)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F1F5F9", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="calendar-outline" size={22} color="#475569" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Schedule</Text>
-              </TouchableOpacity>
-
-              {/* Invoices */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_INVOICE_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="receipt-outline" size={22} color="#16A34A" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Invoices</Text>
-              </TouchableOpacity>
-
-              {/* Contacts */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_CONTACTS)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="call-outline" size={22} color="#2563EB" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Contacts</Text>
-              </TouchableOpacity>
-
-              {/* Notes */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_NOTES)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#FEF9C3", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="document-text-outline" size={22} color="#CA8A04" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Notes</Text>
-              </TouchableOpacity>
-
-              {/* Reminders */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_REMINDERS)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#F3E8FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="notifications-outline" size={22} color="#7C3AED" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Reminders</Text>
-              </TouchableOpacity>
-
-              {/* Employees */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_LIST)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#E0E7FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="people-outline" size={22} color="#4338CA" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Employees</Text>
-              </TouchableOpacity>
-
-              {/* Team Chat */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="chatbubbles-outline" size={22} color="#2563EB" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Team Chat</Text>
-              </TouchableOpacity>
-
-              {/* Contact Inquiries (Booking Leads) */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(ROUTES.WORKSHOP_INQUIRIES)}
-                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
-              >
-                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
-                  <Ionicons name="mail-unread-outline" size={22} color="#15803D" />
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Inquiries</Text>
-              </TouchableOpacity>
-            </View>
+            {/* Secondary Action: Open Sidebar Menu */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={() => setSidebarOpen(true)}
+              style={{
+                flex: 1,
+                backgroundColor: "#FFFFFF",
+                borderRadius: 14,
+                paddingVertical: 14,
+                paddingHorizontal: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                borderWidth: 1.5,
+                borderColor: "#E2E8F0",
+              }}
+            >
+              <Ionicons name="grid-outline" size={18} color="#2563EB" />
+              <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A" }}>
+                All Modules
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Recent Workshop Activity */}
@@ -594,6 +515,15 @@ export default function WorkshopDashboardScreen() {
           )}
         </ScrollView>
       )}
+
+      {/* Sidebar Navigation Drawer */}
+      <WorkshopSidebarDrawer
+        visible={isSidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        user={user}
+        summary={summary}
+        onLogout={handleLogout}
+      />
     </SafeAreaView>
   );
 }
