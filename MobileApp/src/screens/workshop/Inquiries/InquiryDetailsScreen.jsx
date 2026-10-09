@@ -174,11 +174,11 @@ export default function InquiryDetailsScreen() {
           >
             <Ionicons name="arrow-back" size={20} color="#0F172A" />
           </TouchableOpacity>
-          <View>
-            <Text style={{ fontSize: 18, fontWeight: "800", color: "#0F172A" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: "800", color: "#0F172A" }} numberOfLines={1}>
               Job Card Inquiry
             </Text>
-            <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }}>
+            <Text style={{ fontSize: 12, color: "#64748B", fontWeight: "600" }} numberOfLines={1}>
               {vehicle?.registration} • {formattedDate}
             </Text>
           </View>
@@ -187,7 +187,7 @@ export default function InquiryDetailsScreen() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ padding: 16, paddingBottom: 60 }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
       >
         {/* Status Control Bar */}
         <View
@@ -242,40 +242,48 @@ export default function InquiryDetailsScreen() {
             </Text>
           </View>
 
-          <View style={{ gap: 8, marginBottom: 14 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Customer Name:</Text>
-              <Text style={{ fontSize: 14, fontWeight: "800", color: "#0F172A" }}>{customer?.name}</Text>
+          <View style={{ gap: 10, marginBottom: 14 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Customer Name:</Text>
+              <Text style={{ fontSize: 14, fontWeight: "800", color: "#0F172A", flex: 1, textAlign: "right" }} numberOfLines={1}>
+                {customer?.name}
+              </Text>
             </View>
 
             {customer?.companyName ? (
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <Text style={{ fontSize: 13, color: "#64748B" }}>Company Name:</Text>
-                <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155" }}>{customer.companyName}</Text>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+                <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Company Name:</Text>
+                <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", flex: 1, textAlign: "right" }} numberOfLines={1}>
+                  {customer.companyName}
+                </Text>
               </View>
             ) : null}
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Mobile Number:</Text>
-              <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB" }}>{customer?.mobileNumber}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Mobile Number:</Text>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", flex: 1, textAlign: "right" }} numberOfLines={1}>
+                {customer?.mobileNumber}
+              </Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Email Address:</Text>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: "#334155" }}>{customer?.email}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Email Address:</Text>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: "#334155", flex: 1, textAlign: "right" }} numberOfLines={1} ellipsizeMode="middle">
+                {customer?.email}
+              </Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Preferred Contact:</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Preferred Contact:</Text>
               <View style={{ backgroundColor: "#F1F5F9", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 }}>
                 <Text style={{ fontSize: 12, fontWeight: "700", color: "#334155" }}>{customer?.preferredContactMethod || "Phone"}</Text>
               </View>
             </View>
 
             {customer?.customerNotes ? (
-              <View style={{ marginTop: 6, backgroundColor: "#F8FAFC", padding: 10, borderRadius: 8 }}>
+              <View style={{ marginTop: 6, backgroundColor: "#F8FAFC", padding: 10, borderRadius: 8, borderWidth: 1, borderColor: "#F1F5F9" }}>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#64748B", marginBottom: 2 }}>Customer Notes:</Text>
-                <Text style={{ fontSize: 13, color: "#334155" }}>{customer.customerNotes}</Text>
+                <Text style={{ fontSize: 13, color: "#334155", lineHeight: 18 }}>{customer.customerNotes}</Text>
               </View>
             ) : null}
           </View>
@@ -319,45 +327,47 @@ export default function InquiryDetailsScreen() {
             </Text>
           </View>
 
-          <View style={{ gap: 8 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Registration Number:</Text>
+          <View style={{ gap: 10 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Registration Number:</Text>
               <View style={{ backgroundColor: "#FEF08A", paddingHorizontal: 10, paddingVertical: 3, borderRadius: 6, borderWidth: 1, borderColor: "#FDE047" }}>
                 <Text style={{ fontSize: 14, fontWeight: "900", color: "#854D0E" }}>{vehicle?.registration}</Text>
               </View>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Make & Model:</Text>
-              <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Make & Model:</Text>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A", flex: 1, textAlign: "right" }} numberOfLines={1}>
                 {vehicle?.make} {vehicle?.model}
               </Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Year:</Text>
-              <Text style={{ fontSize: 14, fontWeight: "700", color: "#334155" }}>{vehicle?.year}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Year:</Text>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#334155", flex: 1, textAlign: "right" }}>{vehicle?.year}</Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Odometer (km):</Text>
-              <Text style={{ fontSize: 14, fontWeight: "800", color: "#0F172A" }}>{vehicle?.odometer?.toLocaleString()} km</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Odometer (km):</Text>
+              <Text style={{ fontSize: 14, fontWeight: "800", color: "#0F172A", flex: 1, textAlign: "right" }}>{vehicle?.odometer?.toLocaleString()} km</Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Vehicle Type:</Text>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>{vehicle?.vehicleType}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Vehicle Type:</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", flex: 1, textAlign: "right" }}>{vehicle?.vehicleType}</Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 13, color: "#64748B" }}>Fuel Type:</Text>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155" }}>{vehicle?.fuelType}</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+              <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Fuel Type:</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#334155", flex: 1, textAlign: "right" }}>{vehicle?.fuelType}</Text>
             </View>
 
             {vehicle?.vin ? (
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <Text style={{ fontSize: 13, color: "#64748B" }}>VIN / Chassis:</Text>
-                <Text style={{ fontSize: 12, fontWeight: "600", color: "#64748B" }}>{vehicle.vin}</Text>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+                <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>VIN / Chassis:</Text>
+                <Text style={{ fontSize: 12, fontWeight: "600", color: "#64748B", flex: 1, textAlign: "right" }} numberOfLines={1}>
+                  {vehicle.vin}
+                </Text>
               </View>
             ) : null}
           </View>
