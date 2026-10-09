@@ -23,7 +23,7 @@ export function streamInvoicePdf(invoice, res) {
   const lightBg = "#F8FAFC";
 
   // Header
-  doc.fillColor(darkColor).fontSize(22).font("Helvetica-Bold").text("FLEEV WORKSHOP", 40, 40);
+  doc.fillColor(darkColor).fontSize(22).font("Helvetica-Bold").text("WORKFLEE WORKSHOP", 40, 40);
   doc.fillColor(grayColor).fontSize(10).font("Helvetica").text("Commercial Fleet Maintenance & NHVR Compliance", 40, 66);
 
   // Right Header - Tax Invoice Title
@@ -77,7 +77,7 @@ export function streamInvoicePdf(invoice, res) {
   metaY += 14;
 
   doc.font("Helvetica-Bold").text(`Vendor: `, rightX, metaY, { continued: true });
-  doc.font("Helvetica").text(invoice?.vendor || "Fleev Service Center");
+  doc.font("Helvetica").text(invoice?.vendor || "Workflee Service Center");
   metaY += 14;
 
   if (invoice?.workOrder?.jobNumber) {
@@ -117,7 +117,7 @@ export function streamInvoicePdf(invoice, res) {
   doc.fillColor(grayColor).fontSize(8.5).font("Helvetica").text(invoice?.notes || "Commercial fleet maintenance & compliance servicing", 50, rowY + 26, { width: 220 });
 
   doc.fillColor(darkColor).fontSize(9.5).font("Helvetica").text(invoice?.category || "Parts", 280, rowY + 14);
-  doc.text(invoice?.vendor || "Fleev", 380, rowY + 14);
+  doc.text(invoice?.vendor || "Workflee", 380, rowY + 14);
 
   const amount = Number(invoice?.amount || 0);
   const gst = (amount * 0.1).toFixed(2);
@@ -153,7 +153,7 @@ export function streamInvoicePdf(invoice, res) {
 
   // Footer
   doc.fillColor("#94A3B8").fontSize(8).font("Helvetica").text(
-    "Fleev Commercial Fleet Management System  •  NHVR Standards Compliant  •  Tax Invoice",
+    "Workflee Commercial Fleet Management System  •  NHVR Standards Compliant  •  Tax Invoice",
     40,
     760,
     { align: "center", width: 515 }
