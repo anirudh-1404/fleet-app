@@ -263,7 +263,7 @@ export default function WorkOrderDetailsScreen() {
                   }}
                 >
                   <Ionicons name="chatbubbles-outline" size={16} color="#16A34A" style={{ marginBottom: 2 }} />
-                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#16A34A" }}>Team Chat</Text>
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#16A34A" }}>Team Chat (Soon)</Text>
                 </TouchableOpacity>
               </View>
             </View>

@@ -487,6 +487,17 @@ export default function WorkshopDashboardScreen() {
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Employees</Text>
               </TouchableOpacity>
+
+              {/* Team Chat */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT)}
+                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
+              >
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="chatbubbles-outline" size={22} color="#2563EB" />
+                </View>
+                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Team Chat</Text>
+              </TouchableOpacity>
             </View>
           </View>
 

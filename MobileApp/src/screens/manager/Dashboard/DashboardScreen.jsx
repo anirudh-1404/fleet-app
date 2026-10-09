@@ -221,6 +221,15 @@ export default function DashboardScreen() {
                 onPress={() => handleAction(ROUTES.REMINDERS)}
               />
             </View>
+
+            {/* Row 5: Team Chat (Coming Soon) */}
+            <FleetActionCard
+              title="Team Chat"
+              subtitle="Coming soon • Real-time driver & mechanic messaging"
+              icon="chatbubbles-outline"
+              isFeatured={true}
+              onPress={() => handleAction(ROUTES.WORKSHOP_EMPLOYEE_CHAT)}
+            />
           </View>
         </View>
 

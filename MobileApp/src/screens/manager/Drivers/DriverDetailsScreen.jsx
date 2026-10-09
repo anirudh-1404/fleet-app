@@ -7,6 +7,8 @@ import {
   Platform,
   ActivityIndicator,
   StatusBar,
+  Alert,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -63,7 +65,31 @@ export default function DriverDetailsScreen() {
   };
 
   const handleActionPress = (actionName) => {
-    console.log(`Action pressed: ${actionName}`);
+    if (actionName === "Contact") {
+      Alert.alert(
+        "Contact Driver",
+        `Reach out to ${name}:`,
+        [
+          {
+            text: "Call Driver",
+            onPress: () => {
+              if (phone && phone !== "-") {
+                Linking.openURL(`tel:${phone}`);
+              } else {
+                Alert.alert("Call Driver", "No phone number registered for this driver.");
+              }
+            },
+          },
+          {
+            text: "Team Chat (Coming Soon)",
+            onPress: () => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT),
+          },
+          { text: "Cancel", style: "cancel" },
+        ]
+      );
+    } else {
+      console.log(`Action pressed: ${actionName}`);
+    }
   };
 
   if (isLoading && !driver) {

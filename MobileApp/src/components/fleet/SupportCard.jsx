@@ -1,8 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Alert, Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import ROUTES from "@constants/routes";
 
 export default function SupportCard() {
+  const navigation = useNavigation();
   const managerPhone = "+61412345678";
 
   const handleSupportPress = async (type) => {
@@ -15,13 +18,14 @@ export default function SupportCard() {
         } else {
           Alert.alert("Contact Manager", `Manager Phone: ${managerPhone}`);
         }
-      } else if (type === "Message") {
-        const url = `sms:${managerPhone}`;
-        const canOpen = await Linking.canOpenURL(url);
-        if (canOpen) {
-          await Linking.openURL(url);
-        } else {
-          Alert.alert("Message Manager", `Send SMS to: ${managerPhone}`);
+      } else if (type === "Chat") {
+        try {
+          navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT);
+        } catch (e) {
+          Alert.alert(
+            "Team Chat • Coming Soon 🚀",
+            "Real-time team chat and messaging with your fleet manager is currently under development and will be available soon!"
+          );
         }
       }
     } catch (e) {
@@ -52,11 +56,11 @@ export default function SupportCard() {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => handleSupportPress("Message")}
+          onPress={() => handleSupportPress("Chat")}
           className="flex-1 h-12 rounded-[16px] bg-[#F8FAFC] border border-[#E8EDF3] flex-row items-center justify-center gap-2"
         >
-          <Ionicons name="chatbubble-outline" size={18} color="#2563EB" />
-          <Text className="text-sm font-bold text-[#2563EB]">Message Manager</Text>
+          <Ionicons name="chatbubbles-outline" size={18} color="#2563EB" />
+          <Text className="text-sm font-bold text-[#2563EB]">Team Chat</Text>
         </TouchableOpacity>
       </View>
     </View>

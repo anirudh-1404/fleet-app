@@ -1,308 +1,345 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
-  FlatList,
-  TextInput,
+  ScrollView,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Platform,
   StatusBar,
-  ActivityIndicator,
   Alert,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { workshopEmployeeService } from "../../../services/workshopEmployeeService";
-import { useAuth } from "../../../context/AuthContext";
-import socketService from "../../../services/socketService";
 
 export default function JobMessagesScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { id, jobNumber } = route.params;
-  const { user } = useAuth();
+  const { jobNumber } = route.params || {};
 
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [inputText, setInputText] = useState("");
-  const [sending, setSending] = useState(false);
-  const flatListRef = useRef(null);
+  const [notified, setNotified] = useState(false);
 
-  const fetchMessages = async () => {
-    try {
-      const res = await workshopEmployeeService.getJobMessages(id);
-      setMessages(res || []);
-    } catch (err) {
-      console.error("Error fetching job messages:", err);
-      Alert.alert("Error", "Failed to load team messages.");
-    } finally {
-      setLoading(false);
-    }
+  const handleNotifyMe = () => {
+    setNotified(true);
+    Alert.alert(
+      "You're on the list! 🎉",
+      "Thank you for your interest! We'll notify you as soon as Team Chat is activated in your portal."
+    );
   };
 
-  useEffect(() => {
-    fetchMessages();
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top"]}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-    // Setup real-time socket listener
-    const channelName = `workorder_message:${id}`;
-    const handleNewMessage = (newMsg) => {
-      setMessages((prev) => {
-        // avoid duplicate if already received
-        if (prev.some((m) => m._id === newMsg._id)) return prev;
-        return [...prev, newMsg];
-      });
-    };
-
-    socketService.connect();
-    socketService.on(channelName, handleNewMessage);
-
-    return () => {
-      socketService.off(channelName, handleNewMessage);
-    };
-  }, [id]);
-
-  const handleSendMessage = async () => {
-    if (!inputText.trim() || sending) return;
-
-    const messagePayload = {
-      text: inputText.trim(),
-    };
-
-    setSending(true);
-    setInputText("");
-
-    try {
-      const createdMsg = await workshopEmployeeService.sendJobMessage(id, messagePayload);
-      setMessages((prev) => {
-        if (prev.some((m) => m._id === createdMsg._id)) return prev;
-        return [...prev, createdMsg];
-      });
-    } catch (err) {
-      console.error("Failed to send message:", err);
-      Alert.alert("Error", err.response?.data?.message || "Failed to send message");
-    } finally {
-      setSending(false);
-    }
-  };
-
-  const renderMessageItem = ({ item }) => {
-    const isMe = item.sender?._id === user?._id || item.sender === user?._id;
-    const isManager = item.senderRole === "workshop_manager" || item.sender?.role === "workshop_manager";
-
-    return (
+      {/* Top Navigation Bar */}
       <View
         style={{
-          alignSelf: isMe ? "flex-end" : "flex-start",
-          maxWidth: "80%",
-          marginBottom: 10,
+          paddingHorizontal: 20,
+          paddingVertical: 14,
+          backgroundColor: "#FFFFFF",
+          borderBottomWidth: 1,
+          borderBottomColor: "#E2E8F0",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 2,
-            alignSelf: isMe ? "flex-end" : "flex-start",
-          }}
-        >
-          <Text style={{ fontSize: 11, fontWeight: "700", color: "#64748B", marginRight: 6 }}>
-            {isMe ? "You" : item.senderName || item.sender?.name || "Team Member"}
-          </Text>
-          <View
+        <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.goBack()}
             style={{
-              backgroundColor: isManager ? "#FEF3C7" : "#EFF6FF",
-              paddingHorizontal: 6,
-              paddingVertical: 1,
-              borderRadius: 4,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "#F1F5F9",
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight: 12,
             }}
           >
-            <Text
-              style={{
-                fontSize: 9,
-                fontWeight: "700",
-                color: isManager ? "#B45309" : "#2563EB",
-              }}
-            >
-              {isManager ? "Manager" : "Mechanic"}
+            <Ionicons name="arrow-back" size={20} color="#0F172A" />
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: "800", color: "#0F172A" }}>
+              Team Chat
+            </Text>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#64748B" }}>
+              {jobNumber ? `Work Order #${jobNumber}` : "Fleet & Workshop Collaboration"}
             </Text>
           </View>
         </View>
 
         <View
           style={{
-            backgroundColor: isMe ? "#2563EB" : "#FFFFFF",
-            paddingHorizontal: 14,
-            paddingVertical: 10,
-            borderRadius: 14,
-            borderBottomRightRadius: isMe ? 2 : 14,
-            borderBottomLeftRadius: isMe ? 14 : 2,
-            borderWidth: isMe ? 0 : 1,
-            borderColor: "#E2E8F0",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.05,
-            shadowRadius: 2,
-            elevation: 1,
+            backgroundColor: "#FEF3C7",
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: "#FDE68A",
           }}
         >
-          <Text
-            style={{
-              fontSize: 14,
-              color: isMe ? "#FFFFFF" : "#1E293B",
-              lineHeight: 20,
-            }}
-          >
-            {item.text}
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 10,
-              color: isMe ? "rgba(255,255,255,0.7)" : "#94A3B8",
-              alignSelf: "flex-end",
-              marginTop: 4,
-            }}
-          >
-            {item.createdAt
-              ? new Date(item.createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : ""}
+          <Text style={{ fontSize: 11, fontWeight: "800", color: "#B45309" }}>
+            COMING SOON
           </Text>
         </View>
       </View>
-    );
-  };
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8FAFC" }} edges={["top", "bottom"]}>
-      <StatusBar barStyle="dark-content" />
-
-      {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          padding: 24,
+          paddingBottom: 48,
           alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          backgroundColor: "#FFFFFF",
-          borderBottomWidth: 1,
-          borderBottomColor: "#E2E8F0",
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
+        {/* Glowing Chat Icon Container */}
+        <View
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: 10,
-            backgroundColor: "#F1F5F9",
+            width: 96,
+            height: 96,
+            borderRadius: 30,
+            backgroundColor: "#EFF6FF",
+            borderWidth: 2,
+            borderColor: "#BFDBFE",
             justifyContent: "center",
             alignItems: "center",
+            marginTop: 16,
+            marginBottom: 20,
+            shadowColor: "#2563EB",
+            shadowOffset: { width: 0, height: 8 },
+            shadowOpacity: 0.15,
+            shadowRadius: 16,
+            elevation: 4,
           }}
         >
-          <Ionicons name="arrow-back" size={22} color="#1E293B" />
-        </TouchableOpacity>
-
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
-            {jobNumber ? `Job ${jobNumber}` : "Team Messages"}
-          </Text>
-          <Text style={{ fontSize: 11, color: "#10B981", fontWeight: "600" }}>
-            ● Workshop Live Channel
-          </Text>
+          <Ionicons name="chatbubbles" size={48} color="#2563EB" />
         </View>
 
-        <View style={{ width: 40 }} />
-      </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
-      >
-        {loading ? (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <ActivityIndicator size="large" color="#2563EB" />
-          </View>
-        ) : (
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={(item, index) => item._id || String(index)}
-            renderItem={renderMessageItem}
-            contentContainerStyle={{ padding: 16, flexGrow: 1 }}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-            onLayout={() => flatListRef.current?.scrollToEnd({ animated: false })}
-            ListEmptyComponent={
-              <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 24 }}>
-                <Ionicons name="chatbubbles-outline" size={48} color="#CBD5E1" style={{ marginBottom: 12 }} />
-                <Text style={{ fontSize: 15, fontWeight: "700", color: "#64748B" }}>
-                  No messages yet
-                </Text>
-                <Text style={{ fontSize: 13, color: "#94A3B8", textAlign: "center", marginTop: 4 }}>
-                  Start a conversation with the workshop manager or mechanic about this job, parts, or findings.
-                </Text>
-              </View>
-            }
-          />
-        )}
-
-        {/* Input Bar */}
+        {/* Coming Soon Pill */}
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            backgroundColor: "#FFFFFF",
-            borderTopWidth: 1,
-            borderTopColor: "#E2E8F0",
+            backgroundColor: "#EFF6FF",
+            paddingHorizontal: 14,
+            paddingVertical: 6,
+            borderRadius: 20,
+            borderWidth: 1,
+            borderColor: "#DBEAFE",
+            marginBottom: 12,
           }}
         >
-          <TextInput
-            style={{
-              flex: 1,
-              backgroundColor: "#F1F5F9",
-              borderRadius: 20,
-              paddingHorizontal: 16,
-              paddingVertical: 10,
-              fontSize: 14,
-              color: "#0F172A",
-              maxHeight: 100,
-            }}
-            placeholder="Type a message or update..."
-            placeholderTextColor="#94A3B8"
-            multiline
-            value={inputText}
-            onChangeText={setInputText}
-          />
+          <Ionicons name="sparkles" size={14} color="#2563EB" style={{ marginRight: 6 }} />
+          <Text style={{ fontSize: 12, fontWeight: "800", color: "#1D4ED8", letterSpacing: 0.5 }}>
+            FEATURE IN PROGRESS 🚀
+          </Text>
+        </View>
 
-          <TouchableOpacity
-            disabled={sending || !inputText.trim()}
-            onPress={handleSendMessage}
+        {/* Headline & Description */}
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: "800",
+            color: "#0F172A",
+            textAlign: "center",
+            marginBottom: 8,
+          }}
+        >
+          Team Chat & Live Messaging
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            color: "#64748B",
+            textAlign: "center",
+            lineHeight: 22,
+            marginBottom: 28,
+            maxWidth: 340,
+          }}
+        >
+          Real-time messaging between fleet managers, drivers, and mechanics is currently under construction. You will soon be able to coordinate repairs and dispatches seamlessly.
+        </Text>
+
+        {/* Feature Highlights Grid */}
+        <View style={{ width: "100%", gap: 12, marginBottom: 32 }}>
+          {/* Highlight 1 */}
+          <View
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: inputText.trim() ? "#2563EB" : "#CBD5E1",
-              justifyContent: "center",
+              backgroundColor: "#FFFFFF",
+              borderRadius: 16,
+              padding: 16,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              flexDirection: "row",
               alignItems: "center",
-              marginLeft: 8,
+              shadowColor: "#0F172A",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.03,
+              shadowRadius: 8,
+              elevation: 1,
             }}
           >
-            {sending ? (
-              <ActivityIndicator size="small" color="#FFFFFF" />
-            ) : (
-              <Ionicons name="send" size={18} color="#FFFFFF" />
-            )}
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                backgroundColor: "#EFF6FF",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 14,
+              }}
+            >
+              <Ionicons name="chatbubble-ellipses-outline" size={22} color="#2563EB" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>
+                Direct & Group Messaging
+              </Text>
+              <Text style={{ fontSize: 12, color: "#64748B", lineHeight: 18 }}>
+                1-on-1 driver dispatch chats & workshop group channels.
+              </Text>
+            </View>
+          </View>
+
+          {/* Highlight 2 */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 16,
+              padding: 16,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#0F172A",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.03,
+              shadowRadius: 8,
+              elevation: 1,
+            }}
+          >
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                backgroundColor: "#F0FDF4",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 14,
+              }}
+            >
+              <Ionicons name="camera-outline" size={22} color="#16A34A" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>
+                Photo & Defect Sharing
+              </Text>
+              <Text style={{ fontSize: 12, color: "#64748B", lineHeight: 18 }}>
+                Instantly send inspection defect photos and repair updates.
+              </Text>
+            </View>
+          </View>
+
+          {/* Highlight 3 */}
+          <View
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 16,
+              padding: 16,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#0F172A",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.03,
+              shadowRadius: 8,
+              elevation: 1,
+            }}
+          >
+            <View
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                backgroundColor: "#FEF3C7",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 14,
+              }}
+            >
+              <Ionicons name="notifications-outline" size={22} color="#D97706" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>
+                Push Alerts & Priority Mentions
+              </Text>
+              <Text style={{ fontSize: 12, color: "#64748B", lineHeight: 18 }}>
+                Instant notifications for urgent jobs and vehicle breakdowns.
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Action Buttons */}
+        <View style={{ width: "100%", gap: 12 }}>
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => navigation.goBack()}
+            style={{
+              backgroundColor: "#2563EB",
+              borderRadius: 14,
+              paddingVertical: 15,
+              alignItems: "center",
+              justifyContent: "center",
+              shadowColor: "#2563EB",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              elevation: 3,
+            }}
+          >
+            <Text style={{ fontSize: 15, fontWeight: "700", color: "#FFFFFF" }}>
+              Back to Dashboard
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPress={handleNotifyMe}
+            style={{
+              backgroundColor: notified ? "#F0FDF4" : "#FFFFFF",
+              borderRadius: 14,
+              paddingVertical: 14,
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 1,
+              borderColor: notified ? "#86EFAC" : "#E2E8F0",
+              flexDirection: "row",
+            }}
+          >
+            <Ionicons
+              name={notified ? "checkmark-circle" : "notifications-outline"}
+              size={18}
+              color={notified ? "#16A34A" : "#64748B"}
+              style={{ marginRight: 6 }}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "700",
+                color: notified ? "#16A34A" : "#334155",
+              }}
+            >
+              {notified ? "We'll Notify You" : "Notify Me When Ready"}
+            </Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 }

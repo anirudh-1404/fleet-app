@@ -811,7 +811,7 @@ export default function EmployeeJobDetailsScreen() {
         >
           <Ionicons name="chatbubbles-outline" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
           <Text style={{ fontSize: 15, fontWeight: "700", color: "#FFFFFF" }}>
-            Open Job Team Chat
+            Open Job Team Chat (Coming Soon)
           </Text>
         </TouchableOpacity>
       </ScrollView>

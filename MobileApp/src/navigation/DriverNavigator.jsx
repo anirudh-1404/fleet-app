@@ -9,6 +9,7 @@ import InspectionReviewScreen from "@screens/driver/Inspection/InspectionReviewS
 import InspectionSubmittedScreen from "@screens/driver/Inspection/InspectionSubmittedScreen";
 import HistoryScreen from "@screens/driver/History/HistoryScreen";
 import NotificationsScreen from "@screens/common/NotificationsScreen";
+import JobMessagesScreen from "@screens/workshop/EmployeePortal/JobMessagesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function DriverNavigator() {
       <Stack.Screen name={ROUTES.INSPECTION_REVIEW} component={InspectionReviewScreen} />
       <Stack.Screen name={ROUTES.INSPECTION_SUBMITTED} component={InspectionSubmittedScreen} />
       <Stack.Screen name={ROUTES.DRIVER_HISTORY} component={HistoryScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHAT} component={JobMessagesScreen} />
     </Stack.Navigator>
   );
 }

@@ -17,6 +17,7 @@ const ICON_THEMES = {
   "call-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "document-text-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "notifications-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
+  "chatbubbles-outline": { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" },
 };
 
 export default function FleetActionCard({ title, subtitle, icon, isFeatured, onPress }) {

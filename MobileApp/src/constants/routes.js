@@ -109,6 +109,7 @@ const ROUTES = {
   WORKSHOP_EMPLOYEE_CHECKLIST: "WorkshopEmployeeChecklist",
   WORKSHOP_EMPLOYEE_PHOTOS: "WorkshopEmployeePhotos",
   WORKSHOP_EMPLOYEE_CHAT: "WorkshopEmployeeChat",
+  TEAM_CHAT: "WorkshopEmployeeChat",
   WORKSHOP_EMPLOYEE_HISTORY: "WorkshopEmployeeHistory",
   WORKSHOP_EMPLOYEE_START_SERVICE: "WorkshopEmployeeStartService",
 };

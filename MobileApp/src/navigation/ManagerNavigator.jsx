@@ -54,6 +54,9 @@ import ReminderDetailsScreen from "@screens/manager/Reminder/ReminderDetailsScre
 import AddReminderScreen from "@screens/manager/Reminder/AddReminderScreen";
 import EditReminderScreen from "@screens/manager/Reminder/EditReminderScreen";
 
+// Team Chat
+import JobMessagesScreen from "@screens/workshop/EmployeePortal/JobMessagesScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function ManagerNavigator() {
@@ -109,6 +112,9 @@ export default function ManagerNavigator() {
       <Stack.Screen name={ROUTES.REMINDER_DETAILS} component={ReminderDetailsScreen} />
       <Stack.Screen name={ROUTES.ADD_REMINDER} component={AddReminderScreen} />
       <Stack.Screen name={ROUTES.EDIT_REMINDER} component={EditReminderScreen} />
+
+      {/* Team Chat */}
+      <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHAT} component={JobMessagesScreen} />
     </Stack.Navigator>
   );
 }
