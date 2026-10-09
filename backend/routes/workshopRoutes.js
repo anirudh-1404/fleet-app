@@ -102,6 +102,14 @@ import {
   deleteWorkshopReminder,
 } from "../controllers/workshopReminderController.js";
 
+import {
+  getAdminInquiries,
+  getAdminInquiryById,
+  updateInquiryStatus,
+  convertInquiryToWorkOrder,
+  deleteInquiry,
+} from "../controllers/workshopInquiryController.js";
+
 import { getWorkshopDashboard } from "../controllers/workshopDashboardController.js";
 
 const router = express.Router();
@@ -200,5 +208,12 @@ router.post("/reminders", createWorkshopReminder);
 router.get("/reminders/:id", getWorkshopReminderById);
 router.patch("/reminders/:id", updateWorkshopReminder);
 router.delete("/reminders/:id", deleteWorkshopReminder);
+
+// 14. Contact Inquiries & Public Bookings (Admin Access)
+router.get("/inquiries", getAdminInquiries);
+router.get("/inquiries/:id", getAdminInquiryById);
+router.patch("/inquiries/:id/status", updateInquiryStatus);
+router.post("/inquiries/:id/convert", convertInquiryToWorkOrder);
+router.delete("/inquiries/:id", deleteInquiry);
 
 export default router;

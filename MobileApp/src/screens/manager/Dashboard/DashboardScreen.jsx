@@ -230,6 +230,15 @@ export default function DashboardScreen() {
               isFeatured={true}
               onPress={() => handleAction(ROUTES.WORKSHOP_EMPLOYEE_CHAT)}
             />
+
+            {/* Row 6: Contact Inquiries (Customer Booking Leads) */}
+            <FleetActionCard
+              title="Contact Inquiries"
+              subtitle="Customer booking job cards & online leads"
+              icon="mail-unread-outline"
+              isFeatured={true}
+              onPress={() => handleAction(ROUTES.WORKSHOP_INQUIRIES)}
+            />
           </View>
         </View>
 

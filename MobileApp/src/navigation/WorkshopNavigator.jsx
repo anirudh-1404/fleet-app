@@ -75,6 +75,10 @@ import DigitalChecklistScreen from "../screens/workshop/EmployeePortal/DigitalCh
 import JobPhotosEvidenceScreen from "../screens/workshop/EmployeePortal/JobPhotosEvidenceScreen";
 import JobMessagesScreen from "../screens/workshop/EmployeePortal/JobMessagesScreen";
 
+// Contact Inquiries & Public Bookings
+import ContactInquiriesScreen from "../screens/workshop/Inquiries/ContactInquiriesScreen";
+import InquiryDetailsScreen from "../screens/workshop/Inquiries/InquiryDetailsScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function WorkshopNavigator() {
@@ -155,6 +159,10 @@ export default function WorkshopNavigator() {
       <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHECKLIST} component={DigitalChecklistScreen} />
       <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_PHOTOS} component={JobPhotosEvidenceScreen} />
       <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHAT} component={JobMessagesScreen} />
+
+      {/* 16. Contact Inquiries & Public Booking Cards */}
+      <Stack.Screen name={ROUTES.WORKSHOP_INQUIRIES} component={ContactInquiriesScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_INQUIRY_DETAILS} component={InquiryDetailsScreen} />
     </Stack.Navigator>
   );
 }

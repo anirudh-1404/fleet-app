@@ -498,6 +498,17 @@ export default function WorkshopDashboardScreen() {
                 </View>
                 <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Team Chat</Text>
               </TouchableOpacity>
+
+              {/* Contact Inquiries (Booking Leads) */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ROUTES.WORKSHOP_INQUIRIES)}
+                style={{ width: "24%", alignItems: "center", paddingVertical: 10 }}
+              >
+                <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 6 }}>
+                  <Ionicons name="mail-unread-outline" size={22} color="#15803D" />
+                </View>
+                <Text style={{ fontSize: 11, fontWeight: "700", color: "#334155", textAlign: "center" }}>Inquiries</Text>
+              </TouchableOpacity>
             </View>
           </View>
 

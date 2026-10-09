@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Workshop Job Card / Booking Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --slate-900: #0F172A;
+      --slate-800: #1E293B;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748B;
+      --slate-200: #E2E8F0;
+      --slate-100: #F1F5F9;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --danger: #DC2626;
+      --success: #16A34A;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--slate-900);
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    .header-banner {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      color: white;
+      padding: 32px 20px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 99, 235, 0.25);
+      border: 1px solid rgba(147, 197, 253, 0.4);
+      color: #93C5FD;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .header-banner h1 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .workshop-name {
+      font-size: 14px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: -16px auto 0;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--slate-200);
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: 6px;
+    }
+
+    .req {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--slate-900);
+      background: #FFFFFF;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Radio & Chip Groups */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip-item {
+      position: relative;
+    }
+
+    .chip-item input[type="radio"],
+    .chip-item input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .chip-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-700);
+      background: var(--slate-100);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .chip-item input:checked + .chip-label {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Checkbox Card Grid for Booking Types */
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .booking-card {
+      position: relative;
+    }
+
+    .booking-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .booking-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      background: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-800);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .booking-box .check-icon {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--slate-400);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      font-size: 11px;
+      color: transparent;
+    }
+
+    .booking-card input:checked + .booking-box {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .booking-card input:checked + .booking-box .check-icon {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* Signature Area */
+    .signature-container {
+      background: #FAFAFA;
+      border: 2px dashed var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    #signatureCanvas {
+      width: 100%;
+      height: 160px;
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      touch-action: none;
+      cursor: crosshair;
+      border: 1px solid var(--slate-200);
+    }
+
+    .signature-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding: 0 4px;
+    }
+
+    .signature-hint {
+      font-size: 11px;
+      color: var(--slate-500);
+      font-weight: 500;
+    }
+
+    .btn-clear {
+      background: #FEE2E2;
+      color: #DC2626;
+      border: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error Message Box */
+    .error-box {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Success State */
+    .success-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 40px 24px;
+      text-align: center;
+      border: 1px solid var(--slate-200);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      display: none;
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #DCFCE7;
+      color: #16A34A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 18px;
+    }
+
+    .success-card h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 8px;
+    }
+
+    .success-card p {
+      color: var(--slate-600);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .booking-ref-box {
+      background: var(--slate-100);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Banner -->
+  <div class="header-banner">
+    <div class="badge-pill">Commercial Fleet & Workshop</div>
+    <h1>Workshop Job Card / Booking Form</h1>
+    <p class="workshop-name" id="workshopHeading">Connecting to workshop...</p>
+  </div>
+
+  <div class="container">
+    <!-- Error Box -->
+    <div class="error-box" id="errorBox"></div>
+
+    <!-- Success Screen -->
+    <div class="success-card" id="successCard">
+      <div class="success-icon">✓</div>
+      <h2>Booking Received Successfully!</h2>
+      <p id="successMessage">
+        Thank you for submitting your booking. The workshop service advisor has received your request and will contact you shortly to confirm your booking schedule.
+      </p>
+      <div class="booking-ref-box" id="bookingRefBox">
+        Vehicle: <span id="successVehicleRego"></span>
+      </div>
+      <button class="btn-submit" onclick="window.location.reload()">
+        Submit Another Booking
+      </button>
+    </div>
+
+    <!-- Main Form -->
+    <form id="bookingForm">
+
+      <!-- Section 1: Customer Details -->
+      <div class="card">
+        <div class="card-title">
+          <div class="step-number">1</div>
+          Customer Details
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Customer Name <span class="req">*</span></label>
+            <input type="text" id="customerName" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" id="companyName" placeholder="e.g. Apex Freight Logistics">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Mobile Number <span class="req">*</span></label>
+            <input type="tel" id="mobileNumber" placeholder="e.g. 0412 345 678" required>
+          </div>
+          <div class="form-group">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="e.g. john@apexlogistics.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred Contact Method</label>
+          <div class="chip-group">
+            <div class="chip-item">
+              <input type="radio" name="contactMethod" id="cm_phone" value="Phone" checked>
+              <label class="chip-label" for="cm_phone">📞 Phone</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="contactMethod" id="cm_whatsapp" value="WhatsApp">
+              <label class="chip-label" for="cm_whatsapp">💬 WhatsApp</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="contactMethod" id="cm_sms" value="SMS">
+              <label class="chip-label" for="cm_sms">📱 SMS</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="contactMethod" id="cm_email" value="Email">
+              <label class="chip-label" for="cm_email">✉️ Email</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Customer Notes</label>
+          <textarea id="customerNotes" rows="2" placeholder="Any special instructions or availability..."></textarea>
+        </div>
+      </div>
+
+      <!-- Section 2: Vehicle Details -->
+      <div class="card">
+        <div class="card-title">
+          <div class="step-number">2</div>
+          Vehicle Details
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Registration Number <span class="req">*</span></label>
+            <input type="text" id="registration" placeholder="e.g. TRK-889" style="text-transform: uppercase;" required>
+          </div>
+          <div class="form-group">
+            <label>VIN / Chassis Number</label>
+            <input type="text" id="vin" placeholder="17-digit VIN (optional)" style="text-transform: uppercase;">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Make <span class="req">*</span></label>
+            <input type="text" id="make" placeholder="e.g. Kenworth / Isuzu / Volvo" required>
+          </div>
+          <div class="form-group">
+            <label>Model <span class="req">*</span></label>
+            <input type="text" id="model" placeholder="e.g. T909 / F-Series / FH16" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Year <span class="req">*</span></label>
+            <input type="number" id="year" placeholder="e.g. 2022" min="1980" max="2035" required>
+          </div>
+          <div class="form-group">
+            <label>Current Odometer (km) <span class="req">*</span></label>
+            <input type="number" id="odometer" placeholder="e.g. 145000" min="0" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Vehicle Type</label>
+          <div class="chip-group">
+            <div class="chip-item">
+              <input type="radio" name="vehicleType" id="vt_truck" value="Truck" checked>
+              <label class="chip-label" for="vt_truck">🚛 Heavy Truck</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="vehicleType" id="vt_trailer" value="Trailer">
+              <label class="chip-label" for="vt_trailer">🚚 Trailer</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="vehicleType" id="vt_van" value="Van">
+              <label class="chip-label" for="vt_van">🚐 Van</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="vehicleType" id="vt_car" value="Car">
+              <label class="chip-label" for="vt_car">🚗 Car / Ute</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="vehicleType" id="vt_other" value="Other">
+              <label class="chip-label" for="vt_other">⚙️ Other</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Fuel Type</label>
+          <div class="chip-group">
+            <div class="chip-item">
+              <input type="radio" name="fuelType" id="ft_diesel" value="Diesel" checked>
+              <label class="chip-label" for="ft_diesel">⛽ Diesel</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="fuelType" id="ft_petrol" value="Petrol">
+              <label class="chip-label" for="ft_petrol">⛽ Petrol</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="fuelType" id="ft_hybrid" value="Hybrid">
+              <label class="chip-label" for="ft_hybrid">🔋 Hybrid</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="fuelType" id="ft_ev" value="EV">
+              <label class="chip-label" for="ft_ev">⚡ Electric</label>
+            </div>
+            <div class="chip-item">
+              <input type="radio" name="fuelType" id="ft_other" value="Other">
+              <label class="chip-label" for="ft_other">Other</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Booking Type -->
+      <div class="card">
+        <div class="card-title">
+          <div class="step-number">3</div>
+          Booking Type — Select One or More
+        </div>
+
+        <div class="booking-grid">
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_service" value="Service / Maintenance">
+            <label class="booking-box" for="bt_service">
+              <span class="check-icon">✓</span>
+              Service / Maintenance
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_repair" value="Repair">
+            <label class="booking-box" for="bt_repair">
+              <span class="check-icon">✓</span>
+              Repair
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_diag" value="Diagnostic / Fault Finding">
+            <label class="booking-box" for="bt_diag">
+              <span class="check-icon">✓</span>
+              Diagnostic / Fault Finding
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_inspect" value="Inspection">
+            <label class="booking-box" for="bt_inspect">
+              <span class="check-icon">✓</span>
+              Inspection
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_prepurchase" value="Pre-purchase Inspection">
+            <label class="booking-box" for="bt_prepurchase">
+              <span class="check-icon">✓</span>
+              Pre-purchase Inspection
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_elec" value="Electrical Repair">
+            <label class="booking-box" for="bt_elec">
+              <span class="check-icon">✓</span>
+              Electrical Repair
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_ac" value="Air Conditioning">
+            <label class="booking-box" for="bt_ac">
+              <span class="check-icon">✓</span>
+              Air Conditioning
+            </label>
+          </div>
+
+          <div class="booking-card">
+            <input type="checkbox" name="bookingType" id="bt_tyres" value="Tyres / Wheels">
+            <label class="booking-box" for="bt_tyres">
+              <span class="check-icon">✓</span>
+              Tyres / Wheels
+            </label>
+          </div>
+
+          <div class="booking-card" style="grid-column: span 2;">
+            <input type="checkbox" name="bookingType" id="bt_other" value="Other">
+            <label class="booking-box" for="bt_other">
+              <span class="check-icon">✓</span>
+              Other Services
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Main Job / Customer Request -->
+      <div class="card">
+        <div class="card-title">
+          <div class="step-number">4</div>
+          Main Job / Customer Request
+        </div>
+
+        <div class="form-group">
+          <label>What would you like us to inspect or repair?</label>
+          <textarea id="mainJobRequest" rows="4" placeholder="Describe symptoms, noise, warning lights, leaking fluids, or specific service requirements in detail..."></textarea>
+        </div>
+      </div>
+
+      <!-- Section 5: Signs (Customer Signature) -->
+      <div class="card">
+        <div class="card-title">
+          <div class="step-number">5</div>
+          Customer Signature & Authorisation
+        </div>
+
+        <div class="signature-container">
+          <canvas id="signatureCanvas"></canvas>
+          <div class="signature-actions">
+            <span class="signature-hint">✍️ Please sign above using finger or mouse</span>
+            <button type="button" class="btn-clear" id="btnClearSign">Clear Signature</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Submit -->
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnText">Submit Workshop Booking 🚀</span>
+      </button>
+
+    </form>
+  </div>
+
+  <script>
+    // Extract adminId from URL (e.g. /booking/:adminId or query param ?admin=...)
+    const pathParts = window.location.pathname.split('/');
+    let adminId = pathParts[pathParts.length - 1];
+    if (!adminId || adminId === 'booking' || adminId === 'book') {
+      const urlParams = new URLSearchParams(window.location.search);
+      adminId = urlParams.get('admin') || '';
+    }
+
+    const workshopHeading = document.getElementById('workshopHeading');
+    const bookingForm = document.getElementById('bookingForm');
+    const errorBox = document.getElementById('errorBox');
+    const successCard = document.getElementById('successCard');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btnText');
+
+    // Fetch workshop details
+    async function loadWorkshopInfo() {
+      if (!adminId) {
+        showError("Invalid booking link. Workshop Administrator ID is missing.");
+        btnSubmit.disabled = true;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/public/bookings/${adminId}`);
+        const data = await res.json();
+        if (res.ok && data.workshop) {
+          workshopHeading.innerText = `Book with ${data.workshop.name}`;
+          document.title = `Booking Form — ${data.workshop.name}`;
+        } else {
+          workshopHeading.innerText = "Commercial Fleet Workshop";
+        }
+      } catch (e) {
+        workshopHeading.innerText = "Commercial Fleet Workshop";
+      }
+    }
+
+    loadWorkshopInfo();
+
+    // Canvas Signature Setup
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let hasSigned = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#0F172A';
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 100);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      isDrawing = true;
+      hasSigned = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDraw(e) {
+      if (!isDrawing) return;
+      isDrawing = false;
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDraw);
+
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    window.addEventListener('touchend', stopDraw);
+
+    document.getElementById('btnClearSign').addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasSigned = false;
+    });
+
+    function showError(msg) {
+      errorBox.innerText = msg;
+      errorBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hideError() {
+      errorBox.style.display = 'none';
+    }
+
+    // Handle Form Submit
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+
+      if (!adminId) {
+        showError("Invalid booking link: Missing workshop manager ID.");
+        return;
+      }
+
+      const customerName = document.getElementById('customerName').value.trim();
+      const companyName = document.getElementById('companyName').value.trim();
+      const mobileNumber = document.getElementById('mobileNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const preferredContactMethod = document.querySelector('input[name="contactMethod"]:checked')?.value || 'Phone';
+      const customerNotes = document.getElementById('customerNotes').value.trim();
+
+      const registration = document.getElementById('registration').value.trim().toUpperCase();
+      const vin = document.getElementById('vin').value.trim().toUpperCase();
+      const make = document.getElementById('make').value.trim();
+      const model = document.getElementById('model').value.trim();
+      const year = document.getElementById('year').value.trim();
+      const odometer = document.getElementById('odometer').value.trim();
+      const vehicleType = document.querySelector('input[name="vehicleType"]:checked')?.value || 'Truck';
+      const fuelType = document.querySelector('input[name="fuelType"]:checked')?.value || 'Diesel';
+
+      const bookingTypes = Array.from(document.querySelectorAll('input[name="bookingType"]:checked')).map(el => el.value);
+      const mainJobRequest = document.getElementById('mainJobRequest').value.trim();
+
+      let signatureData = "";
+      if (hasSigned) {
+        signatureData = canvas.toDataURL('image/png');
+      }
+
+      // Payload
+      const payload = {
+        customerName,
+        companyName,
+        mobileNumber,
+        email,
+        preferredContactMethod,
+        customerNotes,
+        registration,
+        vin,
+        make,
+        model,
+        year: Number(year),
+        odometer: Number(odometer),
+        vehicleType,
+        fuelType,
+        bookingTypes,
+        mainJobRequest,
+        signature: signatureData
+      };
+
+      // Set Loading State
+      btnSubmit.disabled = true;
+      spinner.style.display = 'inline-block';
+      btnText.innerText = 'Submitting Booking...';
+
+      try {
+        const response = await fetch(`/api/public/bookings/${adminId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || 'Failed to submit booking inquiry');
+        }
+
+        // Show Success
+        bookingForm.style.display = 'none';
+        successCard.style.display = 'block';
+        document.getElementById('successVehicleRego').innerText = `${make} ${model} (${registration})`;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (err) {
+        console.error(err);
+        showError(err.message || 'Something went wrong. Please check your connection and try again.');
+        btnSubmit.disabled = false;
+        spinner.style.display = 'none';
+        btnText.innerText = 'Submit Workshop Booking 🚀';
+      }
+    });
+  </script>
+</body>
+</html>

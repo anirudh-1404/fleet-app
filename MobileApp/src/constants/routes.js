@@ -112,6 +112,10 @@ const ROUTES = {
   TEAM_CHAT: "WorkshopEmployeeChat",
   WORKSHOP_EMPLOYEE_HISTORY: "WorkshopEmployeeHistory",
   WORKSHOP_EMPLOYEE_START_SERVICE: "WorkshopEmployeeStartService",
+
+  // Contact Inquiries & Public Booking Job Cards
+  WORKSHOP_INQUIRIES: "WorkshopInquiries",
+  WORKSHOP_INQUIRY_DETAILS: "WorkshopInquiryDetails",
 };
 
 export default ROUTES;

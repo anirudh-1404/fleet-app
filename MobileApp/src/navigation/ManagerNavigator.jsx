@@ -57,6 +57,10 @@ import EditReminderScreen from "@screens/manager/Reminder/EditReminderScreen";
 // Team Chat
 import JobMessagesScreen from "@screens/workshop/EmployeePortal/JobMessagesScreen";
 
+// Contact Inquiries & Public Bookings
+import ContactInquiriesScreen from "@screens/workshop/Inquiries/ContactInquiriesScreen";
+import InquiryDetailsScreen from "@screens/workshop/Inquiries/InquiryDetailsScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function ManagerNavigator() {
@@ -115,6 +119,10 @@ export default function ManagerNavigator() {
 
       {/* Team Chat */}
       <Stack.Screen name={ROUTES.WORKSHOP_EMPLOYEE_CHAT} component={JobMessagesScreen} />
+
+      {/* Contact Inquiries & Public Bookings */}
+      <Stack.Screen name={ROUTES.WORKSHOP_INQUIRIES} component={ContactInquiriesScreen} />
+      <Stack.Screen name={ROUTES.WORKSHOP_INQUIRY_DETAILS} component={InquiryDetailsScreen} />
     </Stack.Navigator>
   );
 }
