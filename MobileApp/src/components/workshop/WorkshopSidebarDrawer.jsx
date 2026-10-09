@@ -11,8 +11,9 @@ import {
   Platform,
   Linking,
   Alert,
+  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
@@ -28,8 +29,16 @@ export default function WorkshopSidebarDrawer({
   onLogout,
 }) {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const slideAnim = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // Compute safe padding for all device notches, dynamic islands & status bars
+  const topInset = Math.max(
+    insets.top,
+    Platform.OS === "ios" ? 54 : (StatusBar.currentHeight || 28)
+  );
+  const bottomInset = Math.max(insets.bottom, Platform.OS === "ios" ? 24 : 12);
 
   useEffect(() => {
     if (visible) {
@@ -102,7 +111,6 @@ export default function WorkshopSidebarDrawer({
       visible={visible}
       animationType="none"
       onRequestClose={onClose}
-      statusBarTranslucent
     >
       <View style={styles.overlayContainer}>
         {/* Backdrop */}
@@ -124,9 +132,9 @@ export default function WorkshopSidebarDrawer({
             },
           ]}
         >
-          <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
+          <View style={{ flex: 1 }}>
             {/* Header with Brand & Close Button */}
-            <View style={styles.drawerHeader}>
+            <View style={[styles.drawerHeader, { paddingTop: topInset + 8 }]}>
               <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                 <View style={styles.brandIconBox}>
                   <Ionicons name="construct" size={18} color="#FFFFFF" />
@@ -336,7 +344,7 @@ export default function WorkshopSidebarDrawer({
             </ScrollView>
 
             {/* Bottom Drawer Footer */}
-            <View style={styles.drawerFooter}>
+            <View style={[styles.drawerFooter, { paddingBottom: bottomInset + 8 }]}>
               {/* Logout Button */}
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -362,7 +370,7 @@ export default function WorkshopSidebarDrawer({
                 </Text>
               </TouchableOpacity>
             </View>
-          </SafeAreaView>
+          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -394,7 +402,6 @@ const styles = StyleSheet.create({
   },
   drawerHeader: {
     paddingHorizontal: 18,
-    paddingTop: Platform.OS === "android" ? 14 : 8,
     paddingBottom: 14,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -519,8 +526,7 @@ const styles = StyleSheet.create({
   },
   drawerFooter: {
     paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 12,
     borderTopWidth: 1,
     borderColor: "#F1F5F9",
     backgroundColor: "#FFFFFF",
