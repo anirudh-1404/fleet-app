@@ -27,7 +27,7 @@ export default function WorkshopStatusBadge({ status, type = "status", size = "n
     bg = "#F3E8FF";
     text = "#6B21A8";
     border = "#E9D5FF";
-  } else if (s === "COMPLETED" || s === "PASSED" || s === "PASS") {
+  } else if (s === "COMPLETED" || s === "PASSED" || s === "PASS" || s === "OK") {
     bg = "#DCFCE7";
     text = "#15803D";
     border = "#BBF7D0";
@@ -48,6 +48,7 @@ export default function WorkshopStatusBadge({ status, type = "status", size = "n
   const isSmall = size === "small";
 
   const formatText = (val) => {
+    if (val === "PASS" || val === "PASSED" || val === "OK") return "✓ OK";
     return val.replace(/_/g, " ");
   };
 

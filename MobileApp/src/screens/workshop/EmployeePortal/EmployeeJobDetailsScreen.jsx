@@ -136,7 +136,7 @@ export default function EmployeeJobDetailsScreen() {
 
   // Checklist counts
   const totalChecklistItems = checklist?.items?.length || 0;
-  const passedItems = checklist?.items?.filter((i) => i.status === "PASS").length || 0;
+  const passedItems = checklist?.items?.filter((i) => i.status === "PASS" || i.status === "OK").length || 0;
   const failedItems = checklist?.items?.filter((i) => i.status === "FAIL").length || 0;
 
   return (
@@ -555,7 +555,7 @@ export default function EmployeeJobDetailsScreen() {
                 </Text>
                 <Text style={{ fontSize: 12, color: "#64748B", marginTop: 2 }}>
                   {checklist?.checklistType
-                    ? `${checklist.checklistType.replace(/_/g, " ")} • ${passedItems} Pass, ${failedItems} Fail`
+                    ? `${checklist.checklistType.replace(/_/g, " ")} • ${passedItems} OK, ${failedItems} Defect`
                     : "Lube, Basic & Annual Checklists"}
                 </Text>
               </View>

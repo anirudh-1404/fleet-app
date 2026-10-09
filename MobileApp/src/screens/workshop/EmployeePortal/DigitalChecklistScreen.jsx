@@ -98,7 +98,7 @@ export default function DigitalChecklistScreen() {
           label: i.label || i.title || "Check Item",
           category: i.category || "General / Custom",
           measurementUnit: i.measurementUnit || "",
-          status: i.status || "PASS",
+          status: i.status === "PASS" ? "OK" : (i.status || "OK"),
           severity: i.severity || "Minor",
           notes: i.notes || i.observation || "",
           observation: i.observation || i.notes || "",
@@ -148,7 +148,7 @@ export default function DigitalChecklistScreen() {
         label: tmpl.title,
         category: tmpl.category || "General / Custom",
         measurementUnit: tmpl.measurementUnit || "",
-        status: "PASS",
+        status: "OK",
         severity: "Minor",
         notes: "",
         observation: "",
@@ -237,7 +237,7 @@ export default function DigitalChecklistScreen() {
       label: newItemTitle.trim(),
       category: newItemCategory || "General / Custom",
       measurementUnit: newItemUnit.trim(),
-      status: "PASS",
+      status: "OK",
       severity: "Minor",
       notes: "",
       observation: "",
@@ -357,7 +357,7 @@ export default function DigitalChecklistScreen() {
     }
   };
 
-  const passedCount = items.filter((i) => i.status === "PASS").length;
+  const passedCount = items.filter((i) => i.status === "OK" || i.status === "PASS").length;
   const failedCount = items.filter((i) => i.status === "FAIL" || i.status === "DEFECT").length;
   const naCount = items.filter((i) => i.status === "NA" || i.status === "N/A").length;
 
@@ -519,7 +519,7 @@ export default function DigitalChecklistScreen() {
         >
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 18, fontWeight: "900", color: "#10B981" }}>{passedCount}</Text>
-            <Text style={{ fontSize: 10, fontWeight: "800", color: "#64748B" }}>PASS</Text>
+            <Text style={{ fontSize: 10, fontWeight: "800", color: "#64748B" }}>OK</Text>
           </View>
           <View style={{ width: 1, height: "100%", backgroundColor: "#E2E8F0" }} />
           <View style={{ alignItems: "center" }}>
@@ -860,7 +860,7 @@ export default function DigitalChecklistScreen() {
             .filter(({ item }) => (item.category || "General / Custom") === categoryName);
 
           const isCollapsed = !!collapsedCategories[categoryName];
-          const catPassed = categoryItems.filter(({ item }) => item.status === "PASS").length;
+          const catPassed = categoryItems.filter(({ item }) => item.status === "OK" || item.status === "PASS").length;
           const catFailed = categoryItems.filter(({ item }) => item.status === "FAIL" || item.status === "DEFECT").length;
 
           return (
@@ -931,7 +931,7 @@ export default function DigitalChecklistScreen() {
                 <View style={{ padding: 12, gap: 10 }}>
                   {categoryItems.map(({ item, originalIndex }) => {
                     const isFail = item.status === "FAIL" || item.status === "DEFECT";
-                    const isPass = item.status === "PASS";
+                    const isPass = item.status === "OK" || item.status === "PASS";
 
                     return (
                       <View
@@ -974,14 +974,17 @@ export default function DigitalChecklistScreen() {
                           </View>
                         </View>
 
-                        {/* Status Toggle (Pass / Defect / N/A) */}
+                        {/* Status Toggle (OK / Defect / N/A) */}
                         <View style={{ flexDirection: "row", backgroundColor: "#F1F5F9", borderRadius: 8, padding: 2, marginBottom: 8 }}>
                           {[
-                            { key: "PASS", label: "Pass", color: "#10B981" },
+                            { key: "OK", label: "OK", icon: "checkmark", color: "#10B981" },
                             { key: "FAIL", label: "Defect", color: "#EF4444" },
                             { key: "NA", label: "N/A", color: "#64748B" },
                           ].map((st) => {
-                            const isActive = item.status === st.key;
+                            const isActive =
+                              st.key === "OK"
+                                ? item.status === "OK" || item.status === "PASS"
+                                : item.status === st.key;
                             return (
                               <TouchableOpacity
                                 key={st.key}
@@ -990,10 +993,20 @@ export default function DigitalChecklistScreen() {
                                   flex: 1,
                                   paddingVertical: 6,
                                   borderRadius: 6,
+                                  flexDirection: "row",
                                   alignItems: "center",
+                                  justifyContent: "center",
+                                  gap: 4,
                                   backgroundColor: isActive ? st.color : "transparent",
                                 }}
                               >
+                                {st.icon && (
+                                  <Ionicons
+                                    name={st.icon}
+                                    size={13}
+                                    color={isActive ? "#FFFFFF" : "#10B981"}
+                                  />
+                                )}
                                 <Text style={{ fontSize: 11, fontWeight: "800", color: isActive ? "#FFFFFF" : "#64748B" }}>
                                   {st.label}
                                 </Text>

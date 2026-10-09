@@ -560,9 +560,9 @@ export default function WorkOrderDetailsScreen() {
                 >
                   <View style={{ alignItems: "center" }}>
                     <Text style={{ fontSize: 15, fontWeight: "800", color: "#10B981" }}>
-                      {workOrder.checklist.items.filter((i) => i.status === "PASS").length}
+                      {workOrder.checklist.items.filter((i) => i.status === "PASS" || i.status === "OK").length}
                     </Text>
-                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>PASSED</Text>
+                    <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>OK</Text>
                   </View>
                   <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
                   <View style={{ alignItems: "center" }}>
