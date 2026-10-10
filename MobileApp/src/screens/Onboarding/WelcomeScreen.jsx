@@ -31,7 +31,7 @@ export default function WelcomeScreen() {
             resizeMode="contain"
           />
           <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A", letterSpacing: -0.5 }}>
-            Workflee
+            Workfle
           </Text>
         </View>
 

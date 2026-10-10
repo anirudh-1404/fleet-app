@@ -140,7 +140,7 @@ export default function WorkshopSidebarDrawer({
                   <Ionicons name="construct" size={18} color="#FFFFFF" />
                 </View>
                 <View>
-                  <Text style={styles.brandTitle}>Workflee</Text>
+                  <Text style={styles.brandTitle}>Workfle</Text>
                   <Text style={styles.brandSubtitle}>Workshop Manager</Text>
                 </View>
               </View>

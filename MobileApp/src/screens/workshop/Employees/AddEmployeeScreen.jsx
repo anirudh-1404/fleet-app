@@ -123,7 +123,7 @@ export default function AddEmployeeScreen() {
           >
             <Ionicons name="information-circle-outline" size={20} color="#2563EB" style={{ marginRight: 10 }} />
             <Text style={{ fontSize: 13, color: "#1E40AF", flex: 1, lineHeight: 18 }}>
-              This employee can securely log into Workflee with their email and password to view and complete their assigned jobs.
+              This employee can securely log into Workfle with their email and password to view and complete their assigned jobs.
             </Text>
           </View>
 
