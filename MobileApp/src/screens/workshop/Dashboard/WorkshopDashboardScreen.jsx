@@ -9,6 +9,7 @@ import {
   StatusBar,
   Alert,
   Platform,
+  useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -22,6 +23,9 @@ import WorkshopSidebarDrawer from "../../../components/workshop/WorkshopSidebarD
 export default function WorkshopDashboardScreen() {
   const navigation = useNavigation();
   const { user, logout } = useAuth();
+  const { width: windowWidth } = useWindowDimensions();
+  const isDesktop = windowWidth >= 900;
+  const kpiWidth = isDesktop ? "23.5%" : "48%";
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -113,16 +117,24 @@ export default function WorkshopDashboardScreen() {
       <View
         style={{
           backgroundColor: "#FFFFFF",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
           borderBottomWidth: 1,
           borderColor: "#E2E8F0",
+          width: "100%",
         }}
       >
-        {/* Hamburger Icon */}
+        <View
+          style={{
+            maxWidth: 1200,
+            width: "100%",
+            alignSelf: "center",
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {/* Hamburger Icon */}
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => setSidebarOpen(true)}
@@ -182,6 +194,7 @@ export default function WorkshopDashboardScreen() {
           </TouchableOpacity>
         </View>
       </View>
+    </View>
 
       {loading && !refreshing ? (
         <WorkshopStateView loading={true} />
@@ -193,19 +206,20 @@ export default function WorkshopDashboardScreen() {
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
-          {/* Main Operational Overview */}
-          <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
-            Operational Overview
-          </Text>
+          <View style={{ maxWidth: 1200, width: "100%", alignSelf: "center" }}>
+            {/* Main Operational Overview */}
+            <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
+              Operational Overview
+            </Text>
 
-          {/* Primary KPI Grid */}
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
+            {/* Primary KPI Grid */}
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
             {/* Today's Jobs */}
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -227,7 +241,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -249,7 +263,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_VEHICLE_LIST, { status: "IN_WORKSHOP" })}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -271,7 +285,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST, { status: "READY_FOR_COLLECTION" })}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -293,7 +307,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST, { status: "IN_PROGRESS" })}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -315,7 +329,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_INSPECTION_LIST, { status: "PENDING" })}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -337,7 +351,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: summary.overdueJobs > 0 ? "#FEF2F2" : "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -361,7 +375,7 @@ export default function WorkshopDashboardScreen() {
               activeOpacity={0.8}
               onPress={() => navigation.navigate(ROUTES.WORKSHOP_INVOICE_LIST)}
               style={{
-                width: "48%",
+                width: kpiWidth,
                 backgroundColor: "#FFFFFF",
                 borderRadius: 12,
                 padding: 14,
@@ -379,8 +393,8 @@ export default function WorkshopDashboardScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Executive Quick Operations Bar */}
-          <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
+            {/* Executive Quick Operations Bar */}
+            <View style={{ flexDirection: "row", gap: 10, marginBottom: 20, maxWidth: isDesktop ? 480 : "100%" }}>
             {/* Primary Action: Create Work Order */}
             <TouchableOpacity
               activeOpacity={0.85}
@@ -513,6 +527,7 @@ export default function WorkshopDashboardScreen() {
               ))}
             </View>
           )}
+          </View>
         </ScrollView>
       )}
 

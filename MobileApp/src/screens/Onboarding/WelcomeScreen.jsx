@@ -21,8 +21,17 @@ export default function WelcomeScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }} edges={["top"]}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      <View style={{ flex: 1, paddingHorizontal: 28, justifyContent: "space-between", paddingVertical: 20 }}>
-        
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 28,
+          justifyContent: "space-between",
+          paddingVertical: 24,
+          maxWidth: 640,
+          width: "100%",
+          alignSelf: "center",
+        }}
+      >
         {/* Top Logo Row */}
         <View style={{ paddingTop: 28, flexDirection: "row", alignItems: "center", gap: 12 }}>
           <Image
@@ -37,7 +46,7 @@ export default function WelcomeScreen() {
 
         {/* Center Simple Headline */}
         <View style={{ marginVertical: "auto" }}>
-          <Text style={{ fontSize: 32, fontWeight: "800", color: "#0F172A", lineHeight: 40, letterSpacing: -0.5 }}>
+          <Text style={{ fontSize: 32, fontWeight: "800", color: "#0F172A", lineHeight: 42, letterSpacing: -0.5 }}>
             Fleet management & vehicle rentals, simplified.
           </Text>
 
@@ -82,7 +91,6 @@ export default function WelcomeScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </SafeAreaView>
   );

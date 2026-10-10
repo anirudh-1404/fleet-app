@@ -122,16 +122,18 @@ export default function WorkshopSidebarDrawer({
           />
         </Animated.View>
 
-        {/* Sliding Sidebar */}
-        <Animated.View
-          style={[
-            styles.drawerContent,
-            {
-              width: DRAWER_WIDTH,
-              transform: [{ translateX: slideAnim }],
-            },
-          ]}
-        >
+        {/* Center column constraint for web browser shell */}
+        <View style={styles.webShellConstraint} pointerEvents="box-none">
+          {/* Sliding Sidebar */}
+          <Animated.View
+            style={[
+              styles.drawerContent,
+              {
+                width: DRAWER_WIDTH,
+                transform: [{ translateX: slideAnim }],
+              },
+            ]}
+          >
           <View style={{ flex: 1 }}>
             {/* Header with Brand & Close Button */}
             <View style={[styles.drawerHeader, { paddingTop: topInset + 8 }]}>
@@ -372,6 +374,7 @@ export default function WorkshopSidebarDrawer({
             </View>
           </View>
         </Animated.View>
+        </View>
       </View>
     </Modal>
   );
@@ -381,6 +384,15 @@ const styles = StyleSheet.create({
   overlayContainer: {
     flex: 1,
     flexDirection: "row",
+  },
+  webShellConstraint: {
+    flex: 1,
+    width: "100%",
+    maxWidth: Platform.OS === "web" ? 1200 : undefined,
+    alignSelf: "center",
+    flexDirection: "row",
+    position: "relative",
+    height: "100%",
   },
   backdrop: {
     ...StyleSheet.FillObject,
