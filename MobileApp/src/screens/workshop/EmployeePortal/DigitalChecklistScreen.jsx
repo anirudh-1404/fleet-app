@@ -937,12 +937,11 @@ export default function DigitalChecklistScreen() {
                       <View
                         key={item.id || originalIndex}
                         style={{
-                          backgroundColor: "#FFFFFF",
+                          backgroundColor: isFail ? "#FFF5F5" : "#FFFFFF",
                           borderRadius: 12,
                           padding: 12,
-                          borderWidth: 1.5,
-                          borderColor: isFail ? "#FCA5A5" : isPass ? "#BBF7D0" : "#E2E8F0",
-                          backgroundColor: isFail ? "#FFF5F5" : "#FFFFFF",
+                          borderWidth: 1,
+                          borderColor: isFail ? "#FCA5A5" : "#E2E8F0",
                         }}
                       >
                         {/* Title Row + Edit/Delete */}
