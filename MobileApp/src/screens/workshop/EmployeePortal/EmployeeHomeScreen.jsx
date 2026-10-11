@@ -8,6 +8,7 @@ import {
   RefreshControl,
   StatusBar,
   Alert,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -63,17 +64,34 @@ export default function EmployeeHomeScreen() {
   };
 
   const handleLogout = () => {
-    Alert.alert("Logout", "Are you sure you want to sign out?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Logout",
-        style: "destructive",
-        onPress: async () => {
-          await logout();
-          navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+    const doLogout = async () => {
+      try {
+        await logout();
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+      navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+    };
+
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined") {
+        const confirmed = window.confirm("Are you sure you want to sign out?");
+        if (confirmed) {
+          doLogout();
+        }
+      } else {
+        doLogout();
+      }
+    } else {
+      Alert.alert("Logout", "Are you sure you want to sign out?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: doLogout,
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const filteredJobs = jobs.filter((job) => {

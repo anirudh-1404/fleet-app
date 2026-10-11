@@ -78,20 +78,37 @@ export default function RentalDashboardScreen() {
   const upcomingReturns = data?.upcomingReturns || [];
 
   const handleLogout = async () => {
-    Alert.alert("Sign Out", "Are you sure you want to sign out of your rental workspace?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Sign Out",
-        style: "destructive",
-        onPress: async () => {
-          await logout();
-          navigation.reset({
-            index: 0,
-            routes: [{ name: ROUTES.LOGIN }],
-          });
+    const doLogout = async () => {
+      try {
+        await logout();
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+      navigation.reset({
+        index: 0,
+        routes: [{ name: ROUTES.LOGIN }],
+      });
+    };
+
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined") {
+        const confirmed = window.confirm("Are you sure you want to sign out of your rental workspace?");
+        if (confirmed) {
+          await doLogout();
+        }
+      } else {
+        await doLogout();
+      }
+    } else {
+      Alert.alert("Sign Out", "Are you sure you want to sign out of your rental workspace?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: doLogout,
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   return (

@@ -29,11 +29,15 @@ export function AuthProvider({ children }) {
             setRole(freshUser.role);
           }
         } catch (e) {
-          console.warn("Auth token validation failed, clearing stored auth:", e.message);
-          await authService.logout();
-          setUser(null);
-          setToken(null);
-          setRole(null);
+          if (e.response && e.response.status === 401) {
+            console.warn("Auth token expired (401), clearing stored session");
+            await authService.logout();
+            setUser(null);
+            setToken(null);
+            setRole(null);
+          } else {
+            console.warn("Could not reach backend to revalidate token, keeping cached auth session:", e.message);
+          }
         }
       }
     } catch (error) {

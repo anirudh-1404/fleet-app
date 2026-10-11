@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,29 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
+import { useAuth } from "../../context/AuthContext";
 
 const logoImg = require("../../../assets/logo.png");
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
+  const { user, role } = useAuth();
+
+  useEffect(() => {
+    if (user && role) {
+      if (role === "workshop_manager") {
+        navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
+      } else if (role === "workshop_employee") {
+        navigation.reset({ index: 0, routes: [{ name: "WorkshopEmployeeStack" }] });
+      } else if (role === "manager") {
+        navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
+      } else if (role === "rental_owner") {
+        navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
+      } else if (role === "driver") {
+        navigation.reset({ index: 0, routes: [{ name: "DriverStack" }] });
+      }
+    }
+  }, [user, role]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }} edges={["top"]}>

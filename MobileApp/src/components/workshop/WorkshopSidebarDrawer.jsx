@@ -352,7 +352,9 @@ export default function WorkshopSidebarDrawer({
                 activeOpacity={0.8}
                 onPress={() => {
                   onClose();
-                  if (onLogout) onLogout();
+                  setTimeout(() => {
+                    if (onLogout) onLogout();
+                  }, 150);
                 }}
                 style={styles.logoutBtn}
               >

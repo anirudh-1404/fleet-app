@@ -59,17 +59,34 @@ export default function WorkshopDashboardScreen() {
   };
 
   const handleLogout = () => {
-    Alert.alert("Log Out", "Are you sure you want to log out of Workshop?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Log Out",
-        style: "destructive",
-        onPress: async () => {
-          await logout();
-          navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+    const doLogout = async () => {
+      try {
+        await logout();
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+      navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+    };
+
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined") {
+        const confirmed = window.confirm("Are you sure you want to log out of Workshop?");
+        if (confirmed) {
+          doLogout();
+        }
+      } else {
+        doLogout();
+      }
+    } else {
+      Alert.alert("Log Out", "Are you sure you want to log out of Workshop?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Log Out",
+          style: "destructive",
+          onPress: doLogout,
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const getGreeting = () => {
