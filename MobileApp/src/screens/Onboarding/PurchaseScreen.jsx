@@ -27,28 +27,48 @@ export default function PurchaseScreen() {
       {/* Header */}
       <View
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 12,
-          flexDirection: "row",
-          alignItems: "center",
+          width: "100%",
           backgroundColor: "#FFFFFF",
           borderBottomWidth: 1,
           borderColor: "#E2E8F0",
         }}
       >
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ padding: 4, marginRight: 12 }}
+        <View
+          style={{
+            maxWidth: 640,
+            width: "100%",
+            alignSelf: "center",
+            paddingHorizontal: 20,
+            paddingVertical: 12,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
         >
-          <Ionicons name="arrow-back" size={24} color="#0F172A" />
-        </TouchableOpacity>
-        <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
-          Choose a Plan
-        </Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ padding: 4, marginRight: 12 }}
+          >
+            <Ionicons name="arrow-back" size={24} color="#0F172A" />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
+            Choose a Plan
+          </Text>
+        </View>
       </View>
 
       {/* Main Container */}
-      <View style={{ flex: 1, justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 16 }}>
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          maxWidth: 640,
+          alignSelf: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 20,
+          paddingTop: 16,
+          paddingBottom: 16,
+        }}
+      >
         <ScrollView
           contentContainerStyle={{ paddingBottom: 16 }}
           showsVerticalScrollIndicator={false}
@@ -97,9 +117,17 @@ export default function PurchaseScreen() {
               For companies managing internal transport, vehicles, and drivers.
             </Text>
 
-            <Text style={{ fontSize: 22, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
-              $149 <Text style={{ fontSize: 13, fontWeight: "500", color: "#64748B" }}>/ month</Text>
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: "#94A3B8", textDecorationLine: "line-through" }}>
+                $149/mo
+              </Text>
+              <Text style={{ fontSize: 24, fontWeight: "900", color: "#16A34A" }}>
+                Free
+              </Text>
+              <View style={{ backgroundColor: "#DCFCE7", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, marginLeft: 2 }}>
+                <Text style={{ fontSize: 11, fontWeight: "800", color: "#15803D" }}>100% FREE</Text>
+              </View>
+            </View>
 
             <View style={{ borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 10, gap: 6 }}>
               <Text style={{ fontSize: 13, color: "#334155" }}>• Daily driver pre-trip checklists</Text>
@@ -145,9 +173,17 @@ export default function PurchaseScreen() {
               For businesses renting cars, vans, or trucks to customers.
             </Text>
 
-            <Text style={{ fontSize: 22, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
-              $129 <Text style={{ fontSize: 13, fontWeight: "500", color: "#64748B" }}>/ month</Text>
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: "#94A3B8", textDecorationLine: "line-through" }}>
+                $129/mo
+              </Text>
+              <Text style={{ fontSize: 24, fontWeight: "900", color: "#16A34A" }}>
+                Free
+              </Text>
+              <View style={{ backgroundColor: "#DCFCE7", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, marginLeft: 2 }}>
+                <Text style={{ fontSize: 11, fontWeight: "800", color: "#15803D" }}>100% FREE</Text>
+              </View>
+            </View>
 
             <View style={{ borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 10, gap: 6 }}>
               <Text style={{ fontSize: 13, color: "#334155" }}>• Rental agreements and customer records</Text>
@@ -193,9 +229,17 @@ export default function PurchaseScreen() {
               For vehicle repair shops, servicing, and truck/trailer inspections.
             </Text>
 
-            <Text style={{ fontSize: 22, fontWeight: "800", color: "#0F172A", marginBottom: 12 }}>
-              $199 <Text style={{ fontSize: 13, fontWeight: "500", color: "#64748B" }}>/ month</Text>
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: "#94A3B8", textDecorationLine: "line-through" }}>
+                $199/mo
+              </Text>
+              <Text style={{ fontSize: 24, fontWeight: "900", color: "#16A34A" }}>
+                Free
+              </Text>
+              <View style={{ backgroundColor: "#DCFCE7", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, marginLeft: 2 }}>
+                <Text style={{ fontSize: 11, fontWeight: "800", color: "#15803D" }}>100% FREE</Text>
+              </View>
+            </View>
 
             <View style={{ borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 10, gap: 6 }}>
               <Text style={{ fontSize: 13, color: "#334155" }}>• Work orders & job lifecycle tracking</Text>

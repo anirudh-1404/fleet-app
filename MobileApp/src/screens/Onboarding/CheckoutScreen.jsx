@@ -33,9 +33,9 @@ export default function CheckoutScreen() {
   };
 
   const getPlanLabel = () => {
-    if (isWorkshop) return "Workshop Management ($199/mo)";
-    if (isRental) return "Vehicle Rentals ($129/mo)";
-    return "Fleet Management ($149/mo)";
+    if (isWorkshop) return "Workshop Management (Free)";
+    if (isRental) return "Vehicle Rentals (Free)";
+    return "Fleet Management (Free)";
   };
 
   const [name, setName] = useState("");
@@ -115,26 +115,41 @@ export default function CheckoutScreen() {
       {/* Header */}
       <View
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 12,
-          flexDirection: "row",
-          alignItems: "center",
+          width: "100%",
           backgroundColor: "#FFFFFF",
           borderBottomWidth: 1,
           borderColor: "#E2E8F0",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 4, marginRight: 12 }}>
-          <Ionicons name="arrow-back" size={24} color="#0F172A" />
-        </TouchableOpacity>
-        <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
-          {getPlanTitle()}
-        </Text>
+        <View
+          style={{
+            maxWidth: 640,
+            width: "100%",
+            alignSelf: "center",
+            paddingHorizontal: 20,
+            paddingVertical: 12,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 4, marginRight: 12 }}>
+            <Ionicons name="arrow-back" size={24} color="#0F172A" />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 18, fontWeight: "700", color: "#0F172A" }}>
+            {getPlanTitle()}
+          </Text>
+        </View>
       </View>
 
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <ScrollView
-          contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
+          contentContainerStyle={{
+            padding: 20,
+            paddingBottom: 40,
+            width: "100%",
+            maxWidth: 640,
+            alignSelf: "center",
+          }}
           keyboardShouldPersistTaps="handled"
         >
           {/* Plan chip */}
@@ -257,81 +272,28 @@ export default function CheckoutScreen() {
             </View>
           </View>
 
-          {/* Test Card */}
+          {/* Free Plan Badge / No Credit Card Needed */}
           <View
             style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: 14,
+              backgroundColor: "#F0FDF4",
               borderWidth: 1,
-              borderColor: "#E2E8F0",
+              borderColor: "#BBF7D0",
+              borderRadius: 14,
               padding: 16,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 12,
               marginBottom: 20,
             }}
           >
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12 }}>
-              <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A" }}>Payment Details</Text>
-              <Text style={{ fontSize: 11, color: "#64748B" }}>Demo Mode</Text>
-            </View>
-
-            <View style={{ marginBottom: 10 }}>
-              <TextInput
-                value={cardNumber}
-                onChangeText={(v) => setCardNumber(formatCardNumber(v))}
-                placeholder="4242 4242 4242 4242"
-                keyboardType="numeric"
-                placeholderTextColor="#94A3B8"
-                style={{
-                  backgroundColor: "#F8FAFC",
-                  borderWidth: 1,
-                  borderColor: "#CBD5E1",
-                  borderRadius: 8,
-                  paddingHorizontal: 12,
-                  height: 44,
-                  fontSize: 14,
-                  color: "#0F172A",
-                }}
-              />
-            </View>
-
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              <View style={{ flex: 1 }}>
-                <TextInput
-                  value={expiry}
-                  onChangeText={setExpiry}
-                  placeholder="MM/YY"
-                  placeholderTextColor="#94A3B8"
-                  style={{
-                    backgroundColor: "#F8FAFC",
-                    borderWidth: 1,
-                    borderColor: "#CBD5E1",
-                    borderRadius: 8,
-                    paddingHorizontal: 12,
-                    height: 44,
-                    fontSize: 14,
-                    color: "#0F172A",
-                  }}
-                />
-              </View>
-              <View style={{ flex: 1 }}>
-                <TextInput
-                  value={cvc}
-                  onChangeText={setCvc}
-                  placeholder="CVC"
-                  keyboardType="numeric"
-                  secureTextEntry
-                  placeholderTextColor="#94A3B8"
-                  style={{
-                    backgroundColor: "#F8FAFC",
-                    borderWidth: 1,
-                    borderColor: "#CBD5E1",
-                    borderRadius: 8,
-                    paddingHorizontal: 12,
-                    height: 44,
-                    fontSize: 14,
-                    color: "#0F172A",
-                  }}
-                />
-              </View>
+            <Ionicons name="checkmark-circle" size={24} color="#16A34A" />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#15803D" }}>
+                100% Free Plan Active
+              </Text>
+              <Text style={{ fontSize: 12, color: "#166534", marginTop: 2 }}>
+                No credit card or payment details required. Instant access.
+              </Text>
             </View>
           </View>
 
@@ -352,7 +314,7 @@ export default function CheckoutScreen() {
               <ActivityIndicator color="#FFFFFF" />
             ) : (
               <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
-                Create Account
+                Get Started for Free
               </Text>
             )}
           </TouchableOpacity>
