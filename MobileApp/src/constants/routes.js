@@ -2,6 +2,7 @@ const ROUTES = {
   WELCOME: "Welcome",
   PURCHASE: "Purchase",
   CHECKOUT: "Checkout",
+  VERIFY_OTP: "VerifyOtp",
   LOGIN: "Login",
   FORGOT_PASSWORD: "ForgotPassword",
   MANAGER_DASHBOARD: "ManagerDashboard",

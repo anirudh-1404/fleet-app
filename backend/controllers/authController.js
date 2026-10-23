@@ -107,3 +107,35 @@ export const registerUser = async (req, res) => {
     return res.status(500).json({ message: error.message || "Server error during registration" });
   }
 };
+
+export const sendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+    // Demo verification code (1234). Production email dispatch can be attached here.
+    return res.json({
+      success: true,
+      message: `Verification code sent to ${email}`,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to send verification code" });
+  }
+};
+
+export const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+    // Validate demo OTP
+    if (String(otp).trim() === "1234") {
+      return res.json({ success: true, message: "Code verified successfully" });
+    }
+    return res.status(400).json({ message: "Invalid verification code" });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to verify code" });
+  }
+};

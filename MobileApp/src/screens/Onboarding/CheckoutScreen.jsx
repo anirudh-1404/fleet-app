@@ -15,13 +15,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
-import { authService } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
 
 export default function CheckoutScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { login } = useAuth();
   const selectedPlan = route?.params?.plan || "fleet";
   const isRental = selectedPlan === "rental";
   const isWorkshop = selectedPlan === "workshop";
@@ -48,64 +45,44 @@ export default function CheckoutScreen() {
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const formatCardNumber = (text) => {
     const cleaned = text.replace(/\D/g, "").slice(0, 16);
     const matches = cleaned.match(/.{1,4}/g);
     return matches ? matches.join(" ") : cleaned;
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (!name.trim() || !email.trim() || !password || !phone.trim()) {
       Alert.alert("Missing Fields", "Please fill in your name, email, phone, and password.");
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      let assignedRole = "manager";
-      if (isWorkshop) assignedRole = "workshop_manager";
-      else if (isRental) assignedRole = "rental_owner";
-
-      await authService.register(name.trim(), email.trim(), password, phone.trim(), assignedRole);
-
-      // Automatically log the user in
-      try {
-        const loginData = await login(email.trim(), password);
-        if (loginData.role === "workshop_manager") {
-          navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
-          return;
-        } else if (loginData.role === "rental_owner") {
-          navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
-          return;
-        } else if (loginData.role === "manager") {
-          navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
-          return;
-        }
-      } catch (loginErr) {
-        console.warn("Auto-login failed after registration, navigating to Login screen:", loginErr);
-      }
-
-      Alert.alert(
-        "Account Created 🎉",
-        `Your ${isWorkshop ? "Workshop Manager" : isRental ? "Rental Owner" : "Fleet Manager"} account is ready. Please sign in to continue.`,
-        [
-          {
-            text: "Sign In",
-            onPress: () => {
-              navigation.navigate(ROUTES.LOGIN, { prefillEmail: email.trim() });
-            },
-          },
-        ]
-      );
-    } catch (error) {
-      const errorMsg =
-        error.response?.data?.message || error.message || "Failed to create account. Please try again.";
-      Alert.alert("Registration Error", errorMsg);
-    } finally {
-      setIsSubmitting(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
+      return;
     }
+
+    if (password.length < 6) {
+      Alert.alert("Weak Password", "Password must be at least 6 characters long.");
+      return;
+    }
+
+    let assignedRole = "manager";
+    if (isWorkshop) assignedRole = "workshop_manager";
+    else if (isRental) assignedRole = "rental_owner";
+
+    // Navigate to OTP verification screen with registration payload
+    navigation.navigate(ROUTES.VERIFY_OTP, {
+      registrationData: {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        phone: phone.trim(),
+        role: assignedRole,
+        planTitle: getPlanTitle(),
+      },
+    });
   };
 
   return (
@@ -301,22 +278,25 @@ export default function CheckoutScreen() {
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={handleCheckout}
-            disabled={isSubmitting}
             style={{
-              height: 50,
+              height: 52,
               backgroundColor: "#2563EB",
-              borderRadius: 12,
+              borderRadius: 14,
               alignItems: "center",
               justifyContent: "center",
+              flexDirection: "row",
+              gap: 8,
+              shadowColor: "#2563EB",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              elevation: 4,
             }}
           >
-            {isSubmitting ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
-                Get Started for Free
-              </Text>
-            )}
+            <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
+              Next: Verify Email
+            </Text>
+            <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
