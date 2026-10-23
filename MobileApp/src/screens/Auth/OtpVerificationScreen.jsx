@@ -271,7 +271,7 @@ export default function OtpVerificationScreen() {
             flexGrow: 1,
             justifyContent: "space-between",
           }}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
         >
           <View>

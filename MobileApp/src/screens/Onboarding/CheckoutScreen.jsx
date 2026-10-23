@@ -39,6 +39,7 @@ export default function CheckoutScreen() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -52,19 +53,46 @@ export default function CheckoutScreen() {
   };
 
   const handleCheckout = () => {
-    if (!name.trim() || !email.trim() || !password || !phone.trim()) {
-      Alert.alert("Missing Fields", "Please fill in your name, email, phone, and password.");
+    setValidationError("");
+
+    if (!name.trim()) {
+      const err = "Please enter your full name.";
+      setValidationError(err);
+      if (Platform.OS === "web") window.alert(err);
+      else Alert.alert("Missing Name", err);
+      return;
+    }
+
+    if (!email.trim()) {
+      const err = "Please enter your email address.";
+      setValidationError(err);
+      if (Platform.OS === "web") window.alert(err);
+      else Alert.alert("Missing Email", err);
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      Alert.alert("Invalid Email", "Please enter a valid email address.");
+      const err = "Please enter a valid email address (e.g. name@example.com).";
+      setValidationError(err);
+      if (Platform.OS === "web") window.alert(err);
+      else Alert.alert("Invalid Email", err);
       return;
     }
 
-    if (password.length < 6) {
-      Alert.alert("Weak Password", "Password must be at least 6 characters long.");
+    if (!phone.trim()) {
+      const err = "Please enter your phone number.";
+      setValidationError(err);
+      if (Platform.OS === "web") window.alert(err);
+      else Alert.alert("Missing Phone", err);
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      const err = "Password must be at least 6 characters long.";
+      setValidationError(err);
+      if (Platform.OS === "web") window.alert(err);
+      else Alert.alert("Weak Password", err);
       return;
     }
 
@@ -127,7 +155,7 @@ export default function CheckoutScreen() {
             maxWidth: 640,
             alignSelf: "center",
           }}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="always"
         >
           {/* Plan chip */}
           <View
@@ -273,6 +301,28 @@ export default function CheckoutScreen() {
               </Text>
             </View>
           </View>
+
+          {/* Validation Error Banner */}
+          {validationError ? (
+            <View
+              style={{
+                backgroundColor: "#FEF2F2",
+                borderWidth: 1,
+                borderColor: "#FCA5A5",
+                borderRadius: 12,
+                padding: 12,
+                marginBottom: 16,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <Ionicons name="alert-circle" size={20} color="#DC2626" />
+              <Text style={{ flex: 1, fontSize: 13, color: "#DC2626", fontWeight: "600" }}>
+                {validationError}
+              </Text>
+            </View>
+          ) : null}
 
           {/* Submit */}
           <TouchableOpacity
