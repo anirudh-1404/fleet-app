@@ -21,16 +21,18 @@ import { useAuth } from "../../context/AuthContext";
 export default function OtpVerificationScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { login } = useAuth();
+  const { login, verifyLoginOtp } = useAuth();
 
+  const isLoginMode = route?.params?.mode === "login";
   const registrationData = route?.params?.registrationData || {};
+  const email = (route?.params?.email || registrationData.email || "").trim();
+
   const {
     name = "",
-    email = "",
     password = "",
     phone = "",
     role = "manager",
-    planTitle = "Account Setup",
+    planTitle = isLoginMode ? "Security Verification" : "Account Setup",
   } = registrationData;
 
   const [otp, setOtp] = useState("");
@@ -57,10 +59,10 @@ export default function OtpVerificationScreen() {
     };
   }, [timer]);
 
-  // Auto-focus input & trigger initial OTP dispatch
+  // Auto-focus input & trigger initial OTP dispatch for registration mode
   useEffect(() => {
-    if (email) {
-      authService.sendOtp(email.trim().toLowerCase()).catch((err) => {
+    if (!isLoginMode && email) {
+      authService.sendOtp(email.toLowerCase()).catch((err) => {
         const msg = err.response?.data?.message || "Failed to dispatch verification email.";
         setErrorMessage(msg);
       });
@@ -87,7 +89,7 @@ export default function OtpVerificationScreen() {
     setCanResend(false);
 
     try {
-      await authService.sendOtp(email.trim().toLowerCase());
+      await authService.sendOtp(email.toLowerCase());
       const successMsg = `A new 4-digit verification code has been sent to ${email}`;
       if (Platform.OS === "web") {
         window.alert(successMsg);
@@ -115,23 +117,14 @@ export default function OtpVerificationScreen() {
     setErrorMessage("");
 
     try {
-      // 1. Verify OTP with backend
-      await authService.verifyOtp(email.trim().toLowerCase(), otp);
-
-      // 2. Complete user registration
-      await authService.register(
-        name.trim(),
-        email.trim().toLowerCase(),
-        password,
-        phone.trim(),
-        role
-      );
-
-      // Automatically log the user in
-      try {
-        const loginData = await login(email.trim().toLowerCase(), password);
+      if (isLoginMode) {
+        // --- 2FA LOGIN VERIFICATION ---
+        const loginData = await verifyLoginOtp(email.toLowerCase(), otp);
         if (loginData.role === "workshop_manager") {
           navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
+          return;
+        } else if (loginData.role === "workshop_employee") {
+          navigation.reset({ index: 0, routes: [{ name: "WorkshopEmployeeStack" }] });
           return;
         } else if (loginData.role === "rental_owner") {
           navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
@@ -139,29 +132,60 @@ export default function OtpVerificationScreen() {
         } else if (loginData.role === "manager") {
           navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
           return;
+        } else if (loginData.role === "driver") {
+          navigation.reset({ index: 0, routes: [{ name: "DriverStack" }] });
+          return;
         }
-      } catch (loginErr) {
-        console.warn("Auto-login failed after registration, navigating to Login screen:", loginErr);
-      }
+      } else {
+        // --- REGISTRATION FLOW ---
+        // 1. Verify OTP with backend
+        await authService.verifyOtp(email.toLowerCase(), otp);
 
-      // Fallback if auto-login role redirect did not trigger
-      Alert.alert(
-        "Verification Successful 🎉",
-        "Your account has been verified and created successfully. Please sign in to continue.",
-        [
-          {
-            text: "Sign In",
-            onPress: () => {
-              navigation.reset({
-                index: 0,
-                routes: [{ name: ROUTES.LOGIN, params: { prefillEmail: email.trim() } }],
-              });
+        // 2. Complete user registration
+        await authService.register(
+          name.trim(),
+          email.toLowerCase(),
+          password,
+          phone.trim(),
+          role
+        );
+
+        // 3. Automatically log the user in
+        try {
+          const loginData = await login(email.toLowerCase(), password);
+          if (loginData.role === "workshop_manager") {
+            navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
+            return;
+          } else if (loginData.role === "rental_owner") {
+            navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
+            return;
+          } else if (loginData.role === "manager") {
+            navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
+            return;
+          }
+        } catch (loginErr) {
+          console.warn("Auto-login failed after registration, navigating to Login screen:", loginErr);
+        }
+
+        // Fallback if auto-login role redirect did not trigger
+        Alert.alert(
+          "Verification Successful 🎉",
+          "Your account has been verified and created successfully. Please sign in to continue.",
+          [
+            {
+              text: "Sign In",
+              onPress: () => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: ROUTES.LOGIN, params: { prefillEmail: email } }],
+                });
+              },
             },
-          },
-        ]
-      );
+          ]
+        );
+      }
     } catch (error) {
-      console.error("Registration error after OTP verify:", error);
+      console.error("Verification error after OTP:", error);
       const serverMsg =
         error.response?.data?.message ||
         error.message ||
@@ -323,7 +347,7 @@ export default function OtpVerificationScreen() {
                   letterSpacing: -0.5,
                 }}
               >
-                Verify Your Email
+                {isLoginMode ? "Security Verification" : "Verify Your Email"}
               </Text>
 
               <Text
@@ -336,7 +360,9 @@ export default function OtpVerificationScreen() {
                   paddingHorizontal: 12,
                 }}
               >
-                We have sent a 4-digit verification code to
+                {isLoginMode
+                  ? "Enter the 4-digit code sent to your email to complete sign in"
+                  : "We have sent a 4-digit verification code to"}
               </Text>
 
               {/* Email display pill */}
@@ -501,7 +527,7 @@ export default function OtpVerificationScreen() {
               ) : (
                 <>
                   <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
-                    Verify & Continue
+                    {isLoginMode ? "Verify & Sign In" : "Verify & Continue"}
                   </Text>
                   <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
                 </>
@@ -513,8 +539,10 @@ export default function OtpVerificationScreen() {
               style={{ marginTop: 16, alignItems: "center", paddingVertical: 8 }}
             >
               <Text style={{ fontSize: 13, color: "#64748B" }}>
-                Need to edit your details?{" "}
-                <Text style={{ fontWeight: "700", color: "#2563EB" }}>Go Back</Text>
+                {isLoginMode ? "Need to change account? " : "Need to edit your details? "}
+                <Text style={{ fontWeight: "700", color: "#2563EB" }}>
+                  {isLoginMode ? "Back to Sign In" : "Go Back"}
+                </Text>
               </Text>
             </TouchableOpacity>
           </View>

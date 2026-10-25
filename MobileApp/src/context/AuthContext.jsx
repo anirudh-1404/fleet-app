@@ -51,9 +51,26 @@ export function AuthProvider({ children }) {
     setIsLoading(true);
     try {
       const data = await authService.login(email, password);
-      setUser(data.user);
-      setToken(data.token);
-      setRole(data.role);
+      if (data.token) {
+        setUser(data.user);
+        setToken(data.token);
+        setRole(data.role);
+      }
+      return data;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyLoginOtp = async (email, otp) => {
+    setIsLoading(true);
+    try {
+      const data = await authService.verifyLoginOtp(email, otp);
+      if (data.token) {
+        setUser(data.user);
+        setToken(data.token);
+        setRole(data.role);
+      }
       return data;
     } finally {
       setIsLoading(false);
@@ -80,6 +97,7 @@ export function AuthProvider({ children }) {
         role,
         isLoading,
         login,
+        verifyLoginOtp,
         logout,
         refreshUser: loadStoredAuth,
       }}

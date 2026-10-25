@@ -40,6 +40,16 @@ export default function LoginScreen() {
     setIsSubmitting(true);
     try {
       const data = await login(emailTrim, password);
+
+      // If OTP 2FA is required, navigate to OTP screen
+      if (data.requiresOtp) {
+        navigation.navigate(ROUTES.VERIFY_OTP, {
+          mode: "login",
+          email: emailTrim,
+        });
+        return;
+      }
+
       if (data.role === "workshop_manager") {
         navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
       } else if (data.role === "workshop_employee") {

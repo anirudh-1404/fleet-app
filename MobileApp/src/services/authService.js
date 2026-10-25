@@ -14,6 +14,18 @@ export const authService = {
     return response.data;
   },
 
+  verifyLoginOtp: async (email, otp) => {
+    const response = await api.post("/auth/verify-login-otp", { email, otp });
+    const { token, role, user } = response.data;
+
+    if (token) {
+      await AsyncStorage.setItem("fleet_user_token", token);
+      await AsyncStorage.setItem("fleet_user_data", JSON.stringify(user));
+    }
+
+    return response.data;
+  },
+
   register: async (name, email, password, phone, role = "manager") => {
     const response = await api.post("/auth/register", {
       name,
