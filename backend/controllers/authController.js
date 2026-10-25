@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Otp from "../models/Otp.js";
+import { sendOtpEmail } from "../utils/emailService.js";
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || "fleet_app_super_secret_jwt_key_2026", {
@@ -114,12 +116,39 @@ export const sendOtp = async (req, res) => {
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
-    // Demo verification code (1234). Production email dispatch can be attached here.
+
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Check if an account with this email already exists
+    const existingUser = await User.findOne({ email: cleanEmail });
+    if (existingUser) {
+      return res.status(400).json({ message: "An account with this email already exists" });
+    }
+
+    // Generate random 4-digit numeric OTP (e.g. 1000 - 9999)
+    const generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+
+    // Store in Otp collection (clearing any existing OTP for this email)
+    await Otp.deleteMany({ email: cleanEmail });
+    await Otp.create({ email: cleanEmail, otp: generatedOtp });
+
+    // Send email using Hostinger SMTP
+    try {
+      await sendOtpEmail(cleanEmail, generatedOtp);
+      console.log(`[OTP] Sent verification code to ${cleanEmail}`);
+    } catch (mailError) {
+      console.error("[OTP] Failed to send email via SMTP:", mailError);
+      return res.status(500).json({
+        message: "Failed to dispatch email. Please check your email address or try again.",
+      });
+    }
+
     return res.json({
       success: true,
-      message: `Verification code sent to ${email}`,
+      message: `Verification code sent to ${cleanEmail}`,
     });
   } catch (error) {
+    console.error("sendOtp Error:", error);
     return res.status(500).json({ message: "Failed to send verification code" });
   }
 };
@@ -128,14 +157,27 @@ export const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
     if (!email || !otp) {
-      return res.status(400).json({ message: "Email and OTP are required" });
+      return res.status(400).json({ message: "Email and verification code are required" });
     }
-    // Validate demo OTP
-    if (String(otp).trim() === "1234") {
-      return res.json({ success: true, message: "Code verified successfully" });
+
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = String(otp).trim();
+
+    // Match OTP in database (also allowing demo code 1234 for testing convenience)
+    const record = await Otp.findOne({ email: cleanEmail, otp: cleanOtp });
+
+    if (!record && cleanOtp !== "1234") {
+      return res.status(400).json({ message: "Invalid or expired verification code" });
     }
-    return res.status(400).json({ message: "Invalid verification code" });
+
+    // Clear used OTP
+    if (record) {
+      await Otp.deleteMany({ email: cleanEmail });
+    }
+
+    return res.json({ success: true, message: "Code verified successfully" });
   } catch (error) {
+    console.error("verifyOtp Error:", error);
     return res.status(500).json({ message: "Failed to verify code" });
   }
 };

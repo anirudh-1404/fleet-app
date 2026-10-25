@@ -26,13 +26,8 @@ export const authService = {
   },
 
   sendOtp: async (email) => {
-    try {
-      const response = await api.post("/auth/send-otp", { email });
-      return response.data;
-    } catch (error) {
-      // In offline / mock fallback
-      return { success: true };
-    }
+    const response = await api.post("/auth/send-otp", { email });
+    return response.data;
   },
 
   verifyOtp: async (email, otp) => {

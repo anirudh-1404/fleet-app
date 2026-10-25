@@ -60,7 +60,10 @@ export default function OtpVerificationScreen() {
   // Auto-focus input & trigger initial OTP dispatch
   useEffect(() => {
     if (email) {
-      authService.sendOtp(email);
+      authService.sendOtp(email.trim().toLowerCase()).catch((err) => {
+        const msg = err.response?.data?.message || "Failed to dispatch verification email.";
+        setErrorMessage(msg);
+      });
     }
     const focusTimeout = setTimeout(() => {
       inputRef.current?.focus();
@@ -76,14 +79,30 @@ export default function OtpVerificationScreen() {
     }
   };
 
-  const handleResendOtp = () => {
+  const handleResendOtp = async () => {
     if (!canResend) return;
     setOtp("");
     setErrorMessage("");
     setTimer(30);
     setCanResend(false);
-    authService.sendOtp(email);
-    Alert.alert("Code Resent", `A new 4-digit verification code has been sent to ${email}`);
+
+    try {
+      await authService.sendOtp(email.trim().toLowerCase());
+      const successMsg = `A new 4-digit verification code has been sent to ${email}`;
+      if (Platform.OS === "web") {
+        window.alert(successMsg);
+      } else {
+        Alert.alert("Code Resent", successMsg);
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || "Could not resend code. Please try again.";
+      setErrorMessage(msg);
+      if (Platform.OS === "web") {
+        window.alert(msg);
+      } else {
+        Alert.alert("Resend Failed", msg);
+      }
+    }
   };
 
   const handleVerify = async () => {
@@ -92,17 +111,14 @@ export default function OtpVerificationScreen() {
       return;
     }
 
-    // Demo OTP validation check (1234)
-    if (otp !== "1234") {
-      setErrorMessage("Invalid verification code. Please check your email and try again.");
-      return;
-    }
-
     setIsSubmitting(true);
     setErrorMessage("");
 
     try {
-      // Complete user registration
+      // 1. Verify OTP with backend
+      await authService.verifyOtp(email.trim().toLowerCase(), otp);
+
+      // 2. Complete user registration
       await authService.register(
         name.trim(),
         email.trim().toLowerCase(),
@@ -149,8 +165,13 @@ export default function OtpVerificationScreen() {
       const serverMsg =
         error.response?.data?.message ||
         error.message ||
-        "Registration failed. Please try again or go back.";
-      Alert.alert("Registration Failed", serverMsg);
+        "Invalid or expired verification code. Please try again.";
+      setErrorMessage(serverMsg);
+      if (Platform.OS === "web") {
+        window.alert(serverMsg);
+      } else {
+        Alert.alert("Verification Failed", serverMsg);
+      }
     } finally {
       setIsSubmitting(false);
     }
