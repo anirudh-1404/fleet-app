@@ -9,12 +9,13 @@ const createMailer = (port, secure) => {
       user: process.env.SMTP_USER || "info@workfle.com",
       pass: process.env.SMTP_PASS || "Harpreet@2210#$",
     },
+    family: 4, // CRITICAL: Force IPv4 connection to prevent Linux/Render IPv6 ETIMEDOUT
     tls: {
       rejectUnauthorized: false,
     },
-    connectionTimeout: 8000, // 8 seconds max to connect
-    greetingTimeout: 8000,
-    socketTimeout: 10000,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 };
 
