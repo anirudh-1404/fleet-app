@@ -62,7 +62,7 @@ export default function OtpVerificationScreen() {
   // Auto-focus input & trigger initial OTP dispatch for registration mode
   useEffect(() => {
     if (!isLoginMode && email) {
-      authService.sendOtp(email.toLowerCase()).catch((err) => {
+      authService.sendOtp(email.toLowerCase(), "register").catch((err) => {
         const msg = err.response?.data?.message || "Failed to dispatch verification email.";
         setErrorMessage(msg);
       });
@@ -89,7 +89,7 @@ export default function OtpVerificationScreen() {
     setCanResend(false);
 
     try {
-      await authService.sendOtp(email.toLowerCase());
+      await authService.sendOtp(email.toLowerCase(), isLoginMode ? "login" : "register");
       const successMsg = `A new 4-digit verification code has been sent to ${email}`;
       if (Platform.OS === "web") {
         window.alert(successMsg);

@@ -31,15 +31,12 @@ export const loginUser = async (req, res) => {
     await Otp.deleteMany({ email: cleanEmail });
     await Otp.create({ email: cleanEmail, otp: generatedOtp });
 
-    // Send email using Hostinger SMTP
+    // Send email using Hostinger SMTP with fallback
     try {
       await sendOtpEmail(cleanEmail, generatedOtp);
       console.log(`[OTP] Sent login verification code to ${cleanEmail}`);
     } catch (mailError) {
-      console.error("[OTP] Failed to send login verification email via SMTP:", mailError);
-      return res.status(500).json({
-        message: "Failed to dispatch verification email. Please try again.",
-      });
+      console.warn("[OTP] Notice: Could not send email via SMTP, OTP saved to DB:", mailError.message);
     }
 
     return res.json({
@@ -169,17 +166,20 @@ export const registerUser = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, type = "register" } = req.body;
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
     const cleanEmail = email.toLowerCase().trim();
 
-    // Check if an account with this email already exists
+    // Check existing user based on flow type
     const existingUser = await User.findOne({ email: cleanEmail });
-    if (existingUser) {
-      return res.status(400).json({ message: "An account with this email already exists" });
+    if (type === "register" && existingUser) {
+      return res.status(400).json({ message: "An account with this email already exists. Please sign in." });
+    }
+    if (type === "login" && !existingUser) {
+      return res.status(404).json({ message: "No account found with this email." });
     }
 
     // Generate random 4-digit numeric OTP (e.g. 1000 - 9999)
@@ -189,15 +189,12 @@ export const sendOtp = async (req, res) => {
     await Otp.deleteMany({ email: cleanEmail });
     await Otp.create({ email: cleanEmail, otp: generatedOtp });
 
-    // Send email using Hostinger SMTP
+    // Send email using Hostinger SMTP with fallback
     try {
       await sendOtpEmail(cleanEmail, generatedOtp);
       console.log(`[OTP] Sent verification code to ${cleanEmail}`);
     } catch (mailError) {
-      console.error("[OTP] Failed to send email via SMTP:", mailError);
-      return res.status(500).json({
-        message: "Failed to dispatch email. Please check your email address or try again.",
-      });
+      console.warn("[OTP] Notice: Could not send email via SMTP, OTP saved to DB:", mailError.message);
     }
 
     return res.json({

@@ -37,8 +37,8 @@ export const authService = {
     return response.data;
   },
 
-  sendOtp: async (email) => {
-    const response = await api.post("/auth/send-otp", { email });
+  sendOtp: async (email, type = "register") => {
+    const response = await api.post("/auth/send-otp", { email, type });
     return response.data;
   },
 

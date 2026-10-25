@@ -1,27 +1,41 @@
 import nodemailer from "nodemailer";
 
-// Lazy transporter creation
-let transporter = null;
+const createMailer = (port, secure) => {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.hostinger.com",
+    port,
+    secure,
+    auth: {
+      user: process.env.SMTP_USER || "info@workfle.com",
+      pass: process.env.SMTP_PASS || "Harpreet@2210#$",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+    connectionTimeout: 8000, // 8 seconds max to connect
+    greetingTimeout: 8000,
+    socketTimeout: 10000,
+  });
+};
+
+let primaryTransporter = null;
+let fallbackTransporter = null;
 
 export const getTransporter = () => {
-  if (!transporter) {
-    const port = Number(process.env.SMTP_PORT) || 465;
-    const isSecure = process.env.SMTP_SECURE === "true" || port === 465;
-
-    transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.hostinger.com",
-      port,
-      secure: isSecure,
-      auth: {
-        user: process.env.SMTP_USER || "info@workfle.com",
-        pass: process.env.SMTP_PASS || "",
-      },
-      tls: {
-        rejectUnauthorized: false, // Prevents self-signed cert blocks if any
-      },
-    });
+  if (!primaryTransporter) {
+    const configuredPort = Number(process.env.SMTP_PORT) || 465;
+    const isSecure = process.env.SMTP_SECURE === "true" || configuredPort === 465;
+    primaryTransporter = createMailer(configuredPort, isSecure);
   }
-  return transporter;
+  return primaryTransporter;
+};
+
+export const getFallbackTransporter = () => {
+  if (!fallbackTransporter) {
+    // Port 587 STARTTLS as reliable alternative on cloud hosts
+    fallbackTransporter = createMailer(587, false);
+  }
+  return fallbackTransporter;
 };
 
 /**
@@ -30,7 +44,6 @@ export const getTransporter = () => {
  * @param {string} otp - 4 digit verification code
  */
 export const sendOtpEmail = async (toEmail, otp) => {
-  const mailer = getTransporter();
   const fromAddress = process.env.SMTP_FROM || '"Workfle" <info@workfle.com>';
 
   const htmlContent = `
@@ -85,13 +98,25 @@ export const sendOtpEmail = async (toEmail, otp) => {
 
   const textContent = `Your Workfle verification code is: ${otp}. It is valid for 10 minutes.`;
 
-  const info = await mailer.sendMail({
+  const mailOptions = {
     from: fromAddress,
     to: toEmail,
     subject: `${otp} is your Workfle Verification Code`,
     text: textContent,
     html: htmlContent,
-  });
+  };
 
-  return info;
+  try {
+    const mailer = getTransporter();
+    return await mailer.sendMail(mailOptions);
+  } catch (primaryErr) {
+    console.warn("[EmailService] Primary SMTP (Port 465) failed, attempting fallback (Port 587):", primaryErr.message);
+    try {
+      const fallbackMailer = getFallbackTransporter();
+      return await fallbackMailer.sendMail(mailOptions);
+    } catch (fallbackErr) {
+      console.error("[EmailService] Both Primary and Fallback SMTP failed:", fallbackErr.message);
+      throw fallbackErr;
+    }
+  }
 };
