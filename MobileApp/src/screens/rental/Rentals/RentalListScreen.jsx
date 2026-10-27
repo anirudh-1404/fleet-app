@@ -159,7 +159,7 @@ export default function RentalListScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.CREATE_RENTAL)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: 14,
@@ -267,7 +267,7 @@ export default function RentalListScreen() {
           keyExtractor={(item) => item._id}
           renderItem={renderRentalItem}
           contentContainerStyle={{ padding: 16, paddingBottom: 30 }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#059669"]} />}
         />
       )}
     </SafeAreaView>

@@ -160,7 +160,7 @@ export default function WorkshopVehicleDetailsScreen() {
                 <Text style={{ fontSize: 22, fontWeight: "800", color: "#0F172A" }}>
                   {vehicle?.make} {vehicle?.model}
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                   {vehicle?.registration} • {vehicle?.year} • {vehicle?.vehicleType}
                 </Text>
               </View>
@@ -216,7 +216,7 @@ export default function WorkshopVehicleDetailsScreen() {
           <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
             <TouchableOpacity
               onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER, { prefilledVehicleId: vehicle?._id, prefilledCustomerId: vehicle?.customer?._id })}
-              style={{ flex: 1, backgroundColor: "#2563EB", paddingVertical: 10, borderRadius: 8, alignItems: "center" }}
+              style={{ flex: 1, backgroundColor: "#059669", paddingVertical: 10, borderRadius: 8, alignItems: "center" }}
             >
               <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "700" }}>+ Work Order</Text>
             </TouchableOpacity>

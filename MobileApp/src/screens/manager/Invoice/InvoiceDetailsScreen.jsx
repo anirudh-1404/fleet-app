@@ -91,9 +91,9 @@ export default function InvoiceDetailsScreen() {
           activeOpacity={0.7}
           disabled={downloadingPdf}
           onPress={handleDownloadPdf}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] items-center justify-center mr-2"
+          className="w-10 h-10 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-2"
         >
-          <Ionicons name="cloud-download-outline" size={18} color="#2563EB" />
+          <Ionicons name="cloud-download-outline" size={18} color="#059669" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -121,8 +121,8 @@ export default function InvoiceDetailsScreen() {
         {/* PDF Download Card */}
         <View className="bg-white rounded-2xl p-4 border border-[#E2E8F0] mb-4">
           <View className="flex-row items-center mb-3">
-            <View className="w-8 h-8 rounded-lg bg-[#EFF6FF] items-center justify-center mr-2.5">
-              <Ionicons name="document-text-outline" size={18} color="#2563EB" />
+            <View className="w-8 h-8 rounded-lg bg-[#ECFDF5] items-center justify-center mr-2.5">
+              <Ionicons name="document-text-outline" size={18} color="#059669" />
             </View>
             <View className="flex-1">
               <Text className="text-sm font-bold text-[#0F172A]">Tax Invoice PDF</Text>
@@ -133,7 +133,7 @@ export default function InvoiceDetailsScreen() {
             activeOpacity={0.85}
             disabled={downloadingPdf}
             onPress={handleDownloadPdf}
-            className="bg-[#2563EB] rounded-xl py-3 flex-row items-center justify-center"
+            className="bg-[#059669] rounded-xl py-3 flex-row items-center justify-center"
           >
             <Ionicons name="cloud-download-outline" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
             <Text className="text-sm font-bold text-white">
@@ -154,7 +154,7 @@ export default function InvoiceDetailsScreen() {
         <InfoCard title="Financial Summary" icon="cash-outline">
           <DetailRow label="Subtotal" value={invoice.subtotal || "$1,681.82"} />
           <DetailRow label="GST / Tax (10%)" value={invoice.tax || "$168.18"} />
-          <DetailRow label="Total Amount Due" value={invoice.amount} valueColor="text-[#2563EB]" />
+          <DetailRow label="Total Amount Due" value={invoice.amount} valueColor="text-[#059669]" />
         </InfoCard>
 
         <InfoCard title="Itemized Description" icon="document-text-outline">

@@ -233,7 +233,7 @@ export default function AddCustomerScreen() {
             disabled={submitting}
             style={{
               marginTop: 20,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               height: 50,
               alignItems: "center",

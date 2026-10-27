@@ -119,14 +119,14 @@ export default function ContactDetailsScreen() {
                   {contact?.name}
                 </Text>
                 {contact?.company ? (
-                  <Text style={{ fontSize: 14, fontWeight: "600", color: "#2563EB", marginTop: 2 }}>
+                  <Text style={{ fontSize: 14, fontWeight: "600", color: "#059669", marginTop: 2 }}>
                     {contact.company}
                   </Text>
                 ) : null}
               </View>
 
-              <View style={{ backgroundColor: "#EFF6FF", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 }}>
-                <Text style={{ fontSize: 12, fontWeight: "700", color: "#1D4ED8" }}>
+              <View style={{ backgroundColor: "#ECFDF5", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 }}>
+                <Text style={{ fontSize: 12, fontWeight: "700", color: "#047857" }}>
                   {contact?.type}
                 </Text>
               </View>

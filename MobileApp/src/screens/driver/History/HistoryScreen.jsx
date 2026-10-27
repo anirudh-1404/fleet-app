@@ -77,7 +77,7 @@ export default function HistoryScreen() {
       {/* List */}
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#059669" />
         </View>
       ) : (
         <FlatList

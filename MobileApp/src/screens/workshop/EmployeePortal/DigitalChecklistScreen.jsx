@@ -432,8 +432,8 @@ export default function DigitalChecklistScreen() {
               onPress={() => setShowAddSection(!showAddSection)}
               style={{ flexDirection: "row", alignItems: "center" }}
             >
-              <Ionicons name="add-circle" size={16} color="#2563EB" style={{ marginRight: 4 }} />
-              <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>
+              <Ionicons name="add-circle" size={16} color="#059669" style={{ marginRight: 4 }} />
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>
                 {showAddSection ? "Close Form" : "+ Add Item"}
               </Text>
             </TouchableOpacity>
@@ -462,12 +462,12 @@ export default function DigitalChecklistScreen() {
                     }
                   }}
                   style={{
-                    backgroundColor: isSelected ? "#2563EB" : "#FFFFFF",
+                    backgroundColor: isSelected ? "#059669" : "#FFFFFF",
                     paddingHorizontal: 14,
                     paddingVertical: 10,
                     borderRadius: 10,
                     borderWidth: 1.5,
-                    borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                    borderColor: isSelected ? "#059669" : "#E2E8F0",
                     flexDirection: "row",
                     alignItems: "center",
                   }}
@@ -492,7 +492,7 @@ export default function DigitalChecklistScreen() {
                       style={{
                         fontSize: 10,
                         fontWeight: "600",
-                        color: isSelected ? "#DBEAFE" : "#64748B",
+                        color: isSelected ? "#A7F3D0" : "#64748B",
                       }}
                     >
                       {tmpl.badge}
@@ -533,7 +533,7 @@ export default function DigitalChecklistScreen() {
           </View>
           <View style={{ width: 1, height: "100%", backgroundColor: "#E2E8F0" }} />
           <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 18, fontWeight: "900", color: "#2563EB" }}>{items.length}</Text>
+            <Text style={{ fontSize: 18, fontWeight: "900", color: "#059669" }}>{items.length}</Text>
             <Text style={{ fontSize: 10, fontWeight: "800", color: "#64748B" }}>TOTAL</Text>
           </View>
         </View>
@@ -549,11 +549,11 @@ export default function DigitalChecklistScreen() {
               borderWidth: 1.5,
               borderColor: "#CBD5E1",
               borderLeftWidth: 5,
-              borderLeftColor: "#2563EB",
+              borderLeftColor: "#059669",
             }}
           >
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 6 }}>
-              <Ionicons name="speedometer-outline" size={18} color="#2563EB" style={{ marginRight: 6 }} />
+              <Ionicons name="speedometer-outline" size={18} color="#059669" style={{ marginRight: 6 }} />
               <Text style={{ fontSize: 14, fontWeight: "800", color: "#0F172A" }}>
                 Brake Pads / Shoes Thickness Measurements
               </Text>
@@ -744,18 +744,18 @@ export default function DigitalChecklistScreen() {
         {showAddSection && (
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 14,
               padding: 16,
               marginBottom: 16,
               borderWidth: 1.5,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
             }}
           >
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name="add-circle-outline" size={18} color="#2563EB" style={{ marginRight: 6 }} />
-                <Text style={{ fontSize: 14, fontWeight: "800", color: "#1E40AF" }}>
+                <Ionicons name="add-circle-outline" size={18} color="#059669" style={{ marginRight: 6 }} />
+                <Text style={{ fontSize: 14, fontWeight: "800", color: "#065F46" }}>
                   Add Custom Item to Checklist
                 </Text>
               </View>
@@ -796,13 +796,13 @@ export default function DigitalChecklistScreen() {
                     key={cat}
                     onPress={() => setNewItemCategory(cat)}
                     style={{
-                      backgroundColor: isSelected ? "#2563EB" : "#FFFFFF",
+                      backgroundColor: isSelected ? "#059669" : "#FFFFFF",
                       paddingHorizontal: 10,
                       paddingVertical: 5,
                       borderRadius: 6,
                       marginRight: 6,
                       borderWidth: 1,
-                      borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                      borderColor: isSelected ? "#059669" : "#CBD5E1",
                     }}
                   >
                     <Text style={{ fontSize: 11, fontWeight: "700", color: isSelected ? "#FFFFFF" : "#475569" }}>
@@ -837,7 +837,7 @@ export default function DigitalChecklistScreen() {
             <TouchableOpacity
               onPress={handleAddItem}
               style={{
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 borderRadius: 8,
                 height: 44,
                 justifyContent: "center",
@@ -951,7 +951,7 @@ export default function DigitalChecklistScreen() {
                               {item.title || item.label}
                             </Text>
                             {item.measurementUnit ? (
-                              <Text style={{ fontSize: 10, color: "#2563EB", fontWeight: "700", marginTop: 2 }}>
+                              <Text style={{ fontSize: 10, color: "#059669", fontWeight: "700", marginTop: 2 }}>
                                 Unit: {item.measurementUnit}
                               </Text>
                             ) : null}
@@ -960,9 +960,9 @@ export default function DigitalChecklistScreen() {
                           <View style={{ flexDirection: "row", gap: 6 }}>
                             <TouchableOpacity
                               onPress={() => handleOpenEdit(originalIndex)}
-                              style={{ width: 28, height: 28, borderRadius: 6, backgroundColor: "#EFF6FF", justifyContent: "center", alignItems: "center" }}
+                              style={{ width: 28, height: 28, borderRadius: 6, backgroundColor: "#ECFDF5", justifyContent: "center", alignItems: "center" }}
                             >
-                              <Ionicons name="pencil-outline" size={13} color="#2563EB" />
+                              <Ionicons name="pencil-outline" size={13} color="#059669" />
                             </TouchableOpacity>
                             <TouchableOpacity
                               onPress={() => handleDeleteItem(originalIndex)}
@@ -1046,7 +1046,7 @@ export default function DigitalChecklistScreen() {
                                           ? "#DC2626"
                                           : sev === "Major"
                                           ? "#D97706"
-                                          : "#2563EB"
+                                          : "#059669"
                                         : "#FFFFFF",
                                       borderWidth: 1,
                                       borderColor: isSevActive ? "transparent" : "#CBD5E1",
@@ -1172,7 +1172,7 @@ export default function DigitalChecklistScreen() {
             }}
           >
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 6 }}>
-              <Ionicons name="checkbox-outline" size={18} color="#2563EB" style={{ marginRight: 6 }} />
+              <Ionicons name="checkbox-outline" size={18} color="#059669" style={{ marginRight: 6 }} />
               <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
                 Service Completion Record
               </Text>
@@ -1509,13 +1509,13 @@ export default function DigitalChecklistScreen() {
                     key={cat}
                     onPress={() => setEditCategory(cat)}
                     style={{
-                      backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                      backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                       paddingHorizontal: 10,
                       paddingVertical: 5,
                       borderRadius: 6,
                       marginRight: 6,
                       borderWidth: 1,
-                      borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                      borderColor: isSelected ? "#059669" : "#E2E8F0",
                     }}
                   >
                     <Text style={{ fontSize: 11, fontWeight: "700", color: isSelected ? "#FFFFFF" : "#475569" }}>
@@ -1566,7 +1566,7 @@ export default function DigitalChecklistScreen() {
                 onPress={handleSaveEdit}
                 style={{
                   flex: 1,
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   borderRadius: 10,
                   height: 44,
                   alignItems: "center",

@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Clean, minimal visual hierarchy for simplicity
 const ICON_THEMES = {
-  "car-outline": { bg: "#F0F7FF", icon: "#2563EB", border: "#DBEAFE" },
-  "car-sport-outline": { bg: "#F0F7FF", icon: "#2563EB", border: "#DBEAFE" },
+  "car-outline": { bg: "#F0F7FF", icon: "#059669", border: "#A7F3D0" },
+  "car-sport-outline": { bg: "#F0F7FF", icon: "#059669", border: "#A7F3D0" },
   "people-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "clipboard-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "checkbox-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
@@ -17,12 +17,12 @@ const ICON_THEMES = {
   "call-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "document-text-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
   "notifications-outline": { bg: "#F8FAFC", icon: "#334155", border: "#E2E8F0" },
-  "chatbubbles-outline": { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" },
+  "chatbubbles-outline": { bg: "#ECFDF5", icon: "#059669", border: "#A7F3D0" },
   "mail-unread-outline": { bg: "#ECFDF5", icon: "#10B981", border: "#A7F3D0" },
 };
 
 export default function FleetActionCard({ title, subtitle, icon, isFeatured, onPress }) {
-  const theme = ICON_THEMES[icon] || { bg: "#EFF6FF", icon: "#2563EB", border: "#BFDBFE" };
+  const theme = ICON_THEMES[icon] || { bg: "#ECFDF5", icon: "#059669", border: "#A7F3D0" };
 
   if (isFeatured) {
     return (

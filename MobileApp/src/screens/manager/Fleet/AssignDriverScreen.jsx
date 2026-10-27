@@ -157,7 +157,7 @@ export default function AssignDriverScreen() {
   if (isLoading) {
     return (
       <SafeAreaView className="flex-1 bg-[#F5F7FA] justify-center items-center">
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#059669" />
       </SafeAreaView>
     );
   }
@@ -204,7 +204,7 @@ export default function AssignDriverScreen() {
           <View className="px-6 mb-6">
             <SectionHeader title="Selected Driver" />
             <View
-              className="bg-white border border-[#2563EB]/30 bg-[#EFF6FF]/40 rounded-[24px] p-5 flex-row items-center justify-between"
+              className="bg-white border border-[#059669]/30 bg-[#ECFDF5]/40 rounded-[24px] p-5 flex-row items-center justify-between"
               style={{
                 shadowColor: "#111827",
                 shadowOffset: { width: 0, height: 2 },
@@ -214,7 +214,7 @@ export default function AssignDriverScreen() {
               }}
             >
               <View className="flex-row items-center flex-1 mr-4">
-                <View className="w-12 h-12 rounded-full bg-[#2563EB] items-center justify-center mr-4">
+                <View className="w-12 h-12 rounded-full bg-[#059669] items-center justify-center mr-4">
                   <Ionicons name="person-outline" size={22} color="white" />
                 </View>
                 <View className="flex-1">
@@ -243,7 +243,7 @@ export default function AssignDriverScreen() {
                     onPress={() => setSelectedVehicleId(vId)}
                     className={`mr-3 p-4 rounded-[20px] border ${
                       isSelected
-                        ? "bg-[#2563EB] border-[#2563EB]"
+                        ? "bg-[#059669] border-[#059669]"
                         : "bg-white border-[#E8EDF3]"
                     }`}
                     style={{ minWidth: 150 }}
@@ -307,7 +307,7 @@ export default function AssignDriverScreen() {
         style={{ paddingBottom: Math.max(insets.bottom, 16) }}
       >
         {isSubmitting ? (
-          <View className="h-14 bg-[#2563EB] rounded-2xl items-center justify-center">
+          <View className="h-14 bg-[#059669] rounded-2xl items-center justify-center">
             <ActivityIndicator color="white" />
           </View>
         ) : (

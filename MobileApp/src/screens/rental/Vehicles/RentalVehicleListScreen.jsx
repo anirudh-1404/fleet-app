@@ -109,7 +109,7 @@ export default function RentalVehicleListScreen() {
             </View>
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
-              <Text style={{ fontSize: 15, fontWeight: "800", color: "#2563EB" }}>
+              <Text style={{ fontSize: 15, fontWeight: "800", color: "#059669" }}>
                 ${item.dailyRate}
                 <Text style={{ fontSize: 12, fontWeight: "500", color: "#64748B" }}>/day</Text>
               </Text>
@@ -118,7 +118,7 @@ export default function RentalVehicleListScreen() {
                 <TouchableOpacity
                   onPress={() => navigation.navigate(ROUTES.CREATE_RENTAL, { preSelectedVehicleId: item._id })}
                   style={{
-                    backgroundColor: "#2563EB",
+                    backgroundColor: "#059669",
                     paddingHorizontal: 12,
                     paddingVertical: 5,
                     borderRadius: 8,
@@ -160,7 +160,7 @@ export default function RentalVehicleListScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.ADD_RENTAL_VEHICLE)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: 14,
@@ -268,7 +268,7 @@ export default function RentalVehicleListScreen() {
           keyExtractor={(item) => item._id}
           renderItem={renderVehicleItem}
           contentContainerStyle={{ padding: 16, paddingBottom: 30 }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#059669"]} />}
         />
       )}
     </SafeAreaView>

@@ -198,7 +198,7 @@ export default function AddWorkshopVehicleScreen() {
                         key={c._id}
                         onPress={() => setSelectedCustomerId(c._id)}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 8,
                           borderRadius: 8,
@@ -394,9 +394,9 @@ export default function AddWorkshopVehicleScreen() {
                       key={st}
                       onPress={() => setStatus(st)}
                       style={{
-                        backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                         borderWidth: 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         paddingHorizontal: 12,
                         paddingVertical: 6,
                         borderRadius: 8,
@@ -442,7 +442,7 @@ export default function AddWorkshopVehicleScreen() {
                   }}
                 >
                   {uploading ? (
-                    <ActivityIndicator color="#2563EB" />
+                    <ActivityIndicator color="#059669" />
                   ) : (
                     <>
                       <Ionicons name="camera-outline" size={26} color="#64748B" />
@@ -490,7 +490,7 @@ export default function AddWorkshopVehicleScreen() {
             disabled={submitting}
             style={{
               marginTop: 20,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               height: 50,
               alignItems: "center",

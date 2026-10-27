@@ -190,13 +190,13 @@ export default function WorkshopSidebarDrawer({
                 onPress={() => handleNavigate(ROUTES.WORKSHOP_WORKORDER_LIST)}
                 style={styles.menuItem}
               >
-                <View style={[styles.menuIconBox, { backgroundColor: "#EFF6FF" }]}>
-                  <Ionicons name="clipboard-outline" size={19} color="#2563EB" />
+                <View style={[styles.menuIconBox, { backgroundColor: "#ECFDF5" }]}>
+                  <Ionicons name="clipboard-outline" size={19} color="#059669" />
                 </View>
                 <Text style={styles.menuTitle}>Work Orders</Text>
                 {summary.openWorkOrders > 0 && (
-                  <View style={[styles.badgePill, { backgroundColor: "#DBEAFE" }]}>
-                    <Text style={[styles.badgeText, { color: "#1D4ED8" }]}>
+                  <View style={[styles.badgePill, { backgroundColor: "#A7F3D0" }]}>
+                    <Text style={[styles.badgeText, { color: "#047857" }]}>
                       {summary.openWorkOrders}
                     </Text>
                   </View>
@@ -242,8 +242,8 @@ export default function WorkshopSidebarDrawer({
                 onPress={() => handleNavigate(ROUTES.WORKSHOP_CUSTOMER_LIST)}
                 style={styles.menuItem}
               >
-                <View style={[styles.menuIconBox, { backgroundColor: "#EFF6FF" }]}>
-                  <Ionicons name="people-outline" size={19} color="#2563EB" />
+                <View style={[styles.menuIconBox, { backgroundColor: "#ECFDF5" }]}>
+                  <Ionicons name="people-outline" size={19} color="#059669" />
                 </View>
                 <Text style={styles.menuTitle}>Customers</Text>
                 <Ionicons name="chevron-forward" size={16} color="#CBD5E1" />
@@ -307,8 +307,8 @@ export default function WorkshopSidebarDrawer({
                 onPress={() => handleNavigate(ROUTES.WORKSHOP_EMPLOYEE_CHAT)}
                 style={styles.menuItem}
               >
-                <View style={[styles.menuIconBox, { backgroundColor: "#EFF6FF" }]}>
-                  <Ionicons name="chatbubbles-outline" size={19} color="#2563EB" />
+                <View style={[styles.menuIconBox, { backgroundColor: "#ECFDF5" }]}>
+                  <Ionicons name="chatbubbles-outline" size={19} color="#059669" />
                 </View>
                 <Text style={styles.menuTitle}>Team Chat</Text>
                 <View style={[styles.badgePill, { backgroundColor: "#FEF3C7" }]}>
@@ -326,8 +326,8 @@ export default function WorkshopSidebarDrawer({
                 onPress={() => handleNavigate(ROUTES.WORKSHOP_CONTACTS)}
                 style={styles.menuItem}
               >
-                <View style={[styles.menuIconBox, { backgroundColor: "#EFF6FF" }]}>
-                  <Ionicons name="call-outline" size={19} color="#2563EB" />
+                <View style={[styles.menuIconBox, { backgroundColor: "#ECFDF5" }]}>
+                  <Ionicons name="call-outline" size={19} color="#059669" />
                 </View>
                 <Text style={styles.menuTitle}>Suppliers & Contacts</Text>
                 <Ionicons name="chevron-forward" size={16} color="#CBD5E1" />
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 8,
-    backgroundColor: "#2563EB",
+    backgroundColor: "#059669",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: "#2563EB",
+    backgroundColor: "#059669",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -599,7 +599,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   creditLink: {
-    color: "#2563EB",
+    color: "#059669",
     fontWeight: "700",
     textDecorationLine: "underline",
   },

@@ -118,7 +118,7 @@ export default function RentalVehicleDetailsScreen() {
             onPress={() => navigation.navigate(ROUTES.EDIT_RENTAL_VEHICLE, { vehicle })}
             style={{ padding: 4 }}
           >
-            <Ionicons name="create-outline" size={22} color="#2563EB" />
+            <Ionicons name="create-outline" size={22} color="#059669" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDelete} style={{ padding: 4 }}>
             <Ionicons name="trash-outline" size={22} color="#DC2626" />
@@ -182,7 +182,7 @@ export default function RentalVehicleDetailsScreen() {
                 <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600", textTransform: "uppercase" }}>
                   Daily Rental Rate
                 </Text>
-                <Text style={{ fontSize: 20, fontWeight: "800", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 20, fontWeight: "800", color: "#059669", marginTop: 2 }}>
                   ${vehicle.dailyRate}
                   <Text style={{ fontSize: 12, fontWeight: "500", color: "#64748B" }}> / day</Text>
                 </Text>
@@ -204,7 +204,7 @@ export default function RentalVehicleDetailsScreen() {
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.CREATE_RENTAL, { preSelectedVehicleId: vehicle._id })}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingVertical: 14,
               borderRadius: 12,
               flexDirection: "row",
@@ -223,16 +223,16 @@ export default function RentalVehicleDetailsScreen() {
         {currentRental && (
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 14,
               borderWidth: 1,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
               padding: 16,
               marginBottom: 16,
             }}
           >
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E40AF", textTransform: "uppercase" }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#065F46", textTransform: "uppercase" }}>
                 Current Active Rental
               </Text>
               <RentalStatusBadge status={currentRental.status} size="sm" />
@@ -245,14 +245,14 @@ export default function RentalVehicleDetailsScreen() {
               Phone: {currentRental.customer?.phone || "N/A"}
             </Text>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderColor: "#DBEAFE" }}>
-              <Text style={{ fontSize: 12, color: "#1E40AF", fontWeight: "600" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderColor: "#A7F3D0" }}>
+              <Text style={{ fontSize: 12, color: "#065F46", fontWeight: "600" }}>
                 Period: {currentRental.startDate} → {currentRental.returnDate}
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate(ROUTES.RENTAL_DETAILS, { rentalId: currentRental._id })}
               >
-                <Text style={{ fontSize: 12, color: "#2563EB", fontWeight: "700" }}>View Rental →</Text>
+                <Text style={{ fontSize: 12, color: "#059669", fontWeight: "700" }}>View Rental →</Text>
               </TouchableOpacity>
             </View>
           </View>

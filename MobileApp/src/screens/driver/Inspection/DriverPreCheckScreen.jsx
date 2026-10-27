@@ -310,10 +310,10 @@ export default function DriverPreCheckScreen() {
           disabled={!canCompleteInspection}
           onPress={handleSubmit}
           className={`h-12 rounded-[24px] items-center justify-center ${
-            canCompleteInspection ? "bg-[#2563EB]" : "bg-[#CBD5E1]"
+            canCompleteInspection ? "bg-[#059669]" : "bg-[#CBD5E1]"
           }`}
           style={{
-            shadowColor: canCompleteInspection ? "#2563EB" : "#000",
+            shadowColor: canCompleteInspection ? "#059669" : "#000",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: canCompleteInspection ? 0.15 : 0,
             shadowRadius: 8,

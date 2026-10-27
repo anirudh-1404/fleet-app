@@ -11,9 +11,9 @@ export default function ConfirmationModal({
   confirmText = "Confirm",
   cancelText = "Cancel",
   icon = "help-circle-outline",
-  iconBgColor = "bg-[#EFF6FF]",
-  iconColor = "#2563EB",
-  confirmButtonBg = "bg-[#2563EB]"
+  iconBgColor = "bg-[#ECFDF5]",
+  iconColor = "#059669",
+  confirmButtonBg = "bg-[#059669]"
 }) {
   return (
     <Modal

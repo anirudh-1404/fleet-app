@@ -50,6 +50,7 @@ export const loginUser = async (req, res) => {
 
     return res.json({
       requiresOtp: true,
+      name: user.name,
       email: user.email,
       role: user.role,
       modules: userModules,

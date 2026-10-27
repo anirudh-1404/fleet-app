@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   linkText: {
-    color: "#2563EB",
+    color: "#059669",
     fontWeight: "700",
     textDecorationLine: "underline",
   },

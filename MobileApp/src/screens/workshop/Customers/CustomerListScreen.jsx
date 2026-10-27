@@ -76,8 +76,8 @@ export default function CustomerListScreen() {
         </View>
 
         <View style={{ flexDirection: "row", gap: 6 }}>
-          <View style={{ backgroundColor: "#EFF6FF", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
-            <Text style={{ fontSize: 11, fontWeight: "700", color: "#1D4ED8" }}>
+          <View style={{ backgroundColor: "#ECFDF5", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+            <Text style={{ fontSize: 11, fontWeight: "700", color: "#047857" }}>
               {item.vehiclesCount || 0} {item.vehiclesCount === 1 ? "Vehicle" : "Vehicles"}
             </Text>
           </View>
@@ -127,7 +127,7 @@ export default function CustomerListScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.ADD_WORKSHOP_CUSTOMER)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             paddingHorizontal: 12,
             paddingVertical: 7,
             borderRadius: 8,

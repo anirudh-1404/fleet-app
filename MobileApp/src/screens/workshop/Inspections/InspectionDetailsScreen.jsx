@@ -148,7 +148,7 @@ export default function InspectionDetailsScreen() {
                 <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
                   {inspection?.inspectionType} Inspection
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                   {vehicle?.make} {vehicle?.model} ({vehicle?.registration})
                 </Text>
               </View>
@@ -164,7 +164,7 @@ export default function InspectionDetailsScreen() {
               </Text>
               {workOrder?.jobNumber ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Work Order: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{workOrder.jobNumber} ({workOrder.jobType})</Text>
+                  Work Order: <Text style={{ fontWeight: "700", color: "#059669" }}>{workOrder.jobNumber} ({workOrder.jobType})</Text>
                 </Text>
               ) : null}
               {customer?.fullName ? (

@@ -248,7 +248,7 @@ export default function CreateInspectionScreen() {
                   <TouchableOpacity
                     onPress={() => setSelectedWorkOrderId("")}
                     style={{
-                      backgroundColor: !selectedWorkOrderId ? "#2563EB" : "#F1F5F9",
+                      backgroundColor: !selectedWorkOrderId ? "#059669" : "#F1F5F9",
                       paddingHorizontal: 12,
                       paddingVertical: 6,
                       borderRadius: 8,
@@ -265,7 +265,7 @@ export default function CreateInspectionScreen() {
                         key={wo._id}
                         onPress={() => setSelectedWorkOrderId(wo._id)}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 6,
                           borderRadius: 8,
@@ -318,7 +318,7 @@ export default function CreateInspectionScreen() {
                       onPress={() => setStatus(st)}
                       style={{
                         flex: 1,
-                        backgroundColor: isSelected ? (st === "PASSED" ? "#15803D" : st === "FAILED" ? "#DC2626" : "#2563EB") : "#F8FAFC",
+                        backgroundColor: isSelected ? (st === "PASSED" ? "#15803D" : st === "FAILED" ? "#DC2626" : "#059669") : "#F8FAFC",
                         borderWidth: 1,
                         borderColor: isSelected ? "transparent" : "#CBD5E1",
                         paddingVertical: 8,

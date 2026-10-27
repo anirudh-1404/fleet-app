@@ -95,7 +95,7 @@ export default function DriverDetailsScreen() {
   if (isLoading && !driver) {
     return (
       <SafeAreaView className="flex-1 bg-[#F5F7FA] justify-center items-center">
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#059669" />
       </SafeAreaView>
     );
   }
@@ -257,10 +257,10 @@ export default function DriverDetailsScreen() {
                   driverId: driver?._id || driver?.id || driverId,
                 });
               }}
-              className="bg-white border border-dashed border-[#2563EB]/40 bg-[#EFF6FF]/30 rounded-[24px] p-5 flex-row items-center justify-between"
+              className="bg-white border border-dashed border-[#059669]/40 bg-[#ECFDF5]/30 rounded-[24px] p-5 flex-row items-center justify-between"
             >
               <View className="flex-row items-center flex-1 mr-3">
-                <View className="w-12 h-12 rounded-full bg-[#2563EB] items-center justify-center mr-3">
+                <View className="w-12 h-12 rounded-full bg-[#059669] items-center justify-center mr-3">
                   <Ionicons name="car-outline" size={22} color="white" />
                 </View>
                 <View className="flex-1">
@@ -268,7 +268,7 @@ export default function DriverDetailsScreen() {
                   <Text className="text-xs text-[#6B7280] mt-0.5">Tap here to assign a vehicle to this driver</Text>
                 </View>
               </View>
-              <Ionicons name="chevron-forward" size={18} color="#2563EB" />
+              <Ionicons name="chevron-forward" size={18} color="#059669" />
             </TouchableOpacity>
           )}
         </View>

@@ -263,7 +263,7 @@ export default function AddWorkshopInvoiceScreen() {
                   <TouchableOpacity
                     onPress={() => setSelectedWorkOrderId("")}
                     style={{
-                      backgroundColor: !selectedWorkOrderId ? "#2563EB" : "#F1F5F9",
+                      backgroundColor: !selectedWorkOrderId ? "#059669" : "#F1F5F9",
                       paddingHorizontal: 12,
                       paddingVertical: 6,
                       borderRadius: 8,
@@ -283,7 +283,7 @@ export default function AddWorkshopInvoiceScreen() {
                           if (wo.vehicle?._id) setSelectedVehicleId(wo.vehicle._id);
                         }}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 6,
                           borderRadius: 8,

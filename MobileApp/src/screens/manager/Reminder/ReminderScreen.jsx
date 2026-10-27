@@ -60,9 +60,9 @@ export default function ReminderScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.ADD_REMINDER)}
-          className="h-10 px-4 bg-[#2563EB] rounded-full items-center justify-center flex-row"
+          className="h-10 px-4 bg-[#059669] rounded-full items-center justify-center flex-row"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.15,
             shadowRadius: 6,
@@ -107,7 +107,7 @@ export default function ReminderScreen() {
           >
             <View className="flex-row items-center flex-1 mr-4">
               <View className="w-11 h-11 rounded-full bg-[#EEF4FF] items-center justify-center mr-3">
-                <Ionicons name="notifications-outline" size={18} color="#2563EB" />
+                <Ionicons name="notifications-outline" size={18} color="#059669" />
               </View>
               <View className="flex-1">
                 <Text className="text-sm font-bold text-[#111827]">{item.title}</Text>

@@ -123,7 +123,7 @@ export default function TruckServiceDetailsScreen() {
                 <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
                   {service?.serviceType}
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                   {vehicle?.make} {vehicle?.model} ({vehicle?.registration})
                 </Text>
               </View>
@@ -146,12 +146,12 @@ export default function TruckServiceDetailsScreen() {
               ) : null}
               {service?.nextDueDate ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Next Due Date: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{new Date(service.nextDueDate).toLocaleDateString()}</Text>
+                  Next Due Date: <Text style={{ fontWeight: "700", color: "#059669" }}>{new Date(service.nextDueDate).toLocaleDateString()}</Text>
                 </Text>
               ) : null}
               {workOrder?.jobNumber ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Linked Work Order: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{workOrder.jobNumber}</Text>
+                  Linked Work Order: <Text style={{ fontWeight: "700", color: "#059669" }}>{workOrder.jobNumber}</Text>
                 </Text>
               ) : null}
             </View>

@@ -177,7 +177,7 @@ export default function CheckoutScreen() {
           {/* Plan chip */}
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 10,
               padding: 12,
               flexDirection: "row",
@@ -186,11 +186,11 @@ export default function CheckoutScreen() {
               marginBottom: 16,
             }}
           >
-            <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E40AF" }}>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#065F46" }}>
               Selected: {getPlanLabel()}
             </Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>Change</Text>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>Change</Text>
             </TouchableOpacity>
           </View>
 

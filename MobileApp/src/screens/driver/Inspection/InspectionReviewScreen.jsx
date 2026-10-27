@@ -255,9 +255,9 @@ export default function InspectionReviewScreen() {
           activeOpacity={0.7}
           disabled={isLoading}
           onPress={handleSubmit}
-          className="flex-1 h-12 bg-[#2563EB] rounded-[24px] items-center justify-center"
+          className="flex-1 h-12 bg-[#059669] rounded-[24px] items-center justify-center"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.15,
             shadowRadius: 8,

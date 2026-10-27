@@ -83,8 +83,8 @@ export default function WorkshopContactsScreen() {
           ) : null}
         </View>
 
-        <View style={{ backgroundColor: "#EFF6FF", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
-          <Text style={{ fontSize: 11, fontWeight: "700", color: "#1D4ED8" }}>
+        <View style={{ backgroundColor: "#ECFDF5", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+          <Text style={{ fontSize: 11, fontWeight: "700", color: "#047857" }}>
             {item.type}
           </Text>
         </View>
@@ -133,7 +133,7 @@ export default function WorkshopContactsScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.ADD_WORKSHOP_CONTACT)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             paddingHorizontal: 12,
             paddingVertical: 7,
             borderRadius: 8,
@@ -157,9 +157,9 @@ export default function WorkshopContactsScreen() {
                 key={t}
                 onPress={() => setSelectedType(t)}
                 style={{
-                  backgroundColor: isSelected ? "#2563EB" : "#FFFFFF",
+                  backgroundColor: isSelected ? "#059669" : "#FFFFFF",
                   borderWidth: 1,
-                  borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                  borderColor: isSelected ? "#059669" : "#E2E8F0",
                   paddingHorizontal: 14,
                   paddingVertical: 6,
                   borderRadius: 20,

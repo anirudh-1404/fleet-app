@@ -63,7 +63,7 @@ export default function AssignedVehicleCard({
     >
       <View className="flex-row items-center flex-1 mr-4">
         {/* Photo Placeholder / Icon */}
-        <View className="w-14 h-14 rounded-[18px] bg-[#EFF6FF] items-center justify-center mr-4 border border-[#BFDBFE] overflow-hidden">
+        <View className="w-14 h-14 rounded-[18px] bg-[#ECFDF5] items-center justify-center mr-4 border border-[#A7F3D0] overflow-hidden">
           {photo ? (
             <Image
               source={{ uri: photo }}
@@ -71,7 +71,7 @@ export default function AssignedVehicleCard({
               resizeMode="cover"
             />
           ) : (
-            <Ionicons name="car-outline" size={26} color="#2563EB" />
+            <Ionicons name="car-outline" size={26} color="#059669" />
           )}
         </View>
 

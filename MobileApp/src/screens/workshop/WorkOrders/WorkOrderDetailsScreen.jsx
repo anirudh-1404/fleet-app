@@ -169,7 +169,7 @@ export default function WorkOrderDetailsScreen() {
                 <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
                   {workOrder?.jobNumber}
                 </Text>
-                <Text style={{ fontSize: 16, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 16, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                   {workOrder?.jobType}
                 </Text>
               </View>
@@ -212,16 +212,16 @@ export default function WorkOrderDetailsScreen() {
                   }
                   style={{
                     flex: 1,
-                    backgroundColor: "#EFF6FF",
+                    backgroundColor: "#ECFDF5",
                     borderRadius: 8,
                     paddingVertical: 8,
                     alignItems: "center",
                     borderWidth: 1,
-                    borderColor: "#BFDBFE",
+                    borderColor: "#A7F3D0",
                   }}
                 >
-                  <Ionicons name="checkbox-outline" size={16} color="#2563EB" style={{ marginBottom: 2 }} />
-                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB" }}>Checklist</Text>
+                  <Ionicons name="checkbox-outline" size={16} color="#059669" style={{ marginBottom: 2 }} />
+                  <Text style={{ fontSize: 11, fontWeight: "700", color: "#059669" }}>Checklist</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -274,7 +274,7 @@ export default function WorkOrderDetailsScreen() {
                 <TouchableOpacity
                   onPress={() => handleStatusTransition("IN_PROGRESS")}
                   disabled={updatingStatus}
-                  style={{ backgroundColor: "#2563EB", paddingVertical: 10, borderRadius: 8, alignItems: "center" }}
+                  style={{ backgroundColor: "#059669", paddingVertical: 10, borderRadius: 8, alignItems: "center" }}
                 >
                   <Text style={{ color: "#FFFFFF", fontSize: 13, fontWeight: "700" }}>
                     Start Work → IN PROGRESS
@@ -337,7 +337,7 @@ export default function WorkOrderDetailsScreen() {
               <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A" }}>
                 {vehicle?.make} {vehicle?.model}
               </Text>
-              <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                 {vehicle?.registration}
               </Text>
             </TouchableOpacity>
@@ -367,13 +367,13 @@ export default function WorkOrderDetailsScreen() {
                       width: 32,
                       height: 32,
                       borderRadius: 8,
-                      backgroundColor: "#EFF6FF",
+                      backgroundColor: "#ECFDF5",
                       justifyContent: "center",
                       alignItems: "center",
                       marginRight: 8,
                     }}
                   >
-                    <Ionicons name="clipboard-outline" size={18} color="#2563EB" />
+                    <Ionicons name="clipboard-outline" size={18} color="#059669" />
                   </View>
                   <View>
                     <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
@@ -500,13 +500,13 @@ export default function WorkOrderDetailsScreen() {
                     width: 32,
                     height: 32,
                     borderRadius: 8,
-                    backgroundColor: "#EFF6FF",
+                    backgroundColor: "#ECFDF5",
                     justifyContent: "center",
                     alignItems: "center",
                     marginRight: 8,
                   }}
                 >
-                  <Ionicons name="checkbox-outline" size={18} color="#2563EB" />
+                  <Ionicons name="checkbox-outline" size={18} color="#059669" />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
@@ -528,7 +528,7 @@ export default function WorkOrderDetailsScreen() {
                   })
                 }
                 style={{
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   paddingHorizontal: 12,
                   paddingVertical: 6,
                   borderRadius: 8,
@@ -580,7 +580,7 @@ export default function WorkOrderDetailsScreen() {
                   </View>
                   <View style={{ width: 1, backgroundColor: "#E2E8F0" }} />
                   <View style={{ alignItems: "center" }}>
-                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#2563EB" }}>
+                    <Text style={{ fontSize: 15, fontWeight: "800", color: "#059669" }}>
                       {workOrder.checklist.items.length}
                     </Text>
                     <Text style={{ fontSize: 10, fontWeight: "700", color: "#64748B" }}>TOTAL</Text>
@@ -668,7 +668,7 @@ export default function WorkOrderDetailsScreen() {
                 {workOrder.checklist.serviceRecord?.nextServiceDueKm && (
                   <View
                     style={{
-                      backgroundColor: "#EFF6FF",
+                      backgroundColor: "#ECFDF5",
                       borderRadius: 8,
                       padding: 8,
                       marginBottom: 8,
@@ -677,10 +677,10 @@ export default function WorkOrderDetailsScreen() {
                       alignItems: "center",
                     }}
                   >
-                    <Text style={{ fontSize: 11, fontWeight: "700", color: "#1E40AF" }}>
+                    <Text style={{ fontSize: 11, fontWeight: "700", color: "#065F46" }}>
                       Next Service Due:
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: "800", color: "#1D4ED8" }}>
+                    <Text style={{ fontSize: 12, fontWeight: "800", color: "#047857" }}>
                       {Number(workOrder.checklist.serviceRecord.nextServiceDueKm).toLocaleString()} km
                     </Text>
                   </View>
@@ -717,7 +717,7 @@ export default function WorkOrderDetailsScreen() {
                         </Text>
                       ) : null}
                       {defect.recommendedRepair ? (
-                        <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                        <Text style={{ fontSize: 11, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                           Action: {defect.recommendedRepair}
                         </Text>
                       ) : null}

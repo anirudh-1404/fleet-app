@@ -74,9 +74,9 @@ export default function NoteDetailsScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.EDIT_NOTE, { noteId: note.id })}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] items-center justify-center mr-2"
+          className="w-10 h-10 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-2"
         >
-          <Ionicons name="create-outline" size={18} color="#2563EB" />
+          <Ionicons name="create-outline" size={18} color="#059669" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -98,7 +98,7 @@ export default function NoteDetailsScreen() {
           <DetailRow label="Note Title" value={note.title} />
           <DetailRow label="Author" value={note.author || "Michael Johnson"} />
           <DetailRow label="Date Logged" value={note.date} />
-          <DetailRow label="Linked Vehicle" value={note.linkedVehicle || note.vehicleName || "Volvo FH16 (ABC-123)"} valueColor="text-[#2563EB]" />
+          <DetailRow label="Linked Vehicle" value={note.linkedVehicle || note.vehicleName || "Volvo FH16 (ABC-123)"} valueColor="text-[#059669]" />
         </InfoCard>
 
         <InfoCard title="Note Content" icon="chatbubble-ellipses-outline">

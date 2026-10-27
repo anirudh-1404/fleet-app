@@ -260,7 +260,7 @@ export default function AddTruckServiceScreen() {
                   <TouchableOpacity
                     onPress={() => setSelectedWorkOrderId("")}
                     style={{
-                      backgroundColor: !selectedWorkOrderId ? "#2563EB" : "#F1F5F9",
+                      backgroundColor: !selectedWorkOrderId ? "#059669" : "#F1F5F9",
                       paddingHorizontal: 12,
                       paddingVertical: 6,
                       borderRadius: 8,
@@ -277,7 +277,7 @@ export default function AddTruckServiceScreen() {
                         key={wo._id}
                         onPress={() => setSelectedWorkOrderId(wo._id)}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 6,
                           borderRadius: 8,

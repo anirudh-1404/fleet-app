@@ -21,7 +21,7 @@ import WorkshopStateView from "../../../components/workshop/WorkshopStateView";
 import { normalizeImageUrl } from "../../../services/uploadService";
 
 const STATUS_OPTIONS = [
-  { key: "OPEN", label: "Open", color: "#3B82F6", bg: "#EFF6FF" },
+  { key: "OPEN", label: "Open", color: "#10B981", bg: "#ECFDF5" },
   { key: "IN_PROGRESS", label: "In Progress", color: "#F59E0B", bg: "#FFFBEB" },
   { key: "WAITING_FOR_PARTS", label: "Waiting Parts", color: "#8B5CF6", bg: "#F5F3FF" },
   { key: "COMPLETED", label: "Completed", color: "#10B981", bg: "#ECFDF5" },
@@ -191,21 +191,21 @@ export default function EmployeeJobDetailsScreen() {
             width: 40,
             height: 40,
             borderRadius: 10,
-            backgroundColor: "#EFF6FF",
+            backgroundColor: "#ECFDF5",
             justifyContent: "center",
             alignItems: "center",
             borderWidth: 1,
-            borderColor: "#BFDBFE",
+            borderColor: "#A7F3D0",
           }}
         >
-          <Ionicons name="chatbubbles" size={20} color="#2563EB" />
+          <Ionicons name="chatbubbles" size={20} color="#059669" />
         </TouchableOpacity>
       </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ padding: 16, paddingBottom: 60 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#059669"]} />}
       >
         {/* Status Bar Card */}
         <View
@@ -236,7 +236,7 @@ export default function EmployeeJobDetailsScreen() {
                   fontSize: 14,
                   fontWeight: "800",
                   marginTop: 2,
-                  color: workOrder.priority === "Urgent" || workOrder.priority === "Critical" ? "#DC2626" : "#2563EB",
+                  color: workOrder.priority === "Urgent" || workOrder.priority === "Critical" ? "#DC2626" : "#059669",
                 }}
               >
                 {workOrder.priority || "Normal"}
@@ -298,13 +298,13 @@ export default function EmployeeJobDetailsScreen() {
                   width: 36,
                   height: 36,
                   borderRadius: 8,
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   justifyContent: "center",
                   alignItems: "center",
                   marginRight: 10,
                 }}
               >
-                <Ionicons name="car" size={20} color="#2563EB" />
+                <Ionicons name="car" size={20} color="#059669" />
               </View>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
                 Vehicle Details
@@ -322,13 +322,13 @@ export default function EmployeeJobDetailsScreen() {
                 borderRadius: 6,
               }}
             >
-              <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB", marginRight: 4 }}>
+              <Text style={{ fontSize: 11, fontWeight: "700", color: "#059669", marginRight: 4 }}>
                 {showHistory ? "Hide History" : "View History"}
               </Text>
               <Ionicons
                 name={showHistory ? "chevron-up" : "chevron-down"}
                 size={14}
-                color="#2563EB"
+                color="#059669"
               />
             </TouchableOpacity>
           </View>
@@ -365,7 +365,7 @@ export default function EmployeeJobDetailsScreen() {
 
               <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text style={{ fontSize: 13, color: "#64748B" }}>Odometer:</Text>
-                <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB" }}>
+                <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669" }}>
                   {vehicle.odometer ? `${vehicle.odometer.toLocaleString()} km` : "N/A"}
                 </Text>
               </View>
@@ -537,7 +537,7 @@ export default function EmployeeJobDetailsScreen() {
                   width: 40,
                   height: 40,
                   borderRadius: 10,
-                  backgroundColor: checklist?.isCompleted ? "#DCFCE7" : "#EFF6FF",
+                  backgroundColor: checklist?.isCompleted ? "#DCFCE7" : "#ECFDF5",
                   justifyContent: "center",
                   alignItems: "center",
                   marginRight: 12,
@@ -546,7 +546,7 @@ export default function EmployeeJobDetailsScreen() {
                 <Ionicons
                   name={checklist?.isCompleted ? "checkmark-done-circle" : "checkbox"}
                   size={24}
-                  color={checklist?.isCompleted ? "#10B981" : "#2563EB"}
+                  color={checklist?.isCompleted ? "#10B981" : "#059669"}
                 />
               </View>
               <View style={{ flex: 1 }}>
@@ -564,7 +564,7 @@ export default function EmployeeJobDetailsScreen() {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View
                 style={{
-                  backgroundColor: checklist?.isCompleted ? "#10B981" : "#2563EB",
+                  backgroundColor: checklist?.isCompleted ? "#10B981" : "#059669",
                   paddingHorizontal: 10,
                   paddingVertical: 5,
                   borderRadius: 6,
@@ -626,14 +626,14 @@ export default function EmployeeJobDetailsScreen() {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View
                 style={{
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   paddingHorizontal: 10,
                   paddingVertical: 5,
                   borderRadius: 6,
                   marginRight: 6,
                 }}
               >
-                <Text style={{ fontSize: 11, fontWeight: "800", color: "#2563EB" }}>
+                <Text style={{ fontSize: 11, fontWeight: "800", color: "#059669" }}>
                   ADD / VIEW
                 </Text>
               </View>
@@ -729,7 +729,7 @@ export default function EmployeeJobDetailsScreen() {
               disabled={submittingNote}
               onPress={handleAddNote}
               style={{
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 marginTop: 8,
                 borderRadius: 8,
                 paddingVertical: 10,
@@ -766,7 +766,7 @@ export default function EmployeeJobDetailsScreen() {
                   padding: 12,
                   marginBottom: 8,
                   borderLeftWidth: 3,
-                  borderLeftColor: "#2563EB",
+                  borderLeftColor: "#059669",
                 }}
               >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 4 }}>

@@ -75,9 +75,9 @@ export default function ReminderDetailsScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.EDIT_REMINDER, { reminderId: reminder.id })}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] items-center justify-center mr-2"
+          className="w-10 h-10 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-2"
         >
-          <Ionicons name="create-outline" size={18} color="#2563EB" />
+          <Ionicons name="create-outline" size={18} color="#059669" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -98,7 +98,7 @@ export default function ReminderDetailsScreen() {
         <InfoCard title="Reminder Summary" icon="notifications-outline">
           <DetailRow label="Title" value={reminder.title} />
           <DetailRow label="Alert Type" value={reminder.type || "Registration"} />
-          <DetailRow label="Due Date" value={reminder.date} valueColor="text-[#2563EB]" />
+          <DetailRow label="Due Date" value={reminder.date} valueColor="text-[#059669]" />
           <DetailRow label="Repeat Interval" value={reminder.repeat || "Never"} />
           <DetailRow label="Linked Vehicle" value={reminder.linkedVehicle || "Volvo FH16 (ABC-123)"} />
           <DetailRow label="Priority Status" badge={<StatusBadge status={reminder.status} />} />

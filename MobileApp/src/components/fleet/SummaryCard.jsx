@@ -41,9 +41,9 @@ export default function SummaryCard({ passCount, failCount, naCount, notesCount 
         </View>
 
         {/* Notes count */}
-        <View className="flex-1 items-center bg-[#EFF6FF] rounded-[16px] py-3 mx-1 border border-[#BFDBFE]/20">
-          <Text className="text-lg font-bold text-[#2563EB]">{notesCount}</Text>
-          <Text className="text-[10px] font-bold text-[#2563EB] uppercase mt-0.5">Notes</Text>
+        <View className="flex-1 items-center bg-[#ECFDF5] rounded-[16px] py-3 mx-1 border border-[#A7F3D0]/20">
+          <Text className="text-lg font-bold text-[#059669]">{notesCount}</Text>
+          <Text className="text-[10px] font-bold text-[#059669] uppercase mt-0.5">Notes</Text>
         </View>
       </View>
     </View>

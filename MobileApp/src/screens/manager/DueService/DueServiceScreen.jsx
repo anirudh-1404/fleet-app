@@ -131,7 +131,7 @@ export default function DueServiceScreen() {
               </View>
               <View className="flex-row justify-between">
                 <Text className="text-xs text-[#6B7280]">Next Service Due</Text>
-                <Text className="text-xs font-bold text-[#2563EB]">{item.nextService}</Text>
+                <Text className="text-xs font-bold text-[#059669]">{item.nextService}</Text>
               </View>
               <View className="flex-row justify-between">
                 <Text className="text-xs text-[#6B7280]">Days Remaining</Text>

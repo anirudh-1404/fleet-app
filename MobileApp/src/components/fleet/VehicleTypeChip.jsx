@@ -8,7 +8,7 @@ export default function VehicleTypeChip({ label, isActive, onPress }) {
       onPress={onPress}
       className={`rounded-full border mr-2.5 ${
         isActive
-          ? "bg-[#2563EB] border-[#2563EB]"
+          ? "bg-[#059669] border-[#059669]"
           : "bg-white border-[#E8EDF3]"
       }`}
       style={{

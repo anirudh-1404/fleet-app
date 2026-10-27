@@ -87,9 +87,9 @@ export default function ContactDetailsScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.EDIT_CONTACT, { contactId: contact.id })}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] items-center justify-center mr-2"
+          className="w-10 h-10 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-2"
         >
-          <Ionicons name="create-outline" size={18} color="#2563EB" />
+          <Ionicons name="create-outline" size={18} color="#059669" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -112,7 +112,7 @@ export default function ContactDetailsScreen() {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={handleCall}
-            className="flex-1 bg-[#2563EB] h-12 rounded-[24px] flex-row items-center justify-center"
+            className="flex-1 bg-[#059669] h-12 rounded-[24px] flex-row items-center justify-center"
           >
             <Ionicons name="call-outline" size={18} color="white" />
             <Text className="text-white text-sm font-semibold ml-2">Call Contact</Text>
@@ -123,8 +123,8 @@ export default function ContactDetailsScreen() {
             onPress={handleEmail}
             className="flex-1 bg-white border border-[#E8EDF3] h-12 rounded-[24px] flex-row items-center justify-center"
           >
-            <Ionicons name="mail-outline" size={18} color="#2563EB" />
-            <Text className="text-[#2563EB] text-sm font-semibold ml-2">Send Email</Text>
+            <Ionicons name="mail-outline" size={18} color="#059669" />
+            <Text className="text-[#059669] text-sm font-semibold ml-2">Send Email</Text>
           </TouchableOpacity>
         </View>
 
@@ -133,8 +133,8 @@ export default function ContactDetailsScreen() {
           <DetailRow label="Full Name" value={contact.name} />
           <DetailRow label="Company / Org" value={contact.company || "TransLogistics Corp"} />
           <DetailRow label="Role / Relationship" value={contact.role || "Vendor"} />
-          <DetailRow label="Phone Number" value={contact.phone} valueColor="text-[#2563EB]" />
-          <DetailRow label="Email Address" value={contact.email} valueColor="text-[#2563EB]" />
+          <DetailRow label="Phone Number" value={contact.phone} valueColor="text-[#059669]" />
+          <DetailRow label="Email Address" value={contact.email} valueColor="text-[#059669]" />
           <DetailRow label="Physical Address" value={contact.address || "100 Transport Way, Sydney NSW 2000"} />
         </InfoCard>
 

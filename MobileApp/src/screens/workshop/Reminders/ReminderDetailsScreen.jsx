@@ -142,7 +142,7 @@ export default function ReminderDetailsScreen() {
               </Text>
               {vehicle?.registration ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Vehicle: <Text style={{ fontWeight: "600", color: "#2563EB" }}>{vehicle.make} {vehicle.model} ({vehicle.registration})</Text>
+                  Vehicle: <Text style={{ fontWeight: "600", color: "#059669" }}>{vehicle.make} {vehicle.model} ({vehicle.registration})</Text>
                 </Text>
               ) : null}
             </View>

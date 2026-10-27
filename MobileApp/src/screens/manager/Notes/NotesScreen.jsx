@@ -60,9 +60,9 @@ export default function NotesScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.ADD_NOTE)}
-          className="h-10 px-4 bg-[#2563EB] rounded-full items-center justify-center flex-row"
+          className="h-10 px-4 bg-[#059669] rounded-full items-center justify-center flex-row"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.15,
             shadowRadius: 6,
@@ -114,8 +114,8 @@ export default function NotesScreen() {
             </Text>
             <View className="border-t border-[#E8EDF3] pt-3 flex-row justify-between items-center">
               <Text className="text-[10px] text-[#6B7280] font-medium">Author: {item.author || "Manager"}</Text>
-              <View className="bg-[#EFF6FF] rounded-full px-2.5 py-0.5">
-                <Text className="text-[9px] font-bold text-[#2563EB]">
+              <View className="bg-[#ECFDF5] rounded-full px-2.5 py-0.5">
+                <Text className="text-[9px] font-bold text-[#059669]">
                   {item.linkedVehicle || "Volvo FH16"}
                 </Text>
               </View>

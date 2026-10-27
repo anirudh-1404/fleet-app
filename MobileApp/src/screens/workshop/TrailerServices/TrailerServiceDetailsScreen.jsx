@@ -141,12 +141,12 @@ export default function TrailerServiceDetailsScreen() {
               ) : null}
               {service?.nextDueDate ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Next Due Date: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{new Date(service.nextDueDate).toLocaleDateString()}</Text>
+                  Next Due Date: <Text style={{ fontWeight: "700", color: "#059669" }}>{new Date(service.nextDueDate).toLocaleDateString()}</Text>
                 </Text>
               ) : null}
               {workOrder?.jobNumber ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Work Order: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{workOrder.jobNumber}</Text>
+                  Work Order: <Text style={{ fontWeight: "700", color: "#059669" }}>{workOrder.jobNumber}</Text>
                 </Text>
               ) : null}
             </View>

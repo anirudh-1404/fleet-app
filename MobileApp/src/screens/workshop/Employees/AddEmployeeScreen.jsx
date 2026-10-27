@@ -112,17 +112,17 @@ export default function AddEmployeeScreen() {
           {/* Info Banner */}
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 10,
               padding: 14,
               flexDirection: "row",
               marginBottom: 20,
               borderLeftWidth: 4,
-              borderLeftColor: "#2563EB",
+              borderLeftColor: "#059669",
             }}
           >
-            <Ionicons name="information-circle-outline" size={20} color="#2563EB" style={{ marginRight: 10 }} />
-            <Text style={{ fontSize: 13, color: "#1E40AF", flex: 1, lineHeight: 18 }}>
+            <Ionicons name="information-circle-outline" size={20} color="#059669" style={{ marginRight: 10 }} />
+            <Text style={{ fontSize: 13, color: "#065F46", flex: 1, lineHeight: 18 }}>
               This employee can securely log into Workfle with their email and password to view and complete their assigned jobs.
             </Text>
           </View>
@@ -253,7 +253,7 @@ export default function AddEmployeeScreen() {
                   key={spec}
                   onPress={() => toggleSpecialization(spec)}
                   style={{
-                    backgroundColor: selected ? "#2563EB" : "#F1F5F9",
+                    backgroundColor: selected ? "#059669" : "#F1F5F9",
                     paddingHorizontal: 12,
                     paddingVertical: 7,
                     borderRadius: 20,
@@ -281,12 +281,12 @@ export default function AddEmployeeScreen() {
             disabled={submitting}
             onPress={handleCreate}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               paddingVertical: 15,
               alignItems: "center",
               justifyContent: "center",
-              shadowColor: "#2563EB",
+              shadowColor: "#059669",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.2,
               shadowRadius: 8,

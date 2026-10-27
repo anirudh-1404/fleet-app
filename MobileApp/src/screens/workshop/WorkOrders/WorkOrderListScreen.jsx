@@ -95,7 +95,7 @@ export default function WorkOrderListScreen() {
               <WorkshopStatusBadge status={item.priority} size="small" />
             )}
           </View>
-          <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+          <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", marginTop: 2 }}>
             {item.jobType}
           </Text>
         </View>
@@ -152,7 +152,7 @@ export default function WorkOrderListScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             paddingHorizontal: 12,
             paddingVertical: 7,
             borderRadius: 8,
@@ -238,7 +238,7 @@ export default function WorkOrderListScreen() {
                 key={jt}
                 onPress={() => setSelectedJobType(jt)}
                 style={{
-                  backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                   paddingHorizontal: 12,
                   paddingVertical: 4,
                   borderRadius: 16,

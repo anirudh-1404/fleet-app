@@ -13,7 +13,7 @@ export default function RentalStateView({
   if (type === "loading") {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 32 }}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#059669" />
         <Text style={{ marginTop: 12, fontSize: 14, color: "#64748B", fontWeight: "500" }}>
           {message || "Loading..."}
         </Text>
@@ -47,7 +47,7 @@ export default function RentalStateView({
           <TouchableOpacity
             onPress={onRetry}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 10,

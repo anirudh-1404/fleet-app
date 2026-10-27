@@ -120,7 +120,7 @@ export default function TodaysOperationsScreen() {
             Operational status & driver readiness
           </Text>
         </View>
-        {isRefreshing && <ActivityIndicator color="#2563EB" size="small" />}
+        {isRefreshing && <ActivityIndicator color="#059669" size="small" />}
       </View>
 
       {/* 2. Date Filter Bar */}

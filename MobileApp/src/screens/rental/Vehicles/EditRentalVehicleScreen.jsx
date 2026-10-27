@@ -299,7 +299,7 @@ export default function EditRentalVehicleScreen() {
                     height: 42,
                     fontSize: 15,
                     fontWeight: "700",
-                    color: "#2563EB",
+                    color: "#059669",
                   }}
                 />
               </View>
@@ -377,8 +377,8 @@ export default function EditRentalVehicleScreen() {
                     onPress={handlePhotoSelect}
                     style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
                   >
-                    <Ionicons name="camera-reverse-outline" size={18} color="#2563EB" />
-                    <Text style={{ color: "#2563EB", fontWeight: "700", fontSize: 13 }}>Change Photo</Text>
+                    <Ionicons name="camera-reverse-outline" size={18} color="#059669" />
+                    <Text style={{ color: "#059669", fontWeight: "700", fontSize: 13 }}>Change Photo</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
@@ -409,7 +409,7 @@ export default function EditRentalVehicleScreen() {
               >
                 {isUploadingPhoto ? (
                   <View style={{ alignItems: "center", gap: 8 }}>
-                    <ActivityIndicator size="small" color="#2563EB" />
+                    <ActivityIndicator size="small" color="#059669" />
                     <Text style={{ fontSize: 13, color: "#64748B", fontWeight: "500" }}>Uploading photo...</Text>
                   </View>
                 ) : (
@@ -419,13 +419,13 @@ export default function EditRentalVehicleScreen() {
                         width: 48,
                         height: 48,
                         borderRadius: 24,
-                        backgroundColor: "#EFF6FF",
+                        backgroundColor: "#ECFDF5",
                         alignItems: "center",
                         justifyContent: "center",
                         marginBottom: 10,
                       }}
                     >
-                      <Ionicons name="images-outline" size={24} color="#2563EB" />
+                      <Ionicons name="images-outline" size={24} color="#059669" />
                     </View>
                     <Text style={{ fontSize: 14, fontWeight: "700", color: "#0F172A" }}>
                       Upload Vehicle Photo
@@ -475,7 +475,7 @@ export default function EditRentalVehicleScreen() {
             onPress={handleUpdate}
             disabled={isSubmitting}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               height: 50,
               borderRadius: 12,
               alignItems: "center",

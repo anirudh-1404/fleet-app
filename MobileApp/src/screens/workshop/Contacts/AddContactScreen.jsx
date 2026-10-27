@@ -98,9 +98,9 @@ export default function AddContactScreen() {
                       onPress={() => setType(t)}
                       style={{
                         flex: 1,
-                        backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                         borderWidth: 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         paddingVertical: 8,
                         borderRadius: 8,
                         alignItems: "center",
@@ -268,7 +268,7 @@ export default function AddContactScreen() {
             disabled={submitting}
             style={{
               marginTop: 20,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               height: 50,
               alignItems: "center",

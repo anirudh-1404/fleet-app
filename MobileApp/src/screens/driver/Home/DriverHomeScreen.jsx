@@ -174,8 +174,13 @@ export default function DriverHomeScreen() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigation.reset({
+    try {
+      await logout();
+    } catch (e) {
+      console.error(e);
+    }
+    const rootNav = navigation.getParent() || navigation;
+    rootNav.reset({
       index: 0,
       routes: [{ name: ROUTES.LOGIN }],
     });
@@ -206,7 +211,7 @@ export default function DriverHomeScreen() {
           <SectionHeader title="Today's Assigned Vehicle" />
           {isVehicleLoading ? (
             <View className="bg-white border border-[#E8EDF3] rounded-[24px] p-6 items-center">
-              <ActivityIndicator color="#2563EB" />
+              <ActivityIndicator color="#059669" />
             </View>
           ) : (
             <AssignedVehicleCard
@@ -262,9 +267,9 @@ export default function DriverHomeScreen() {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={handleStartInspection}
-              className="h-14 rounded-[24px] bg-[#2563EB] items-center justify-center flex-row"
+              className="h-14 rounded-[24px] bg-[#059669] items-center justify-center flex-row"
               style={{
-                shadowColor: "#2563EB",
+                shadowColor: "#059669",
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.15,
                 shadowRadius: 12,
@@ -336,17 +341,17 @@ export default function DriverHomeScreen() {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setFuelModalVisible(true)}
-            className="h-14 rounded-[24px] bg-white border border-[#2563EB] items-center justify-center flex-row"
+            className="h-14 rounded-[24px] bg-white border border-[#059669] items-center justify-center flex-row"
             style={{
-              shadowColor: "#2563EB",
+              shadowColor: "#059669",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.05,
               shadowRadius: 8,
               elevation: 1,
             }}
           >
-            <Ionicons name="water-outline" size={20} color="#2563EB" />
-            <Text className="text-[#2563EB] text-base font-bold ml-2">
+            <Ionicons name="water-outline" size={20} color="#059669" />
+            <Text className="text-[#059669] text-base font-bold ml-2">
               Log Fuel Entry
             </Text>
           </TouchableOpacity>
@@ -371,7 +376,7 @@ export default function DriverHomeScreen() {
                 >
                   <View className="flex-row items-center flex-1 mr-2">
                     <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center mr-3">
-                      <Ionicons name="water-outline" size={18} color="#2563EB" />
+                      <Ionicons name="water-outline" size={18} color="#059669" />
                     </View>
                     <View className="flex-1">
                       <Text className="text-sm font-bold text-[#111827]">
@@ -451,8 +456,8 @@ export default function DriverHomeScreen() {
         confirmText="Start Journey"
         cancelText="Cancel"
         icon="play"
-        iconBgColor="bg-[#EFF6FF]"
-        iconColor="#2563EB"
+        iconBgColor="bg-[#ECFDF5]"
+        iconColor="#059669"
         confirmButtonBg="bg-[#16A34A]"
       />
 

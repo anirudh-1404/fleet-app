@@ -87,7 +87,7 @@ export default function ServiceDetailsScreen() {
           <DetailRow label="Registration" value={service.registration} />
           <DetailRow label="Fleet Number" value={service.fleetNumber} />
           <DetailRow label="Last Service Date" value={service.lastService} />
-          <DetailRow label="Next Service Due" value={service.nextService} valueColor="text-[#2563EB]" />
+          <DetailRow label="Next Service Due" value={service.nextService} valueColor="text-[#059669]" />
           <DetailRow
             label="Days Remaining"
             value={service.daysRemaining <= 0 ? "Overdue" : `${service.daysRemaining} Days`}

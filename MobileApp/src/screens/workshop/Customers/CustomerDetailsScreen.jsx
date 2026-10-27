@@ -149,7 +149,7 @@ export default function CustomerDetailsScreen() {
               {customer?.fullName}
             </Text>
             {customer?.companyName ? (
-              <Text style={{ fontSize: 14, fontWeight: "600", color: "#2563EB", marginTop: 2 }}>
+              <Text style={{ fontSize: 14, fontWeight: "600", color: "#059669", marginTop: 2 }}>
                 {customer?.companyName}
               </Text>
             ) : null}
@@ -231,7 +231,7 @@ export default function CustomerDetailsScreen() {
                 </Text>
                 <TouchableOpacity
                   onPress={() => navigation.navigate(ROUTES.ADD_WORKSHOP_VEHICLE, { prefilledCustomerId: customer?._id })}
-                  style={{ backgroundColor: "#2563EB", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6, flexDirection: "row", alignItems: "center", gap: 4 }}
+                  style={{ backgroundColor: "#059669", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6, flexDirection: "row", alignItems: "center", gap: 4 }}
                 >
                   <Ionicons name="add" size={14} color="#FFFFFF" />
                   <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "700" }}>Add Vehicle</Text>
@@ -263,7 +263,7 @@ export default function CustomerDetailsScreen() {
                           <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
                             {v.make} {v.model} ({v.year})
                           </Text>
-                          <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                          <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                             {v.registration} • {v.vehicleType}
                           </Text>
                         </View>
@@ -288,7 +288,7 @@ export default function CustomerDetailsScreen() {
                 </Text>
                 <TouchableOpacity
                   onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER, { prefilledCustomerId: customer?._id })}
-                  style={{ backgroundColor: "#2563EB", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6, flexDirection: "row", alignItems: "center", gap: 4 }}
+                  style={{ backgroundColor: "#059669", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6, flexDirection: "row", alignItems: "center", gap: 4 }}
                 >
                   <Ionicons name="add" size={14} color="#FFFFFF" />
                   <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "700" }}>New Job</Text>

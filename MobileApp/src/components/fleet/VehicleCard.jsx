@@ -67,7 +67,7 @@ export default function VehicleCard({ vehicle, onPress }) {
               resizeMode="cover"
             />
           ) : (
-            <Ionicons name={vehicleIcon} size={24} color="#2563EB" />
+            <Ionicons name={vehicleIcon} size={24} color="#059669" />
           )}
         </View>
 
@@ -95,7 +95,7 @@ export default function VehicleCard({ vehicle, onPress }) {
               className={
                 driverName === "Unassigned"
                   ? "font-semibold text-[#D97706]"
-                  : "font-semibold text-[#2563EB]"
+                  : "font-semibold text-[#059669]"
               }
             >
               {driverName}

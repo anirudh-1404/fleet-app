@@ -81,7 +81,7 @@ export default function WorkshopVehicleListScreen() {
           <Text style={{ fontSize: 17, fontWeight: "800", color: "#0F172A" }}>
             {item.make} {item.model} {item.year ? `(${item.year})` : ""}
           </Text>
-          <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+          <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginTop: 2 }}>
             {item.registration} • {item.vehicleType}
           </Text>
         </View>
@@ -132,7 +132,7 @@ export default function WorkshopVehicleListScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate(ROUTES.ADD_WORKSHOP_VEHICLE)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             paddingHorizontal: 12,
             paddingVertical: 7,
             borderRadius: 8,
@@ -218,7 +218,7 @@ export default function WorkshopVehicleListScreen() {
                 key={tp}
                 onPress={() => setSelectedType(tp)}
                 style={{
-                  backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                   paddingHorizontal: 12,
                   paddingVertical: 4,
                   borderRadius: 16,

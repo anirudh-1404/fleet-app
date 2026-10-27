@@ -205,7 +205,7 @@ export default function InquiryDetailsScreen() {
         >
           <View>
             <Text style={{ fontSize: 11, fontWeight: "700", color: "#64748B" }}>LEAD STATUS</Text>
-            <Text style={{ fontSize: 15, fontWeight: "800", color: status === "NEW" ? "#1D4ED8" : status === "CONVERTED" ? "#15803D" : "#B45309", marginTop: 2 }}>
+            <Text style={{ fontSize: 15, fontWeight: "800", color: status === "NEW" ? "#047857" : status === "CONVERTED" ? "#15803D" : "#B45309", marginTop: 2 }}>
               {status === "NEW" ? "New Booking Lead" : status === "CONTACTED" ? "Client Contacted" : "Converted to Work Order"}
             </Text>
           </View>
@@ -222,9 +222,9 @@ export default function InquiryDetailsScreen() {
               ) : (
                 <TouchableOpacity
                   onPress={() => handleStatusChange("NEW")}
-                  style={{ backgroundColor: "#EFF6FF", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 }}
+                  style={{ backgroundColor: "#ECFDF5", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 }}
                 >
-                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#1D4ED8" }}>Mark as New</Text>
+                  <Text style={{ fontSize: 12, fontWeight: "700", color: "#047857" }}>Mark as New</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -234,8 +234,8 @@ export default function InquiryDetailsScreen() {
         {/* Section 1: Customer Details */}
         <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: "#E2E8F0" }}>
           <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12, borderBottomWidth: 1, borderColor: "#F1F5F9", paddingBottom: 10 }}>
-            <View style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "#EFF6FF", alignItems: "center", justifyContent: "center", marginRight: 10 }}>
-              <Ionicons name="person-outline" size={18} color="#2563EB" />
+            <View style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "#ECFDF5", alignItems: "center", justifyContent: "center", marginRight: 10 }}>
+              <Ionicons name="person-outline" size={18} color="#059669" />
             </View>
             <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
               1. Customer Details
@@ -261,7 +261,7 @@ export default function InquiryDetailsScreen() {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
               <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Mobile Number:</Text>
-              <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", flex: 1, textAlign: "right" }} numberOfLines={1}>
+              <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", flex: 1, textAlign: "right" }} numberOfLines={1}>
                 {customer?.mobileNumber}
               </Text>
             </View>
@@ -292,10 +292,10 @@ export default function InquiryDetailsScreen() {
           <View style={{ flexDirection: "row", gap: 8, borderTopWidth: 1, borderColor: "#F1F5F9", paddingTop: 12 }}>
             <TouchableOpacity
               onPress={handleCall}
-              style={{ flex: 1, backgroundColor: "#EFF6FF", paddingVertical: 10, borderRadius: 10, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+              style={{ flex: 1, backgroundColor: "#ECFDF5", paddingVertical: 10, borderRadius: 10, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
             >
-              <Ionicons name="call-outline" size={16} color="#2563EB" style={{ marginRight: 6 }} />
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>Call</Text>
+              <Ionicons name="call-outline" size={16} color="#059669" style={{ marginRight: 6 }} />
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669" }}>Call</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -354,7 +354,7 @@ export default function InquiryDetailsScreen() {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
               <Text style={{ fontSize: 13, color: "#64748B", flexShrink: 0 }}>Vehicle Type:</Text>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", flex: 1, textAlign: "right" }}>{vehicle?.vehicleType}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", flex: 1, textAlign: "right" }}>{vehicle?.vehicleType}</Text>
             </View>
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
@@ -390,9 +390,9 @@ export default function InquiryDetailsScreen() {
                 <View
                   key={idx}
                   style={{
-                    backgroundColor: "#EFF6FF",
+                    backgroundColor: "#ECFDF5",
                     borderWidth: 1,
-                    borderColor: "#BFDBFE",
+                    borderColor: "#A7F3D0",
                     paddingHorizontal: 12,
                     paddingVertical: 6,
                     borderRadius: 8,
@@ -400,8 +400,8 @@ export default function InquiryDetailsScreen() {
                     alignItems: "center",
                   }}
                 >
-                  <Ionicons name="checkmark-circle" size={14} color="#2563EB" style={{ marginRight: 6 }} />
-                  <Text style={{ fontSize: 13, fontWeight: "700", color: "#1D4ED8" }}>{type}</Text>
+                  <Ionicons name="checkmark-circle" size={14} color="#059669" style={{ marginRight: 6 }} />
+                  <Text style={{ fontSize: 13, fontWeight: "700", color: "#047857" }}>{type}</Text>
                 </View>
               ))}
             </View>
@@ -498,13 +498,13 @@ export default function InquiryDetailsScreen() {
             disabled={converting}
             onPress={handleConvertToWorkOrder}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 14,
               paddingVertical: 16,
               alignItems: "center",
               flexDirection: "row",
               justifyContent: "center",
-              shadowColor: "#2563EB",
+              shadowColor: "#059669",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.25,
               shadowRadius: 8,

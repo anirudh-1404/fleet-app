@@ -126,7 +126,7 @@ export default function EditVehicleScreen() {
       {/* 2. Reusable Vehicle Form */}
       {isLoading || !initialValues ? (
         <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#059669" />
         </View>
       ) : (
         <VehicleForm

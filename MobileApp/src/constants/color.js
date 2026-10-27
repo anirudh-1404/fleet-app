@@ -1,6 +1,11 @@
 const COLORS = {
-    primary: "#111827",
-    secondary: "#2563EB",
+    primary: "#01311B",
+    secondary: "#059669",
+    accent: "#10B981",
+
+    lightGreen: "#ECFDF5",
+    borderGreen: "#A7F3D0",
+    textGreen: "#065F46",
 
     background: "#F8FAFC",
     white: "#FFFFFF",
@@ -11,7 +16,7 @@ const COLORS = {
 
     border: "#E2E8F0",
 
-    success: "#22C55E",
+    success: "#059669",
     warning: "#F59E0B",
     error: "#EF4444",
 };

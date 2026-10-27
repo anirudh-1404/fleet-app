@@ -51,7 +51,7 @@ export default function InspectionItem({ title, selectedValue, onValueChange, no
           activeOpacity={0.7}
           onPress={() => onValueChange("NOTE")}
           className={`flex-1 py-2 rounded-full items-center justify-center ${
-            selectedValue === "NOTE" ? "bg-[#2563EB]" : ""
+            selectedValue === "NOTE" ? "bg-[#059669]" : ""
           }`}
         >
           <Text className={`text-xs font-bold ${selectedValue === "NOTE" ? "text-white" : "text-[#6B7280]"}`}>
@@ -82,7 +82,7 @@ export default function InspectionItem({ title, selectedValue, onValueChange, no
             onPress={() => setShowNote(true)}
             className="flex-row items-center"
           >
-            <Text className="text-xs font-bold text-[#2563EB]">+ Add Note</Text>
+            <Text className="text-xs font-bold text-[#059669]">+ Add Note</Text>
           </TouchableOpacity>
         )}
       </View>

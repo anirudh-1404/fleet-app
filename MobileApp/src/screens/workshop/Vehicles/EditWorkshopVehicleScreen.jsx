@@ -337,9 +337,9 @@ export default function EditWorkshopVehicleScreen() {
                       key={st}
                       onPress={() => setStatus(st)}
                       style={{
-                        backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                         borderWidth: 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         paddingHorizontal: 12,
                         paddingVertical: 6,
                         borderRadius: 8,
@@ -385,7 +385,7 @@ export default function EditWorkshopVehicleScreen() {
                   }}
                 >
                   {uploading ? (
-                    <ActivityIndicator color="#2563EB" />
+                    <ActivityIndicator color="#059669" />
                   ) : (
                     <>
                       <Ionicons name="camera-outline" size={26} color="#64748B" />
@@ -433,7 +433,7 @@ export default function EditWorkshopVehicleScreen() {
             disabled={submitting}
             style={{
               marginTop: 20,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               height: 50,
               alignItems: "center",

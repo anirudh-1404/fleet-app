@@ -33,7 +33,7 @@ export default function DriverCard({ driver, onPress }) {
       {/* Middle Row: Assigned Vehicle Details */}
       <View className="bg-[#F8FAFC] border border-[#E8EDF3] rounded-[16px] px-4 py-3 my-4 flex-row justify-between items-center">
         <Text className="text-xs font-semibold text-[#6B7280]">Assigned Vehicle</Text>
-        <Text className={`text-xs font-bold ${driver.vehicle === "Not Assigned" || !driver.vehicle ? "text-[#94A3B8]" : "text-[#2563EB]"}`}>
+        <Text className={`text-xs font-bold ${driver.vehicle === "Not Assigned" || !driver.vehicle ? "text-[#94A3B8]" : "text-[#059669]"}`}>
           {driver.vehicle || "Not Assigned"}
         </Text>
       </View>
@@ -45,8 +45,8 @@ export default function DriverCard({ driver, onPress }) {
           <Text className="text-xs font-semibold text-[#6B7280] ml-1.5">{driver.phone || "-"}</Text>
         </View>
         <View className="flex-row items-center">
-          <Text className="text-xs font-semibold text-[#2563EB] mr-1">Details</Text>
-          <Ionicons name="chevron-forward" size={16} color="#2563EB" />
+          <Text className="text-xs font-semibold text-[#059669] mr-1">Details</Text>
+          <Ionicons name="chevron-forward" size={16} color="#059669" />
         </View>
       </View>
     </TouchableOpacity>

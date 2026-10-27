@@ -27,8 +27,8 @@ export default function TodaysOperationsCard({
       {/* Top Title Row */}
       <View className="flex-row justify-between items-center mb-1">
         <View className="flex-row items-center flex-1 mr-2">
-          <View className="w-11 h-11 rounded-[16px] bg-[#EFF6FF] border border-[#BFDBFE] items-center justify-center mr-3">
-            <Ionicons name="compass-outline" size={22} color="#2563EB" />
+          <View className="w-11 h-11 rounded-[16px] bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-3">
+            <Ionicons name="compass-outline" size={22} color="#059669" />
           </View>
           <View className="flex-1">
             <Text className="text-base font-bold text-[#0F172A] tracking-tight">Today's Operations</Text>
@@ -88,12 +88,12 @@ export default function TodaysOperationsCard({
 
         {/* Row 3: Journeys Started & Journeys Pending */}
         <View className="flex-row gap-3">
-          <View className="flex-1 bg-[#EFF6FF] border border-[#BFDBFE] rounded-[18px] p-3 flex-row items-center justify-between">
+          <View className="flex-1 bg-[#ECFDF5] border border-[#A7F3D0] rounded-[18px] p-3 flex-row items-center justify-between">
             <View>
-              <Text className="text-[10px] font-bold text-[#1E40AF] uppercase tracking-wider">
+              <Text className="text-[10px] font-bold text-[#065F46] uppercase tracking-wider">
                 Journeys Started
               </Text>
-              <Text className="text-xl font-extrabold text-[#1D4ED8] mt-0.5">{journeysStarted}</Text>
+              <Text className="text-xl font-extrabold text-[#047857] mt-0.5">{journeysStarted}</Text>
             </View>
           </View>
 

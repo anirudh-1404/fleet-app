@@ -17,7 +17,7 @@ export default function QuickActionCard({ title, description, icon, onPress }) {
       }}
     >
       <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center">
-        <Ionicons name={icon} size={20} color="#2563EB" />
+        <Ionicons name={icon} size={20} color="#059669" />
       </View>
       <View className="flex-row justify-between items-end mt-5">
         <View className="flex-1 mr-2">

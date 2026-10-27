@@ -69,7 +69,7 @@ export default function InvoiceScreen() {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => navigation.goBack()}
-          className="px-6 py-3.5 rounded-full bg-[#2563EB] items-center justify-center"
+          className="px-6 py-3.5 rounded-full bg-[#059669] items-center justify-center"
         >
           <Text className="text-white text-xs font-bold">Back to Dashboard</Text>
         </TouchableOpacity>

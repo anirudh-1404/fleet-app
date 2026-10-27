@@ -360,7 +360,7 @@ export default function EmployeeStartServiceScreen() {
                       alignItems: "center",
                       backgroundColor: "#F8FAFC",
                       borderWidth: 1.5,
-                      borderColor: searchRego ? "#2563EB" : "#CBD5E1",
+                      borderColor: searchRego ? "#059669" : "#CBD5E1",
                       borderRadius: 12,
                       paddingLeft: 12,
                       paddingRight: 10,
@@ -433,7 +433,7 @@ export default function EmployeeStartServiceScreen() {
                     style={{
                       height: 48,
                       paddingHorizontal: 18,
-                      backgroundColor: searchRego.trim() ? "#2563EB" : "#94A3B8",
+                      backgroundColor: searchRego.trim() ? "#059669" : "#94A3B8",
                       borderRadius: 12,
                       justifyContent: "center",
                       alignItems: "center",
@@ -478,16 +478,16 @@ export default function EmployeeStartServiceScreen() {
                         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
                           <View
                             style={{
-                              backgroundColor: "#EFF6FF",
+                              backgroundColor: "#ECFDF5",
                               paddingHorizontal: 8,
                               paddingVertical: 3,
                               borderRadius: 6,
                               marginRight: 8,
                               borderWidth: 1,
-                              borderColor: "#BFDBFE",
+                              borderColor: "#A7F3D0",
                             }}
                           >
-                            <Text style={{ fontSize: 13, fontWeight: "800", color: "#1E40AF" }}>
+                            <Text style={{ fontSize: 13, fontWeight: "800", color: "#065F46" }}>
                               {item.registration}
                             </Text>
                           </View>
@@ -506,7 +506,7 @@ export default function EmployeeStartServiceScreen() {
                       </View>
 
                       <View style={{ alignItems: "flex-end" }}>
-                        <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>
+                        <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>
                           Select →
                         </Text>
                         {item.odometer ? (
@@ -617,7 +617,7 @@ export default function EmployeeStartServiceScreen() {
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                           <View style={{ flex: 1 }}>
                             <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600" }}>Last Odometer</Text>
-                            <Text style={{ fontSize: 14, fontWeight: "800", color: "#2563EB", marginTop: 2 }}>
+                            <Text style={{ fontSize: 14, fontWeight: "800", color: "#059669", marginTop: 2 }}>
                               {selectedVehicle.odometer ? `${selectedVehicle.odometer.toLocaleString()} km` : "N/A"}
                             </Text>
                           </View>
@@ -687,7 +687,7 @@ export default function EmployeeStartServiceScreen() {
                     </View>
 
                     {loadingHistory ? (
-                      <ActivityIndicator size="small" color="#2563EB" style={{ marginVertical: 20 }} />
+                      <ActivityIndicator size="small" color="#059669" style={{ marginVertical: 20 }} />
                     ) : (
                       (() => {
                         const pastWorkOrders = vehicleHistory?.workOrders || [];
@@ -713,7 +713,7 @@ export default function EmployeeStartServiceScreen() {
                             {pastWorkOrders.map((wo, idx) => {
                               const isCompleted = wo.status === "COMPLETED";
                               const isWaitingParts = wo.status === "WAITING_FOR_PARTS";
-                              const accentColor = isCompleted ? "#10B981" : isWaitingParts ? "#F97316" : "#2563EB";
+                              const accentColor = isCompleted ? "#10B981" : isWaitingParts ? "#F97316" : "#059669";
 
                               return (
                                 <View
@@ -747,13 +747,13 @@ export default function EmployeeStartServiceScreen() {
                                       <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
                                         <View
                                           style={{
-                                            backgroundColor: "#EFF6FF",
+                                            backgroundColor: "#ECFDF5",
                                             paddingHorizontal: 6,
                                             paddingVertical: 2,
                                             borderRadius: 4,
                                           }}
                                         >
-                                          <Text style={{ fontSize: 11, fontWeight: "800", color: "#1D4ED8" }}>
+                                          <Text style={{ fontSize: 11, fontWeight: "800", color: "#047857" }}>
                                             {wo.jobNumber}
                                           </Text>
                                         </View>
@@ -947,12 +947,12 @@ export default function EmployeeStartServiceScreen() {
                             key={vt}
                             onPress={() => setNewVehicleType(vt)}
                             style={{
-                              backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                              backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                               paddingHorizontal: 12,
                               paddingVertical: 6,
                               borderRadius: 6,
                               borderWidth: 1,
-                              borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                              borderColor: isSelected ? "#059669" : "#E2E8F0",
                             }}
                           >
                             <Text style={{ fontSize: 12, fontWeight: "700", color: isSelected ? "#FFFFFF" : "#475569" }}>
@@ -1144,7 +1144,7 @@ export default function EmployeeStartServiceScreen() {
               >
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ fontSize: 11, fontWeight: "800", color: "#60A5FA", textTransform: "uppercase", letterSpacing: 0.8 }}>
+                    <Text style={{ fontSize: 11, fontWeight: "800", color: "#34D399", textTransform: "uppercase", letterSpacing: 0.8 }}>
                       Workshop Floor Intake
                     </Text>
                     <Text style={{ fontSize: 17, fontWeight: "900", color: "#FFFFFF", marginTop: 2 }}>
@@ -1185,13 +1185,13 @@ export default function EmployeeStartServiceScreen() {
                       width: 28,
                       height: 28,
                       borderRadius: 7,
-                      backgroundColor: "#EFF6FF",
+                      backgroundColor: "#ECFDF5",
                       justifyContent: "center",
                       alignItems: "center",
                       marginRight: 8,
                     }}
                   >
-                    <Ionicons name="bus-outline" size={16} color="#2563EB" />
+                    <Ionicons name="bus-outline" size={16} color="#059669" />
                   </View>
                   <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>
                     1. Truck Details
@@ -1305,12 +1305,12 @@ export default function EmployeeStartServiceScreen() {
                         activeOpacity={0.7}
                         onPress={() => toggleWorkType(wt)}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                          backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                           paddingHorizontal: 12,
                           paddingVertical: 8,
                           borderRadius: 8,
                           borderWidth: 1.5,
-                          borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                          borderColor: isSelected ? "#059669" : "#E2E8F0",
                           flexDirection: "row",
                           alignItems: "center",
                         }}
@@ -1713,13 +1713,13 @@ export default function EmployeeStartServiceScreen() {
                 disabled={submittingService}
                 onPress={handleLaunchService}
                 style={{
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   borderRadius: 14,
                   paddingVertical: 16,
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "row",
-                  shadowColor: "#2563EB",
+                  shadowColor: "#059669",
                   shadowOffset: { width: 0, height: 4 },
                   shadowOpacity: 0.3,
                   shadowRadius: 8,
@@ -1763,13 +1763,13 @@ export default function EmployeeStartServiceScreen() {
               activeOpacity={0.88}
               onPress={handleProceedToService}
               style={{
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 borderRadius: 12,
                 height: 48,
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "row",
-                shadowColor: "#2563EB",
+                shadowColor: "#059669",
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.2,
                 shadowRadius: 4,

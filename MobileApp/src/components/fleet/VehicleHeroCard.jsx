@@ -30,7 +30,7 @@ export default function VehicleHeroCard({ name, registration, fleetNumber, type,
         ) : (
           <View className="flex-1 items-center justify-center">
             <View className="w-16 h-16 rounded-full bg-white items-center justify-center shadow-sm border border-[#E8EDF3]/30">
-              <Ionicons name={isTruck ? "bus-outline" : "car-outline"} size={32} color="#2563EB" />
+              <Ionicons name={isTruck ? "bus-outline" : "car-outline"} size={32} color="#059669" />
             </View>
           </View>
         )}
@@ -47,7 +47,7 @@ export default function VehicleHeroCard({ name, registration, fleetNumber, type,
           </View>
           <View className="flex-row items-center gap-2">
             <View className="bg-[#EEF4FF] border border-[#E8EDF3] px-3 py-1 rounded-full justify-center">
-              <Text className="text-[10px] font-bold text-[#2563EB] uppercase tracking-wider">{type}</Text>
+              <Text className="text-[10px] font-bold text-[#059669] uppercase tracking-wider">{type}</Text>
             </View>
             <StatusBadge status={status} />
           </View>

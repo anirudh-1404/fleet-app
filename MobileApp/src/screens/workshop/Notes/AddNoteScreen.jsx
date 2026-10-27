@@ -124,7 +124,7 @@ export default function AddNoteScreen() {
                   <TouchableOpacity
                     onPress={() => setSelectedVehicleId("")}
                     style={{
-                      backgroundColor: !selectedVehicleId ? "#2563EB" : "#F1F5F9",
+                      backgroundColor: !selectedVehicleId ? "#059669" : "#F1F5F9",
                       paddingHorizontal: 12,
                       paddingVertical: 6,
                       borderRadius: 8,
@@ -141,7 +141,7 @@ export default function AddNoteScreen() {
                         key={v._id}
                         onPress={() => setSelectedVehicleId(v._id)}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 6,
                           borderRadius: 8,

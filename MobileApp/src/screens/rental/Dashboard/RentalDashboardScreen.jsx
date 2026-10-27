@@ -84,7 +84,8 @@ export default function RentalDashboardScreen() {
       } catch (err) {
         console.error("Logout error:", err);
       }
-      navigation.reset({
+      const rootNav = navigation.getParent() || navigation;
+      rootNav.reset({
         index: 0,
         routes: [{ name: ROUTES.LOGIN }],
       });
@@ -189,7 +190,7 @@ export default function RentalDashboardScreen() {
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#059669"]} />}
         >
           {/* Quick Operational Summary Section */}
           <Text style={{ fontSize: 13, fontWeight: "700", color: "#475569", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 10 }}>
@@ -251,7 +252,7 @@ export default function RentalDashboardScreen() {
                 }}
               >
                 <Text style={{ fontSize: 11, color: "#64748B", fontWeight: "600", marginBottom: 4 }}>Rented</Text>
-                <Text style={{ fontSize: 20, fontWeight: "800", color: "#2563EB" }}>{summary.currentlyRented}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "800", color: "#059669" }}>{summary.currentlyRented}</Text>
               </TouchableOpacity>
             </View>
 
@@ -307,7 +308,7 @@ export default function RentalDashboardScreen() {
               onPress={() => navigation.navigate(ROUTES.CREATE_RENTAL)}
               style={{
                 flex: 1,
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 paddingVertical: 14,
                 paddingHorizontal: 12,
                 borderRadius: 12,
@@ -348,7 +349,7 @@ export default function RentalDashboardScreen() {
               Today's Rentals ({todaysRentals.length})
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate(ROUTES.RENTAL_LIST)}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>View All</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669" }}>View All</Text>
             </TouchableOpacity>
           </View>
 
@@ -465,7 +466,7 @@ export default function RentalDashboardScreen() {
                   <Text style={{ fontSize: 13, color: "#64748B", marginTop: 2 }}>
                     {rental.vehicle?.make} {rental.vehicle?.model} • {rental.vehicle?.registration}
                   </Text>
-                  <Text style={{ fontSize: 12, color: "#2563EB", fontWeight: "600", marginTop: 4 }}>
+                  <Text style={{ fontSize: 12, color: "#059669", fontWeight: "600", marginTop: 4 }}>
                     Return: {rental.returnDate} at {rental.returnTime || "17:00"}
                   </Text>
                 </View>

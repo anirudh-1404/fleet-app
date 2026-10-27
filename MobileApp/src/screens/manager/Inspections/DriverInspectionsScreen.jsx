@@ -259,7 +259,7 @@ export default function DriverInspectionsScreen() {
                   </Text>
                   <Text
                     className={`text-sm font-bold mt-0.5 ${
-                      item.summary.notes > 0 ? "text-[#2563EB]" : "text-[#6B7280]"
+                      item.summary.notes > 0 ? "text-[#059669]" : "text-[#6B7280]"
                     }`}
                   >
                     {item.summary.notes}

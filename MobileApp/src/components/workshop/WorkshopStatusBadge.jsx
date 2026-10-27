@@ -12,9 +12,9 @@ export default function WorkshopStatusBadge({ status, type = "status", size = "n
 
   // Work Order & Vehicle Statuses
   if (s === "OPEN" || s === "AVAILABLE") {
-    bg = "#EFF6FF";
-    text = "#1D4ED8";
-    border = "#BFDBFE";
+    bg = "#ECFDF5";
+    text = "#047857";
+    border = "#A7F3D0";
   } else if (s === "IN_PROGRESS" || s === "IN_WORKSHOP" || s === "INSPECTION_PENDING") {
     bg = "#FEF3C7";
     text = "#B45309";

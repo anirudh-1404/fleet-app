@@ -15,7 +15,7 @@ export default function DriverSelectionCard({
       onPress={onPress}
       className={`border rounded-[24px] p-5 mb-4 flex-row items-center justify-between ${
         isSelected
-          ? "bg-[#EFF6FF] border-[#2563EB]"
+          ? "bg-[#ECFDF5] border-[#059669]"
           : "bg-white border-[#E8EDF3]"
       }`}
       style={{
@@ -57,7 +57,7 @@ export default function DriverSelectionCard({
       {/* Checkmark selection Indicator */}
       <View className="w-6 h-6 items-center justify-center">
         {isSelected ? (
-          <Ionicons name="checkmark-circle" size={24} color="#2563EB" />
+          <Ionicons name="checkmark-circle" size={24} color="#059669" />
         ) : (
           <View className="w-5 h-5 rounded-full border border-[#CBD5E1]" style={{ borderWidth: 2 }} />
         )}

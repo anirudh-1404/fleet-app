@@ -70,7 +70,8 @@ export default function EmployeeHomeScreen() {
       } catch (err) {
         console.error("Logout error:", err);
       }
-      navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+      const rootNav = navigation.getParent() || navigation;
+      rootNav.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
     };
 
     if (Platform.OS === "web") {
@@ -124,7 +125,7 @@ export default function EmployeeHomeScreen() {
         {/* Top Tag & Status */}
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginRight: 8 }}>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginRight: 8 }}>
               {item.jobNumber}
             </Text>
             {isPriorityHigh ? (
@@ -176,10 +177,10 @@ export default function EmployeeHomeScreen() {
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginRight: 2 }}>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginRight: 2 }}>
               Open Job
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#2563EB" />
+            <Ionicons name="chevron-forward" size={16} color="#059669" />
           </View>
         </View>
       </TouchableOpacity>
@@ -233,14 +234,14 @@ export default function EmployeeHomeScreen() {
           activeOpacity={0.88}
           onPress={() => navigation.navigate(ROUTES.WORKSHOP_EMPLOYEE_START_SERVICE)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             borderRadius: 14,
             paddingVertical: 13,
             paddingHorizontal: 16,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.22,
             shadowRadius: 6,
@@ -265,7 +266,7 @@ export default function EmployeeHomeScreen() {
               <Text style={{ fontSize: 15, fontWeight: "800", color: "#FFFFFF" }}>
                 Start Service / Add Truck
               </Text>
-              <Text style={{ fontSize: 12, color: "#DBEAFE", fontWeight: "500", marginTop: 2 }}>
+              <Text style={{ fontSize: 12, color: "#A7F3D0", fontWeight: "500", marginTop: 2 }}>
                 Search truck #, see past history, or add new
               </Text>
             </View>
@@ -281,8 +282,8 @@ export default function EmployeeHomeScreen() {
               alignItems: "center",
             }}
           >
-            <Ionicons name="add" size={16} color="#2563EB" style={{ marginRight: 2 }} />
-            <Text style={{ fontSize: 12, fontWeight: "800", color: "#2563EB" }}>New</Text>
+            <Ionicons name="add" size={16} color="#059669" style={{ marginRight: 2 }} />
+            <Text style={{ fontSize: 12, fontWeight: "800", color: "#059669" }}>New</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -301,7 +302,7 @@ export default function EmployeeHomeScreen() {
               <TouchableOpacity
                 onPress={() => setActiveTab(item.key)}
                 style={{
-                  backgroundColor: active ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: active ? "#059669" : "#F1F5F9",
                   paddingHorizontal: 14,
                   paddingVertical: 7,
                   borderRadius: 20,
@@ -345,7 +346,7 @@ export default function EmployeeHomeScreen() {
             keyExtractor={(item) => item._id}
             renderItem={renderJobItem}
             showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#059669"]} />}
             contentContainerStyle={{ paddingBottom: 24 }}
           />
         )}

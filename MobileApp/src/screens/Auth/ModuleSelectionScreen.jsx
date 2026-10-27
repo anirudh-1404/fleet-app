@@ -12,6 +12,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../context/AuthContext";
 
+import ROUTES from "../../constants/routes";
+
 const logoImg = require("../../../assets/logo.png");
 
 const MODULE_DEFINITIONS = {
@@ -35,9 +37,9 @@ const MODULE_DEFINITIONS = {
     icon: "construct-outline",
     stackName: "WorkshopStack",
     badge: "Workshop Active",
-    color: "#0D9488",
-    bgSoft: "#F0FDFA",
-    border: "#99F6E4",
+    color: "#047857",
+    bgSoft: "#ECFDF5",
+    border: "#A7F3D0",
   },
   rental_owner: {
     id: "rental_owner",
@@ -47,9 +49,9 @@ const MODULE_DEFINITIONS = {
     icon: "key-outline",
     stackName: "RentalStack",
     badge: "Rental Active",
-    color: "#0284C7",
-    bgSoft: "#F0F9FF",
-    border: "#BAE6FD",
+    color: "#059669",
+    bgSoft: "#ECFDF5",
+    border: "#A7F3D0",
   },
   driver: {
     id: "driver",
@@ -59,9 +61,9 @@ const MODULE_DEFINITIONS = {
     icon: "speedometer-outline",
     stackName: "DriverStack",
     badge: "Driver Portal",
-    color: "#6366F1",
-    bgSoft: "#EEF2FF",
-    border: "#C7D2FE",
+    color: "#047857",
+    bgSoft: "#ECFDF5",
+    border: "#A7F3D0",
   },
   workshop_employee: {
     id: "workshop_employee",
@@ -71,14 +73,45 @@ const MODULE_DEFINITIONS = {
     icon: "hardware-chip-outline",
     stackName: "WorkshopEmployeeStack",
     badge: "Technician Portal",
-    color: "#D97706",
-    bgSoft: "#FFFBEB",
-    border: "#FDE68A",
+    color: "#065F46",
+    bgSoft: "#ECFDF5",
+    border: "#A7F3D0",
   },
 };
 
 export default function ModuleSelectionScreen({ navigation }) {
-  const { user, modules, role, switchModule, logout } = useAuth();
+  const { user, modules, role, switchModule, logout, refreshUser } = useAuth();
+
+  React.useEffect(() => {
+    if (refreshUser && (!user?.name || user.name.trim().toLowerCase() === "user")) {
+      refreshUser();
+    }
+  }, []);
+
+  const displayName = React.useMemo(() => {
+    const rawName = user?.name?.trim();
+    if (rawName && rawName.toLowerCase() !== "user") {
+      return rawName;
+    }
+    if (user?.email) {
+      const emailPrefix = user.email.split("@")[0];
+      return emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+    }
+    return "Partner";
+  }, [user]);
+
+  const handleSignOut = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      console.error("Sign out error:", e);
+    }
+    const rootNav = navigation.getParent() || navigation;
+    rootNav.reset({
+      index: 0,
+      routes: [{ name: ROUTES.LOGIN }],
+    });
+  };
 
   // Normalize user modules list
   const availableModules =
@@ -133,7 +166,7 @@ export default function ModuleSelectionScreen({ navigation }) {
         </View>
 
         <TouchableOpacity
-          onPress={logout}
+          onPress={handleSignOut}
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -166,7 +199,7 @@ export default function ModuleSelectionScreen({ navigation }) {
             Select Workspace
           </Text>
           <Text style={{ fontSize: 26, fontWeight: "800", color: "#0F172A", marginTop: 4, letterSpacing: -0.5 }}>
-            Welcome, {user?.name || "User"} 👋
+            Welcome, {displayName} 👋
           </Text>
           <Text style={{ fontSize: 14, color: "#64748B", marginTop: 6, lineHeight: 22 }}>
             Your account is authorized for multiple modules. Select the workspace you want to access today:

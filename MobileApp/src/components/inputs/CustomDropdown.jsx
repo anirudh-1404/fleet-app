@@ -131,13 +131,13 @@ export default function CustomDropdown({
                       >
                         <Text
                           className={`text-base ${
-                            isSelected ? "text-[#2563EB] font-bold" : "text-gray-900"
+                            isSelected ? "text-[#059669] font-bold" : "text-gray-900"
                           }`}
                         >
                           {lbl}
                         </Text>
                         {isSelected && (
-                          <Ionicons name="checkmark" size={20} color="#2563EB" />
+                          <Ionicons name="checkmark" size={20} color="#059669" />
                         )}
                       </TouchableOpacity>
                     );

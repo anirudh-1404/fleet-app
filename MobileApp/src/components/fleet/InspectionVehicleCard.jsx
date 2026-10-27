@@ -117,9 +117,9 @@ export default function InspectionVehicleCard({
         )}
 
         {validationStatus === "ASSIGNED_SELF" && (
-          <View className="bg-[#EFF6FF] border border-[#93C5FD] rounded-xl p-3 flex-row items-center gap-2">
-            <Ionicons name="checkmark-circle-outline" size={18} color="#2563EB" />
-            <Text className="text-xs font-semibold text-[#2563EB] flex-1">
+          <View className="bg-[#ECFDF5] border border-[#6EE7B7] rounded-xl p-3 flex-row items-center gap-2">
+            <Ionicons name="checkmark-circle-outline" size={18} color="#059669" />
+            <Text className="text-xs font-semibold text-[#059669] flex-1">
               Currently assigned to you. Ready for inspection.
             </Text>
           </View>
@@ -158,7 +158,7 @@ export default function InspectionVehicleCard({
                   textAlignVertical: "center",
                   includeFontPadding: false,
                 }}
-                className="font-bold text-[#2563EB] flex-1"
+                className="font-bold text-[#059669] flex-1"
               />
               <Text className="text-[10px] font-bold text-[#6B7280] ml-1">KM</Text>
             </View>

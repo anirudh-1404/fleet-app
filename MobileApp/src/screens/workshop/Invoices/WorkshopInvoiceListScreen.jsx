@@ -86,7 +86,7 @@ export default function WorkshopInvoiceListScreen() {
           <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
             {item.invoiceNumber}
           </Text>
-          <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB", marginTop: 2 }}>
+          <Text style={{ fontSize: 13, fontWeight: "600", color: "#059669", marginTop: 2 }}>
             {item.category} {item.vendor ? `• ${item.vendor}` : ""}
           </Text>
         </View>
@@ -111,16 +111,16 @@ export default function WorkshopInvoiceListScreen() {
             style={{
               paddingHorizontal: 8,
               paddingVertical: 3.5,
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 6,
               borderWidth: 1,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
               flexDirection: "row",
               alignItems: "center",
             }}
           >
-            <Ionicons name="cloud-download-outline" size={13} color="#2563EB" style={{ marginRight: 3 }} />
-            <Text style={{ fontSize: 11, fontWeight: "700", color: "#2563EB" }}>PDF</Text>
+            <Ionicons name="cloud-download-outline" size={13} color="#059669" style={{ marginRight: 3 }} />
+            <Text style={{ fontSize: 11, fontWeight: "700", color: "#059669" }}>PDF</Text>
           </TouchableOpacity>
         </View>
       </View>

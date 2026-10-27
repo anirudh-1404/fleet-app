@@ -51,16 +51,16 @@ export default function SupportCard() {
           onPress={() => handleSupportPress("Call")}
           className="flex-1 h-12 rounded-[16px] bg-[#F8FAFC] border border-[#E8EDF3] flex-row items-center justify-center gap-2"
         >
-          <Ionicons name="call-outline" size={18} color="#2563EB" />
-          <Text className="text-sm font-bold text-[#2563EB]">Call Manager</Text>
+          <Ionicons name="call-outline" size={18} color="#059669" />
+          <Text className="text-sm font-bold text-[#059669]">Call Manager</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => handleSupportPress("Chat")}
           className="flex-1 h-12 rounded-[16px] bg-[#F8FAFC] border border-[#E8EDF3] flex-row items-center justify-center gap-2"
         >
-          <Ionicons name="chatbubbles-outline" size={18} color="#2563EB" />
-          <Text className="text-sm font-bold text-[#2563EB]">Team Chat</Text>
+          <Ionicons name="chatbubbles-outline" size={18} color="#059669" />
+          <Text className="text-sm font-bold text-[#059669]">Team Chat</Text>
         </TouchableOpacity>
       </View>
     </View>

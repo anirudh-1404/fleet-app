@@ -70,7 +70,7 @@ export default function CustomerListScreen() {
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
           <View style={{ flex: 1, marginRight: 8 }}>
             <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>{item.fullName}</Text>
-            <Text style={{ fontSize: 13, color: "#2563EB", marginTop: 2, fontWeight: "600" }}>{item.phone}</Text>
+            <Text style={{ fontSize: 13, color: "#059669", marginTop: 2, fontWeight: "600" }}>{item.phone}</Text>
           </View>
           <View
             style={{
@@ -109,8 +109,8 @@ export default function CustomerListScreen() {
               gap: 4,
             }}
           >
-            <Ionicons name="key-outline" size={14} color="#2563EB" />
-            <Text style={{ fontSize: 12, color: "#2563EB", fontWeight: "700" }}>Rent Vehicle</Text>
+            <Ionicons name="key-outline" size={14} color="#059669" />
+            <Text style={{ fontSize: 12, color: "#059669", fontWeight: "700" }}>Rent Vehicle</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -191,7 +191,7 @@ export default function CustomerListScreen() {
           keyExtractor={(item) => item._id}
           renderItem={renderCustomerItem}
           contentContainerStyle={{ padding: 16, paddingBottom: 30 }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} colors={["#059669"]} />}
         />
       )}
     </SafeAreaView>

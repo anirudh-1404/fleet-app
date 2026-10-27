@@ -90,7 +90,7 @@ export default function PurchaseScreen() {
               padding: 18,
               marginBottom: 14,
               borderWidth: 2,
-              borderColor: selectedPlan === "fleet" ? "#2563EB" : "#E2E8F0",
+              borderColor: selectedPlan === "fleet" ? "#059669" : "#E2E8F0",
             }}
           >
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>

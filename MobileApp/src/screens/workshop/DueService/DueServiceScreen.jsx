@@ -79,7 +79,7 @@ export default function DueServiceScreen() {
             <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
               {item.vehicle?.make} {item.vehicle?.model} ({item.vehicle?.registration})
             </Text>
-            <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginTop: 2 }}>
               {item.serviceType} • {item.vehicle?.vehicleType}
             </Text>
           </View>
@@ -108,7 +108,7 @@ export default function DueServiceScreen() {
               prefilledDate: item.nextDueDate,
             })}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingHorizontal: 14,
               paddingVertical: 7,
               borderRadius: 6,
@@ -186,7 +186,7 @@ export default function DueServiceScreen() {
                 key={tp}
                 onPress={() => setSelectedType(tp)}
                 style={{
-                  backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                   paddingHorizontal: 12,
                   paddingVertical: 4,
                   borderRadius: 16,

@@ -97,7 +97,7 @@ export default function LogFuelModal({ visible, onClose, onSuccess }) {
               <View className="flex-row justify-between items-center pb-4 border-b border-[#E8EDF3] mb-4">
                 <View className="flex-row items-center">
                   <View className="w-10 h-10 rounded-full bg-[#EEF4FF] items-center justify-center mr-3">
-                    <Ionicons name="water-outline" size={20} color="#2563EB" />
+                    <Ionicons name="water-outline" size={20} color="#059669" />
                   </View>
                   <View>
                     <Text className="text-lg font-bold text-[#111827]">Log Fuel Entry</Text>
@@ -115,7 +115,7 @@ export default function LogFuelModal({ visible, onClose, onSuccess }) {
               {/* Form Content */}
               {isLoading ? (
                 <View className="py-12 items-center justify-center">
-                  <ActivityIndicator size="large" color="#2563EB" />
+                  <ActivityIndicator size="large" color="#059669" />
                 </View>
               ) : (
                 <View className="flex-col gap-4">
@@ -126,7 +126,7 @@ export default function LogFuelModal({ visible, onClose, onSuccess }) {
                       <Text className="text-sm font-bold text-[#111827] mt-0.5">{vehicleName}</Text>
                     </View>
                     <View className="bg-[#EEF4FF] px-3 py-1 rounded-full">
-                      <Text className="text-xs font-bold text-[#2563EB]">{registration}</Text>
+                      <Text className="text-xs font-bold text-[#059669]">{registration}</Text>
                     </View>
                   </View>
 
@@ -236,7 +236,7 @@ export default function LogFuelModal({ visible, onClose, onSuccess }) {
                     <TouchableOpacity
                       onPress={handleSubmit}
                       disabled={isSubmitting}
-                      className="flex-1 h-12 rounded-full items-center justify-center bg-[#2563EB]"
+                      className="flex-1 h-12 rounded-full items-center justify-center bg-[#059669]"
                     >
                       {isSubmitting ? (
                         <ActivityIndicator color="white" />

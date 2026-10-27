@@ -101,9 +101,9 @@ export default function NotificationsScreen() {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={markAllNotificationsAsRead}
-            className="px-3 py-1.5 rounded-full bg-[#EFF6FF]"
+            className="px-3 py-1.5 rounded-full bg-[#ECFDF5]"
           >
-            <Text className="text-xs font-semibold text-[#2563EB]">Mark all as read</Text>
+            <Text className="text-xs font-semibold text-[#059669]">Mark all as read</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -142,7 +142,7 @@ export default function NotificationsScreen() {
             className={`border rounded-[24px] p-5 mb-4 relative ${
               item.isRead
                 ? "bg-white border-[#E8EDF3]"
-                : "bg-[#EFF6FF] border-[#BFDBFE]"
+                : "bg-[#ECFDF5] border-[#A7F3D0]"
             }`}
             style={{
               shadowColor: "#111827",
@@ -165,7 +165,7 @@ export default function NotificationsScreen() {
                   <Ionicons
                     name={getCategoryIcon(item.category)}
                     size={20}
-                    color={item.isUrgent ? "#DC2626" : "#2563EB"}
+                    color={item.isUrgent ? "#DC2626" : "#059669"}
                   />
                 </View>
 

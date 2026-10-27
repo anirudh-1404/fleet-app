@@ -198,14 +198,14 @@ export default function JobPhotosEvidenceScreen() {
                 alignItems: "center",
                 paddingVertical: 8,
                 borderRadius: 8,
-                backgroundColor: isActive ? "#EFF6FF" : "transparent",
+                backgroundColor: isActive ? "#ECFDF5" : "transparent",
               }}
             >
               <Text
                 style={{
                   fontSize: 12,
                   fontWeight: isActive ? "800" : "600",
-                  color: isActive ? "#2563EB" : "#64748B",
+                  color: isActive ? "#059669" : "#64748B",
                 }}
               >
                 {tab.label}
@@ -213,7 +213,7 @@ export default function JobPhotosEvidenceScreen() {
               <View
                 style={{
                   marginTop: 3,
-                  backgroundColor: isActive ? "#2563EB" : "#E2E8F0",
+                  backgroundColor: isActive ? "#059669" : "#E2E8F0",
                   paddingHorizontal: 6,
                   paddingVertical: 1,
                   borderRadius: 10,
@@ -275,7 +275,7 @@ export default function JobPhotosEvidenceScreen() {
             disabled={uploading}
             onPress={showSourceDialog}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 10,
               paddingVertical: 12,
               alignItems: "center",
@@ -311,7 +311,7 @@ export default function JobPhotosEvidenceScreen() {
         </Text>
 
         {loading ? (
-          <ActivityIndicator size="large" color="#2563EB" style={{ marginTop: 40 }} />
+          <ActivityIndicator size="large" color="#059669" style={{ marginTop: 40 }} />
         ) : currentList.length === 0 ? (
           <View
             style={{

@@ -134,20 +134,20 @@ export default function WorkshopInvoiceDetailsScreen() {
             style={{
               paddingHorizontal: 10,
               paddingVertical: 6,
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 8,
               flexDirection: "row",
               alignItems: "center",
               borderWidth: 1,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
             }}
           >
             {downloadingPdf ? (
-              <ActivityIndicator size="small" color="#2563EB" />
+              <ActivityIndicator size="small" color="#059669" />
             ) : (
               <>
-                <Ionicons name="cloud-download-outline" size={16} color="#2563EB" style={{ marginRight: 4 }} />
-                <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>PDF</Text>
+                <Ionicons name="cloud-download-outline" size={16} color="#059669" style={{ marginRight: 4 }} />
+                <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>PDF</Text>
               </>
             )}
           </TouchableOpacity>
@@ -175,7 +175,7 @@ export default function WorkshopInvoiceDetailsScreen() {
                 <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
                   {invoice?.invoiceNumber}
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+                <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669", marginTop: 2 }}>
                   Category: {invoice?.category}
                 </Text>
               </View>
@@ -194,7 +194,7 @@ export default function WorkshopInvoiceDetailsScreen() {
               </Text>
               {workOrder?.jobNumber ? (
                 <Text style={{ fontSize: 13, color: "#475569" }}>
-                  Linked Work Order: <Text style={{ fontWeight: "700", color: "#2563EB" }}>{workOrder.jobNumber}</Text>
+                  Linked Work Order: <Text style={{ fontWeight: "700", color: "#059669" }}>{workOrder.jobNumber}</Text>
                 </Text>
               ) : null}
               {vehicle?.registration ? (
@@ -236,13 +236,13 @@ export default function WorkshopInvoiceDetailsScreen() {
                   width: 32,
                   height: 32,
                   borderRadius: 8,
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   alignItems: "center",
                   justifyContent: "center",
                   marginRight: 10,
                 }}
               >
-                <Ionicons name="document-text-outline" size={18} color="#2563EB" />
+                <Ionicons name="document-text-outline" size={18} color="#059669" />
               </View>
               <View>
                 <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>Tax Invoice PDF</Text>
@@ -261,13 +261,13 @@ export default function WorkshopInvoiceDetailsScreen() {
                 onPress={handleDownloadPdf}
                 style={{
                   flex: 1,
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   borderRadius: 10,
                   paddingVertical: 12,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
-                  shadowColor: "#2563EB",
+                  shadowColor: "#059669",
                   shadowOffset: { width: 0, height: 3 },
                   shadowOpacity: 0.2,
                   shadowRadius: 6,

@@ -54,13 +54,13 @@ export default function RootNavigator() {
     <Stack.Navigator
       key={isAuthenticated ? `auth_${user?._id || user?.id}_${role}` : "guest"}
       screenOptions={{ headerShown: false }}
-      initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : ROUTES.WELCOME}
+      initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : ROUTES.LOGIN}
     >
+      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
       <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />
       <Stack.Screen name={ROUTES.PURCHASE} component={PurchaseScreen} />
       <Stack.Screen name={ROUTES.CHECKOUT} component={CheckoutScreen} />
       <Stack.Screen name={ROUTES.VERIFY_OTP} component={OtpVerificationScreen} />
-      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
       <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
       <Stack.Screen name={ROUTES.MODULE_SELECTION} component={ModuleSelectionScreen} />
       <Stack.Screen name="ManagerStack" component={ManagerNavigator} />

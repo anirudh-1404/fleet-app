@@ -29,8 +29,8 @@ export default function InfoCard({
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center flex-1 mr-3">
             {icon && (
-              <View className="w-9 h-9 rounded-full bg-[#EFF6FF] items-center justify-center mr-3">
-                <Ionicons name={icon} size={18} color="#2563EB" />
+              <View className="w-9 h-9 rounded-full bg-[#ECFDF5] items-center justify-center mr-3">
+                <Ionicons name={icon} size={18} color="#059669" />
               </View>
             )}
             <View className="flex-1">

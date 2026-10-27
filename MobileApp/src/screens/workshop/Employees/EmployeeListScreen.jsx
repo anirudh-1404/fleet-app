@@ -86,14 +86,14 @@ export default function EmployeeListScreen() {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View
               style={{
-                backgroundColor: "#EFF6FF",
+                backgroundColor: "#ECFDF5",
                 paddingHorizontal: 8,
                 paddingVertical: 3,
                 borderRadius: 6,
                 alignSelf: "flex-start",
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: "600", color: "#2563EB" }}>
+              <Text style={{ fontSize: 12, fontWeight: "600", color: "#059669" }}>
                 {item.designation || "Technician"}
               </Text>
             </View>
@@ -196,7 +196,7 @@ export default function EmployeeListScreen() {
           activeOpacity={0.8}
           onPress={() => navigation.navigate(ROUTES.ADD_WORKSHOP_EMPLOYEE)}
           style={{
-            backgroundColor: "#2563EB",
+            backgroundColor: "#059669",
             paddingHorizontal: 12,
             paddingVertical: 7,
             borderRadius: 8,
@@ -257,7 +257,7 @@ export default function EmployeeListScreen() {
             keyExtractor={(item) => item._id}
             renderItem={renderEmployeeItem}
             showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#059669"]} />}
             contentContainerStyle={{ paddingBottom: 24 }}
           />
         )}

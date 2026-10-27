@@ -68,9 +68,9 @@ export default function ContactsScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.ADD_CONTACT)}
-          className="h-10 px-4 bg-[#2563EB] rounded-full items-center justify-center flex-row"
+          className="h-10 px-4 bg-[#059669] rounded-full items-center justify-center flex-row"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.15,
             shadowRadius: 6,
@@ -115,7 +115,7 @@ export default function ContactsScreen() {
           >
             <View className="flex-row items-center flex-1 mr-4">
               <View className="w-11 h-11 rounded-full bg-[#EEF4FF] border border-[#E8EDF3] items-center justify-center mr-3">
-                <Ionicons name="person-outline" size={18} color="#2563EB" />
+                <Ionicons name="person-outline" size={18} color="#059669" />
               </View>
               <View className="flex-1">
                 <Text className="text-sm font-bold text-[#111827]">{item.name}</Text>
@@ -128,7 +128,7 @@ export default function ContactsScreen() {
               onPress={() => handleCall(item.phone)}
               className="w-9 h-9 rounded-full bg-[#EEF4FF] items-center justify-center"
             >
-              <Ionicons name="call-outline" size={16} color="#2563EB" />
+              <Ionicons name="call-outline" size={16} color="#059669" />
             </TouchableOpacity>
           </TouchableOpacity>
         )}

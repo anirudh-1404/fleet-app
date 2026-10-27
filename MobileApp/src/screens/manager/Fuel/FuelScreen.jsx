@@ -126,7 +126,7 @@ export default function FuelScreen() {
                 </Text>
               </View>
               <View className="bg-[#EEF4FF] rounded-full px-3 py-1">
-                <Text className="text-xs font-bold text-[#2563EB]">{item.liters}</Text>
+                <Text className="text-xs font-bold text-[#059669]">{item.liters}</Text>
               </View>
             </View>
             <View className="border-t border-[#E8EDF3] pt-3 mt-1 flex-col gap-2">

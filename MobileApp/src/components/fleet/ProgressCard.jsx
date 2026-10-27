@@ -17,7 +17,7 @@ export default function ProgressCard({ completed, total }) {
     >
       <View className="flex-row justify-between items-center mb-3">
         <Text className="text-sm font-semibold text-[#111827]">Inspection Progress</Text>
-        <Text className="text-sm font-bold text-[#2563EB]">{completed} / {total} Completed</Text>
+        <Text className="text-sm font-bold text-[#059669]">{completed} / {total} Completed</Text>
       </View>
       
       {/* Progress Bar Container */}

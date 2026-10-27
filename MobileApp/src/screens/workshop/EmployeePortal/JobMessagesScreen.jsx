@@ -100,21 +100,21 @@ export default function JobMessagesScreen() {
             width: 96,
             height: 96,
             borderRadius: 30,
-            backgroundColor: "#EFF6FF",
+            backgroundColor: "#ECFDF5",
             borderWidth: 2,
-            borderColor: "#BFDBFE",
+            borderColor: "#A7F3D0",
             justifyContent: "center",
             alignItems: "center",
             marginTop: 16,
             marginBottom: 20,
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 8 },
             shadowOpacity: 0.15,
             shadowRadius: 16,
             elevation: 4,
           }}
         >
-          <Ionicons name="chatbubbles" size={48} color="#2563EB" />
+          <Ionicons name="chatbubbles" size={48} color="#059669" />
         </View>
 
         {/* Coming Soon Pill */}
@@ -122,17 +122,17 @@ export default function JobMessagesScreen() {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: "#EFF6FF",
+            backgroundColor: "#ECFDF5",
             paddingHorizontal: 14,
             paddingVertical: 6,
             borderRadius: 20,
             borderWidth: 1,
-            borderColor: "#DBEAFE",
+            borderColor: "#A7F3D0",
             marginBottom: 12,
           }}
         >
-          <Ionicons name="sparkles" size={14} color="#2563EB" style={{ marginRight: 6 }} />
-          <Text style={{ fontSize: 12, fontWeight: "800", color: "#1D4ED8", letterSpacing: 0.5 }}>
+          <Ionicons name="sparkles" size={14} color="#059669" style={{ marginRight: 6 }} />
+          <Text style={{ fontSize: 12, fontWeight: "800", color: "#047857", letterSpacing: 0.5 }}>
             FEATURE IN PROGRESS 🚀
           </Text>
         </View>
@@ -186,13 +186,13 @@ export default function JobMessagesScreen() {
                 width: 44,
                 height: 44,
                 borderRadius: 12,
-                backgroundColor: "#EFF6FF",
+                backgroundColor: "#ECFDF5",
                 justifyContent: "center",
                 alignItems: "center",
                 marginRight: 14,
               }}
             >
-              <Ionicons name="chatbubble-ellipses-outline" size={22} color="#2563EB" />
+              <Ionicons name="chatbubble-ellipses-outline" size={22} color="#059669" />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A", marginBottom: 2 }}>
@@ -291,12 +291,12 @@ export default function JobMessagesScreen() {
             activeOpacity={0.85}
             onPress={() => navigation.goBack()}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 14,
               paddingVertical: 15,
               alignItems: "center",
               justifyContent: "center",
-              shadowColor: "#2563EB",
+              shadowColor: "#059669",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.2,
               shadowRadius: 8,

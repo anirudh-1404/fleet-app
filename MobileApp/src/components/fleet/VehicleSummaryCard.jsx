@@ -17,7 +17,7 @@ export default function VehicleSummaryCard({ name, registration, fleetNumber, st
     >
       {/* Vehicle Photo Placeholder */}
       <View className="w-14 h-14 rounded-[16px] bg-[#EEF4FF] items-center justify-center mr-4 border border-[#E8EDF3]/30">
-        <Ionicons name="car-outline" size={28} color="#2563EB" />
+        <Ionicons name="car-outline" size={28} color="#059669" />
       </View>
       <View className="flex-1">
         <View className="flex-row justify-between items-center mr-1">

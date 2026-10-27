@@ -89,7 +89,7 @@ export default function DriverActivityCard({ activity, onPress }) {
             </View>
             <View>
               <Text className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider">Notes</Text>
-              <Text className={`text-xs font-bold mt-0.5 ${notesCount > 0 ? "text-[#2563EB]" : "text-[#6B7280]"}`}>
+              <Text className={`text-xs font-bold mt-0.5 ${notesCount > 0 ? "text-[#059669]" : "text-[#6B7280]"}`}>
                 {notesCount}
               </Text>
             </View>

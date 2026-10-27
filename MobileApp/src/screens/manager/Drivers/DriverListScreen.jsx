@@ -126,9 +126,9 @@ export default function DriverListScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={handleAddDriver}
-          className="bg-[#2563EB] rounded-[24px] px-4 py-3 flex-row items-center"
+          className="bg-[#059669] rounded-[24px] px-4 py-3 flex-row items-center"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.05,
             shadowRadius: 8,
@@ -166,7 +166,7 @@ export default function DriverListScreen() {
       {/* 4. List Section */}
       {isLoading ? (
         <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#059669" />
         </View>
       ) : (
         <FlatList

@@ -108,19 +108,19 @@ export default function CustomerDetailsScreen() {
               width: 64,
               height: 64,
               borderRadius: 32,
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               alignItems: "center",
               justifyContent: "center",
               marginBottom: 10,
             }}
           >
-            <Ionicons name="person" size={32} color="#2563EB" />
+            <Ionicons name="person" size={32} color="#059669" />
           </View>
 
           <Text style={{ fontSize: 20, fontWeight: "800", color: "#0F172A" }}>
             {customer.fullName}
           </Text>
-          <Text style={{ fontSize: 14, color: "#2563EB", fontWeight: "600", marginTop: 2 }}>
+          <Text style={{ fontSize: 14, color: "#059669", fontWeight: "600", marginTop: 2 }}>
             {customer.phone}
           </Text>
           {customer.email ? (
@@ -133,7 +133,7 @@ export default function CustomerDetailsScreen() {
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.CREATE_RENTAL, { customerPrefill: customer })}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 10,

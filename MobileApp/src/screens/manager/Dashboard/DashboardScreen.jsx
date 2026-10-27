@@ -74,8 +74,13 @@ export default function DashboardScreen() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigation.reset({
+    try {
+      await logout();
+    } catch (e) {
+      console.error(e);
+    }
+    const rootNav = navigation.getParent() || navigation;
+    rootNav.reset({
       index: 0,
       routes: [{ name: ROUTES.LOGIN }]
     });

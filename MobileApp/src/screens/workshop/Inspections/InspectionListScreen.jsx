@@ -81,7 +81,7 @@ export default function InspectionListScreen() {
           <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
             {item.vehicle?.make} {item.vehicle?.model} ({item.vehicle?.registration})
           </Text>
-          <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB", marginTop: 2 }}>
+          <Text style={{ fontSize: 13, fontWeight: "600", color: "#059669", marginTop: 2 }}>
             {item.inspectionType} Inspection {item.workOrder?.jobNumber ? `• ${item.workOrder.jobNumber}` : ""}
           </Text>
         </View>

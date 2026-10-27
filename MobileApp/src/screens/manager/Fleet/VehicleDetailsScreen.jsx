@@ -68,7 +68,7 @@ export default function VehicleDetailsScreen() {
   if (isLoading || !vehicle) {
     return (
       <SafeAreaView className="flex-1 bg-[#F5F7FA] justify-center items-center">
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#059669" />
       </SafeAreaView>
     );
   }

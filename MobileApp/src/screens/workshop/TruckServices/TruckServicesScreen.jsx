@@ -76,7 +76,7 @@ export default function TruckServicesScreen() {
           <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A" }}>
             {item.serviceType}
           </Text>
-          <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB", marginTop: 2 }}>
+          <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669", marginTop: 2 }}>
             {item.vehicle?.make} {item.vehicle?.model} ({item.vehicle?.registration})
           </Text>
         </View>

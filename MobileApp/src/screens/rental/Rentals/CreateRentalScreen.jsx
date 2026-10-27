@@ -261,7 +261,7 @@ export default function CreateRentalScreen() {
                   onPress={() => navigation.navigate(ROUTES.ADD_RENTAL_VEHICLE)}
                   style={{ marginTop: 8 }}
                 >
-                  <Text style={{ color: "#2563EB", fontWeight: "700", fontSize: 13 }}>+ Add a Vehicle</Text>
+                  <Text style={{ color: "#059669", fontWeight: "700", fontSize: 13 }}>+ Add a Vehicle</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -274,21 +274,21 @@ export default function CreateRentalScreen() {
                       onPress={() => selectVehicle(v)}
                       style={{
                         width: 170,
-                        backgroundColor: isSelected ? "#EFF6FF" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#ECFDF5" : "#F8FAFC",
                         borderWidth: isSelected ? 2 : 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         borderRadius: 12,
                         padding: 12,
                         marginHorizontal: 4,
                       }}
                     >
-                      <Text style={{ fontSize: 14, fontWeight: "800", color: isSelected ? "#1E40AF" : "#0F172A" }} numberOfLines={1}>
+                      <Text style={{ fontSize: 14, fontWeight: "800", color: isSelected ? "#065F46" : "#0F172A" }} numberOfLines={1}>
                         {v.make} {v.model}
                       </Text>
                       <Text style={{ fontSize: 11, color: "#64748B", marginTop: 2 }}>
                         {v.registration} • {v.year}
                       </Text>
-                      <Text style={{ fontSize: 14, fontWeight: "800", color: "#2563EB", marginTop: 8 }}>
+                      <Text style={{ fontSize: 14, fontWeight: "800", color: "#059669", marginTop: 8 }}>
                         ${v.dailyRate}/day
                       </Text>
                     </TouchableOpacity>
@@ -514,7 +514,7 @@ export default function CreateRentalScreen() {
                     height: 42,
                     fontSize: 15,
                     fontWeight: "700",
-                    color: "#2563EB",
+                    color: "#059669",
                   }}
                 />
               </View>
@@ -665,7 +665,7 @@ export default function CreateRentalScreen() {
 
               <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text style={{ fontSize: 13, color: "#64748B" }}>Rental Period</Text>
-                <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB" }}>
+                <Text style={{ fontSize: 13, fontWeight: "600", color: "#059669" }}>
                   {startDate} → {returnDate} ({numDays} days)
                 </Text>
               </View>
@@ -691,7 +691,7 @@ export default function CreateRentalScreen() {
                 }}
               >
                 <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>Total Payable</Text>
-                <Text style={{ fontSize: 18, fontWeight: "800", color: "#2563EB" }}>${totalAmount}</Text>
+                <Text style={{ fontSize: 18, fontWeight: "800", color: "#059669" }}>${totalAmount}</Text>
               </View>
             </View>
           </View>
@@ -701,7 +701,7 @@ export default function CreateRentalScreen() {
             onPress={handleConfirmRental}
             disabled={isSubmitting}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               height: 52,
               borderRadius: 12,
               alignItems: "center",

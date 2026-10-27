@@ -238,7 +238,7 @@ export default function AddDriverScreen() {
                       }
                       className={`px-3.5 py-2 rounded-xl border ${
                         isSelected
-                          ? "bg-[#2563EB] border-[#2563EB]"
+                          ? "bg-[#059669] border-[#059669]"
                           : "bg-[#F9FAFB] border-[#E5E7EB]"
                       }`}
                     >
@@ -264,7 +264,7 @@ export default function AddDriverScreen() {
         style={{ paddingBottom: Math.max(insets.bottom, 16) }}
       >
         {isSubmitting ? (
-          <View className="h-14 bg-[#2563EB] rounded-2xl items-center justify-center">
+          <View className="h-14 bg-[#059669] rounded-2xl items-center justify-center">
             <ActivityIndicator color="white" />
           </View>
         ) : (

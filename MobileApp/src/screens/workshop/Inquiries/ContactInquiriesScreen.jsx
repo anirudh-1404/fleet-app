@@ -131,8 +131,8 @@ export default function ContactInquiriesScreen() {
     switch (status) {
       case "NEW":
         return (
-          <View style={{ backgroundColor: "#EFF6FF", paddingHorizontal: 9, paddingVertical: 3.5, borderRadius: 6, borderWidth: 1, borderColor: "#BFDBFE" }}>
-            <Text style={{ fontSize: 10, fontWeight: "800", color: "#1D4ED8", letterSpacing: 0.3 }}>NEW LEAD</Text>
+          <View style={{ backgroundColor: "#ECFDF5", paddingHorizontal: 9, paddingVertical: 3.5, borderRadius: 6, borderWidth: 1, borderColor: "#A7F3D0" }}>
+            <Text style={{ fontSize: 10, fontWeight: "800", color: "#047857", letterSpacing: 0.3 }}>NEW LEAD</Text>
           </View>
         );
       case "CONTACTED":
@@ -173,7 +173,7 @@ export default function ContactInquiriesScreen() {
           padding: 16,
           marginBottom: 14,
           borderWidth: 1,
-          borderColor: item.status === "NEW" ? "#93C5FD" : "#E2E8F0",
+          borderColor: item.status === "NEW" ? "#6EE7B7" : "#E2E8F0",
           shadowColor: "#0F172A",
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: item.status === "NEW" ? 0.08 : 0.03,
@@ -255,15 +255,15 @@ export default function ContactInquiriesScreen() {
               <View
                 key={idx}
                 style={{
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   paddingHorizontal: 8,
                   paddingVertical: 3,
                   borderRadius: 6,
                   borderWidth: 1,
-                  borderColor: "#DBEAFE",
+                  borderColor: "#A7F3D0",
                 }}
               >
-                <Text style={{ fontSize: 11, fontWeight: "600", color: "#1D4ED8" }}>{type}</Text>
+                <Text style={{ fontSize: 11, fontWeight: "600", color: "#047857" }}>{type}</Text>
               </View>
             ))}
             {item.bookingTypes.length > 3 ? (
@@ -289,7 +289,7 @@ export default function ContactInquiriesScreen() {
             style={{
               backgroundColor: "#F8FAFC",
               borderLeftWidth: 3,
-              borderLeftColor: "#3B82F6",
+              borderLeftColor: "#10B981",
               paddingHorizontal: 10,
               paddingVertical: 6,
               borderRadius: 4,
@@ -318,7 +318,7 @@ export default function ContactInquiriesScreen() {
               activeOpacity={0.75}
               onPress={() => handleCallCustomer(item.customer?.mobileNumber)}
               style={{
-                backgroundColor: "#EFF6FF",
+                backgroundColor: "#ECFDF5",
                 paddingHorizontal: 12,
                 paddingVertical: 6.5,
                 borderRadius: 8,
@@ -326,8 +326,8 @@ export default function ContactInquiriesScreen() {
                 alignItems: "center",
               }}
             >
-              <Ionicons name="call-outline" size={13} color="#2563EB" style={{ marginRight: 4 }} />
-              <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB" }}>Call</Text>
+              <Ionicons name="call-outline" size={13} color="#059669" style={{ marginRight: 4 }} />
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669" }}>Call</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -348,10 +348,10 @@ export default function ContactInquiriesScreen() {
           </View>
 
           <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 4 }}>
-            <Text style={{ fontSize: 12, fontWeight: "700", color: "#2563EB", marginRight: 2 }}>
+            <Text style={{ fontSize: 12, fontWeight: "700", color: "#059669", marginRight: 2 }}>
               View Card
             </Text>
-            <Ionicons name="chevron-forward" size={15} color="#2563EB" />
+            <Ionicons name="chevron-forward" size={15} color="#059669" />
           </View>
         </View>
       </TouchableOpacity>
@@ -404,15 +404,15 @@ export default function ContactInquiriesScreen() {
         {stats.newCount > 0 ? (
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               paddingHorizontal: 10,
               paddingVertical: 4,
               borderRadius: 12,
               borderWidth: 1,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: "800", color: "#1D4ED8" }}>
+            <Text style={{ fontSize: 11, fontWeight: "800", color: "#047857" }}>
               {stats.newCount} NEW
             </Text>
           </View>
@@ -425,7 +425,7 @@ export default function ContactInquiriesScreen() {
         renderItem={renderInquiryItem}
         contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#059669"]} />}
         ListHeaderComponent={
           <>
             {/* Shareable Booking Form Hero Card */}
@@ -462,7 +462,7 @@ export default function ContactInquiriesScreen() {
                       marginRight: 8,
                     }}
                   >
-                    <Ionicons name="link-outline" size={17} color="#60A5FA" />
+                    <Ionicons name="link-outline" size={17} color="#34D399" />
                   </View>
                   <Text
                     style={{ fontSize: 15, fontWeight: "800", color: "#FFFFFF", flexShrink: 1 }}
@@ -504,11 +504,11 @@ export default function ContactInquiriesScreen() {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 12, color: "#93C5FD", fontWeight: "600", flex: 1, marginRight: 8 }} numberOfLines={1}>
+                <Text style={{ fontSize: 12, color: "#6EE7B7", fontWeight: "600", flex: 1, marginRight: 8 }} numberOfLines={1}>
                   {publicBookingUrl}
                 </Text>
                 <TouchableOpacity onPress={handlePreviewLink} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-                  <Ionicons name="open-outline" size={16} color="#93C5FD" />
+                  <Ionicons name="open-outline" size={16} color="#6EE7B7" />
                 </TouchableOpacity>
               </View>
 
@@ -519,7 +519,7 @@ export default function ContactInquiriesScreen() {
                   onPress={handleShareLink}
                   style={{
                     flex: 1,
-                    backgroundColor: "#2563EB",
+                    backgroundColor: "#059669",
                     borderRadius: 10,
                     paddingVertical: 10,
                     flexDirection: "row",
@@ -580,14 +580,14 @@ export default function ContactInquiriesScreen() {
                   paddingVertical: 10,
                   paddingHorizontal: 4,
                   borderWidth: 1,
-                  borderColor: "#BFDBFE",
+                  borderColor: "#A7F3D0",
                   alignItems: "center",
                   justifyContent: "center",
                   minHeight: 64,
                 }}
               >
-                <Text style={{ fontSize: 18, fontWeight: "900", color: "#1D4ED8" }}>{stats.newCount}</Text>
-                <Text numberOfLines={1} style={{ fontSize: 10, fontWeight: "700", color: "#1D4ED8", marginTop: 3 }}>
+                <Text style={{ fontSize: 18, fontWeight: "900", color: "#047857" }}>{stats.newCount}</Text>
+                <Text numberOfLines={1} style={{ fontSize: 10, fontWeight: "700", color: "#047857", marginTop: 3 }}>
                   New
                 </Text>
               </View>
@@ -759,13 +759,13 @@ export default function ContactInquiriesScreen() {
                   width: 56,
                   height: 56,
                   borderRadius: 28,
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: 14,
                 }}
               >
-                <Ionicons name="mail-open-outline" size={28} color="#2563EB" />
+                <Ionicons name="mail-open-outline" size={28} color="#059669" />
               </View>
               <Text style={{ fontSize: 16, fontWeight: "800", color: "#0F172A", marginBottom: 6 }}>
                 No Inquiries Found
@@ -776,7 +776,7 @@ export default function ContactInquiriesScreen() {
               <TouchableOpacity
                 onPress={handleShareLink}
                 style={{
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   paddingHorizontal: 20,
                   paddingVertical: 10,
                   borderRadius: 10,

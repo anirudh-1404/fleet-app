@@ -173,7 +173,7 @@ export default function RentalDetailsScreen() {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text style={{ fontSize: 13, color: "#64748B" }}>Phone Number</Text>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669" }}>
                 {customer?.phone || "N/A"}
               </Text>
             </View>
@@ -260,7 +260,7 @@ export default function RentalDetailsScreen() {
                 onPress={() => navigation.navigate(ROUTES.RENTAL_VEHICLE_DETAILS, { vehicleId: vehicle._id })}
                 style={{ marginTop: 4, alignSelf: "flex-start" }}
               >
-                <Text style={{ fontSize: 12, color: "#2563EB", fontWeight: "700" }}>View Full Vehicle Profile →</Text>
+                <Text style={{ fontSize: 12, color: "#059669", fontWeight: "700" }}>View Full Vehicle Profile →</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -293,7 +293,7 @@ export default function RentalDetailsScreen() {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text style={{ fontSize: 13, color: "#64748B" }}>Expected Return Date</Text>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669" }}>
                 {rental.returnDate} at {rental.returnTime || "17:00"}
               </Text>
             </View>
@@ -352,7 +352,7 @@ export default function RentalDetailsScreen() {
               }}
             >
               <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>Total Amount</Text>
-              <Text style={{ fontSize: 18, fontWeight: "800", color: "#2563EB" }}>${rental.totalAmount}</Text>
+              <Text style={{ fontSize: 18, fontWeight: "800", color: "#059669" }}>${rental.totalAmount}</Text>
             </View>
           </View>
         </View>
@@ -420,7 +420,7 @@ export default function RentalDetailsScreen() {
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.RETURN_RENTAL, { rental })}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               height: 52,
               borderRadius: 12,
               alignItems: "center",

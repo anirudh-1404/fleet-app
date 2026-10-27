@@ -16,7 +16,7 @@ export default function DriverAvatar({ name, size = 44 }) {
       className="rounded-full bg-[#EEF4FF] items-center justify-center border border-[#E8EDF3]"
       style={{ width: size, height: size }}
     >
-      <Text className="text-xs font-bold text-[#2563EB] tracking-wider">{initials}</Text>
+      <Text className="text-xs font-bold text-[#059669] tracking-wider">{initials}</Text>
     </View>
   );
 }

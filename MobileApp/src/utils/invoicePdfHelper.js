@@ -49,8 +49,8 @@ export function generateInvoiceHTML(invoice) {
         .logo-area h1 { font-size: 26px; font-weight: 900; color: #0F172A; letter-spacing: -0.5px; }
         .logo-area p { color: #64748B; font-size: 11px; margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .invoice-title { text-align: right; }
-        .invoice-title h2 { font-size: 24px; font-weight: 800; color: #2563EB; }
-        .invoice-title .inv-badge { display: inline-block; background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
+        .invoice-title h2 { font-size: 24px; font-weight: 800; color: #059669; }
+        .invoice-title .inv-badge { display: inline-block; background: #ECFDF5; border: 1px solid #A7F3D0; color: #047857; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
         
         .info-grid { display: flex; justify-content: space-between; margin-bottom: 24px; gap: 20px; }
         .info-col { flex: 1; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px; }
@@ -73,7 +73,7 @@ export function generateInvoiceHTML(invoice) {
         .calc-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: #64748B; }
         .calc-row.total { border-top: 2px solid #0F172A; border-bottom: 2px solid #0F172A; padding: 10px 0; font-size: 17px; font-weight: 900; color: #0F172A; margin-top: 6px; }
 
-        .notes-box { background: #F8FAFC; border-left: 4px solid #2563EB; padding: 12px 14px; border-radius: 0 6px 6px 0; margin-bottom: 28px; }
+        .notes-box { background: #F8FAFC; border-left: 4px solid #059669; padding: 12px 14px; border-radius: 0 6px 6px 0; margin-bottom: 28px; }
         .notes-box h4 { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #475569; margin-bottom: 4px; }
         .notes-box p { font-size: 12px; color: #334155; line-height: 1.5; }
 

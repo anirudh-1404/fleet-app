@@ -111,9 +111,9 @@ export default function EditWorkOrderScreen() {
                       key={st}
                       onPress={() => setStatus(st)}
                       style={{
-                        backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                         borderWidth: 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         paddingHorizontal: 12,
                         paddingVertical: 6,
                         borderRadius: 8,
@@ -141,9 +141,9 @@ export default function EditWorkOrderScreen() {
                       key={jt}
                       onPress={() => setJobType(jt)}
                       style={{
-                        backgroundColor: isSelected ? "#2563EB" : "#F8FAFC",
+                        backgroundColor: isSelected ? "#059669" : "#F8FAFC",
                         borderWidth: 1,
-                        borderColor: isSelected ? "#2563EB" : "#CBD5E1",
+                        borderColor: isSelected ? "#059669" : "#CBD5E1",
                         paddingHorizontal: 12,
                         paddingVertical: 6,
                         borderRadius: 8,
@@ -211,13 +211,13 @@ export default function EditWorkOrderScreen() {
                           }
                         }}
                         style={{
-                          backgroundColor: isSelected ? "#2563EB" : "#F1F5F9",
+                          backgroundColor: isSelected ? "#059669" : "#F1F5F9",
                           paddingHorizontal: 12,
                           paddingVertical: 6,
                           borderRadius: 8,
                           marginRight: 8,
                           borderWidth: 1,
-                          borderColor: isSelected ? "#2563EB" : "#E2E8F0",
+                          borderColor: isSelected ? "#059669" : "#E2E8F0",
                         }}
                       >
                         <Text
@@ -317,7 +317,7 @@ export default function EditWorkOrderScreen() {
             disabled={submitting}
             style={{
               marginTop: 20,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               borderRadius: 12,
               height: 50,
               alignItems: "center",

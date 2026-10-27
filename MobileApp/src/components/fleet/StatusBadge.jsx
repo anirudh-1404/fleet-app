@@ -25,8 +25,8 @@ export default function StatusBadge({ status }) {
     textColorClass = "text-[#6B7280]";
     displayStatus = status || "Normal";
   } else if (lowerStatus === "started" || lowerStatus === "journey started") {
-    bgColorClass = "bg-[#EFF6FF]";
-    textColorClass = "text-[#2563EB]";
+    bgColorClass = "bg-[#ECFDF5]";
+    textColorClass = "text-[#059669]";
     displayStatus = status || "Started";
   }
 

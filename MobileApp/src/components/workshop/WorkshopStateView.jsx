@@ -16,7 +16,7 @@ export default function WorkshopStateView({
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 32 }}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#059669" />
         <Text style={{ marginTop: 12, fontSize: 14, color: "#64748B", fontWeight: "500" }}>
           Loading workshop data...
         </Text>
@@ -52,7 +52,7 @@ export default function WorkshopStateView({
             onPress={onRetry}
             style={{
               marginTop: 18,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 8,
@@ -93,7 +93,7 @@ export default function WorkshopStateView({
             onPress={onEmptyAction}
             style={{
               marginTop: 18,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 8,

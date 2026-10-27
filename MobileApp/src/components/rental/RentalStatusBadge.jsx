@@ -9,9 +9,9 @@ const STATUS_CONFIGS = {
     label: "Available",
   },
   RENTED: {
-    bg: "#EFF6FF",
-    text: "#2563EB",
-    border: "#BFDBFE",
+    bg: "#ECFDF5",
+    text: "#059669",
+    border: "#A7F3D0",
     label: "Rented",
   },
   MAINTENANCE: {
@@ -33,9 +33,9 @@ const STATUS_CONFIGS = {
     label: "Upcoming",
   },
   ACTIVE: {
-    bg: "#EFF6FF",
-    text: "#2563EB",
-    border: "#BFDBFE",
+    bg: "#ECFDF5",
+    text: "#059669",
+    border: "#A7F3D0",
     label: "Active",
   },
   RETURNING_TODAY: {
@@ -75,9 +75,9 @@ const STATUS_CONFIGS = {
     label: "Pending",
   },
   Partial: {
-    bg: "#EFF6FF",
-    text: "#2563EB",
-    border: "#BFDBFE",
+    bg: "#ECFDF5",
+    text: "#059669",
+    border: "#A7F3D0",
     label: "Partial",
   },
 };

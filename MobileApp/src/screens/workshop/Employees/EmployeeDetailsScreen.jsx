@@ -136,7 +136,7 @@ export default function EmployeeDetailsScreen() {
 
       <ScrollView
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2563EB"]} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#059669"]} />}
       >
         {/* Profile Card */}
         <View
@@ -155,7 +155,7 @@ export default function EmployeeDetailsScreen() {
                 width: 52,
                 height: 52,
                 borderRadius: 26,
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 alignItems: "center",
                 justifyContent: "center",
                 marginRight: 14,
@@ -227,7 +227,7 @@ export default function EmployeeDetailsScreen() {
                   <View
                     key={s}
                     style={{
-                      backgroundColor: "#EFF6FF",
+                      backgroundColor: "#ECFDF5",
                       borderRadius: 12,
                       paddingHorizontal: 10,
                       paddingVertical: 4,
@@ -235,7 +235,7 @@ export default function EmployeeDetailsScreen() {
                       marginBottom: 6,
                     }}
                   >
-                    <Text style={{ fontSize: 11, fontWeight: "600", color: "#2563EB" }}>{s}</Text>
+                    <Text style={{ fontSize: 11, fontWeight: "600", color: "#059669" }}>{s}</Text>
                   </View>
                 ))}
               </View>

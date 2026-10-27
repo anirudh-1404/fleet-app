@@ -36,9 +36,9 @@ export default function SuccessScreen({
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={onButtonPress}
-          className="h-12 bg-[#2563EB] rounded-[24px] items-center justify-center w-full"
+          className="h-12 bg-[#059669] rounded-[24px] items-center justify-center w-full"
           style={{
-            shadowColor: "#2563EB",
+            shadowColor: "#059669",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.15,
             shadowRadius: 8,

@@ -65,7 +65,8 @@ export default function WorkshopDashboardScreen() {
       } catch (err) {
         console.error("Logout error:", err);
       }
-      navigation.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
+      const rootNav = navigation.getParent() || navigation;
+      rootNav.reset({ index: 0, routes: [{ name: ROUTES.LOGIN }] });
     };
 
     if (Platform.OS === "web") {
@@ -246,7 +247,7 @@ export default function WorkshopDashboardScreen() {
             >
               <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <Text style={{ fontSize: 12, fontWeight: "700", color: "#64748B" }}>Today's Jobs</Text>
-                <Ionicons name="calendar-outline" size={16} color="#2563EB" />
+                <Ionicons name="calendar-outline" size={16} color="#059669" />
               </View>
               <Text style={{ fontSize: 24, fontWeight: "800", color: "#0F172A", marginTop: 8 }}>
                 {summary.todaysJobs}
@@ -418,7 +419,7 @@ export default function WorkshopDashboardScreen() {
               onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER)}
               style={{
                 flex: 1.2,
-                backgroundColor: "#2563EB",
+                backgroundColor: "#059669",
                 borderRadius: 14,
                 paddingVertical: 14,
                 paddingHorizontal: 12,
@@ -426,7 +427,7 @@ export default function WorkshopDashboardScreen() {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 8,
-                shadowColor: "#2563EB",
+                shadowColor: "#059669",
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.25,
                 shadowRadius: 8,
@@ -457,7 +458,7 @@ export default function WorkshopDashboardScreen() {
                 borderColor: "#E2E8F0",
               }}
             >
-              <Ionicons name="grid-outline" size={18} color="#2563EB" />
+              <Ionicons name="grid-outline" size={18} color="#059669" />
               <Text style={{ fontSize: 13, fontWeight: "800", color: "#0F172A" }}>
                 All Modules
               </Text>
@@ -470,7 +471,7 @@ export default function WorkshopDashboardScreen() {
               Recent Workshop Activity
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate(ROUTES.WORKSHOP_WORKORDER_LIST)}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: "#2563EB" }}>View All</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: "#059669" }}>View All</Text>
             </TouchableOpacity>
           </View>
 
@@ -496,7 +497,7 @@ export default function WorkshopDashboardScreen() {
                 onPress={() => navigation.navigate(ROUTES.CREATE_WORKSHOP_WORKORDER)}
                 style={{
                   marginTop: 14,
-                  backgroundColor: "#2563EB",
+                  backgroundColor: "#059669",
                   paddingHorizontal: 16,
                   paddingVertical: 8,
                   borderRadius: 8,
@@ -525,7 +526,7 @@ export default function WorkshopDashboardScreen() {
                       <Text style={{ fontSize: 15, fontWeight: "700", color: "#0F172A" }}>
                         {item.customer?.fullName || "Walk-in Customer"}
                       </Text>
-                      <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB", marginTop: 2 }}>
+                      <Text style={{ fontSize: 13, fontWeight: "600", color: "#059669", marginTop: 2 }}>
                         {item.vehicle?.make} {item.vehicle?.model} ({item.vehicle?.registration})
                       </Text>
                     </View>

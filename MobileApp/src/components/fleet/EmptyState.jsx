@@ -20,7 +20,7 @@ export default function EmptyState({
       }}
     >
       <View className="w-16 h-16 rounded-full bg-[#EEF4FF] items-center justify-center mb-4">
-        <Ionicons name={icon} size={32} color="#2563EB" />
+        <Ionicons name={icon} size={32} color="#059669" />
       </View>
       <Text className="text-base font-bold text-[#111827] text-center">
         {title}
@@ -31,7 +31,7 @@ export default function EmptyState({
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={onActionPress}
-        className="bg-[#2563EB] rounded-[24px] px-6 py-3"
+        className="bg-[#059669] rounded-[24px] px-6 py-3"
       >
         <Text className="text-white text-sm font-semibold">{actionText}</Text>
       </TouchableOpacity>

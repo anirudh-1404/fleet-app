@@ -78,9 +78,9 @@ export default function FuelDetailsScreen() {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigation.navigate(ROUTES.EDIT_FUEL, { fuelId: fuelItem.id })}
-          className="w-10 h-10 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] items-center justify-center mr-2"
+          className="w-10 h-10 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] items-center justify-center mr-2"
         >
-          <Ionicons name="create-outline" size={18} color="#2563EB" />
+          <Ionicons name="create-outline" size={18} color="#059669" />
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -109,7 +109,7 @@ export default function FuelDetailsScreen() {
 
         {/* Consumption & Metrics */}
         <InfoCard title="Fuel Metrics" icon="stats-chart-outline">
-          <DetailRow label="Litres Purchased" value={fuelItem.liters} valueColor="text-[#2563EB]" />
+          <DetailRow label="Litres Purchased" value={fuelItem.liters} valueColor="text-[#059669]" />
           <DetailRow label="Total Cost" value={fuelItem.cost} valueColor="text-[#16A34A]" />
           <DetailRow label="Odometer Reading" value={fuelItem.odometer} />
           <DetailRow label="Fuel Efficiency" value={fuelItem.efficiency || "32.4 L/100km"} />

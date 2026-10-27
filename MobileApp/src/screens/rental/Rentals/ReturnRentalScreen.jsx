@@ -118,15 +118,15 @@ export default function ReturnRentalScreen() {
           {/* Summary Box */}
           <View
             style={{
-              backgroundColor: "#EFF6FF",
+              backgroundColor: "#ECFDF5",
               borderRadius: 14,
               borderWidth: 1,
-              borderColor: "#BFDBFE",
+              borderColor: "#A7F3D0",
               padding: 16,
               marginBottom: 16,
             }}
           >
-            <Text style={{ fontSize: 13, fontWeight: "700", color: "#1E40AF", textTransform: "uppercase" }}>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: "#065F46", textTransform: "uppercase" }}>
               Rental Agreement Details
             </Text>
 
@@ -137,7 +137,7 @@ export default function ReturnRentalScreen() {
               {rental?.vehicle?.make} {rental?.vehicle?.model} • Plate: {rental?.vehicle?.registration}
             </Text>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderColor: "#DBEAFE" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderColor: "#A7F3D0" }}>
               <Text style={{ fontSize: 12, color: "#64748B" }}>Expected Return Date:</Text>
               <Text style={{ fontSize: 12, fontWeight: "700", color: "#0F172A" }}>{rental?.returnDate}</Text>
             </View>
@@ -335,7 +335,7 @@ export default function ReturnRentalScreen() {
                 }}
               >
                 <Text style={{ fontSize: 15, fontWeight: "800", color: "#0F172A" }}>Final Settled Amount</Text>
-                <Text style={{ fontSize: 18, fontWeight: "800", color: "#2563EB" }}>${finalCalculatedAmount}</Text>
+                <Text style={{ fontSize: 18, fontWeight: "800", color: "#059669" }}>${finalCalculatedAmount}</Text>
               </View>
             </View>
           </View>
@@ -345,7 +345,7 @@ export default function ReturnRentalScreen() {
             onPress={handleCompleteReturn}
             disabled={isSubmitting}
             style={{
-              backgroundColor: "#2563EB",
+              backgroundColor: "#059669",
               height: 52,
               borderRadius: 12,
               alignItems: "center",

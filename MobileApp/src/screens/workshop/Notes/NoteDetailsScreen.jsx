@@ -126,7 +126,7 @@ export default function NoteDetailsScreen() {
               </Text>
               {vehicle?.registration ? (
                 <Text style={{ fontSize: 12, color: "#64748B" }}>
-                  Vehicle: <Text style={{ fontWeight: "600", color: "#2563EB" }}>{vehicle.make} {vehicle.model} ({vehicle.registration})</Text>
+                  Vehicle: <Text style={{ fontWeight: "600", color: "#059669" }}>{vehicle.make} {vehicle.model} ({vehicle.registration})</Text>
                 </Text>
               ) : null}
               {customer?.fullName ? (

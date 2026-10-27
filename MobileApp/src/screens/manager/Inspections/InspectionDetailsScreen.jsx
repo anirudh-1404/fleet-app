@@ -189,7 +189,7 @@ export default function InspectionDetailsScreen() {
 
           <View className="flex-row justify-between items-center py-2 border-b border-[#F8FAFC]">
             <Text className="text-xs font-semibold text-[#6B7280]">Phone</Text>
-            <Text className="text-xs font-semibold text-[#2563EB]">{inspection.driver.phone}</Text>
+            <Text className="text-xs font-semibold text-[#059669]">{inspection.driver.phone}</Text>
           </View>
 
           <View className="flex-row justify-between items-center py-2">
@@ -297,7 +297,7 @@ export default function InspectionDetailsScreen() {
                                 : item.status === "FAIL"
                                 ? "bg-[#FEF2F2]"
                                 : item.status === "NOTE"
-                                ? "bg-[#EFF6FF]"
+                                ? "bg-[#ECFDF5]"
                                 : "bg-[#F1F5F9]"
                             }`}>
                               <Text className={`text-[10px] font-bold ${
@@ -306,7 +306,7 @@ export default function InspectionDetailsScreen() {
                                   : item.status === "FAIL"
                                   ? "text-[#DC2626]"
                                   : item.status === "NOTE"
-                                  ? "text-[#2563EB]"
+                                  ? "text-[#059669]"
                                   : "text-[#6B7280]"
                               }`}>
                                 {item.status}
@@ -316,17 +316,17 @@ export default function InspectionDetailsScreen() {
                           {(item.status === "NOTE" || item.note) && (
                             <View className={`border rounded-[12px] px-4 py-3 mt-2 flex-row items-start ${
                               item.status === "NOTE"
-                                ? "bg-[#EFF6FF] border-[#DBEAFE]"
+                                ? "bg-[#ECFDF5] border-[#A7F3D0]"
                                 : "bg-[#FEF2F2] border-[#FEE2E2]"
                             }`}>
                               <Ionicons
                                 name={item.status === "NOTE" ? "document-text-outline" : "warning-outline"}
                                 size={14}
-                                color={item.status === "NOTE" ? "#2563EB" : "#DC2626"}
+                                color={item.status === "NOTE" ? "#059669" : "#DC2626"}
                                 style={{ marginRight: 8, marginTop: 2 }}
                               />
                               <Text className={`text-xs font-medium flex-1 ${
-                                item.status === "NOTE" ? "text-[#2563EB]" : "text-[#DC2626]"
+                                item.status === "NOTE" ? "text-[#059669]" : "text-[#DC2626]"
                               }`}>
                                 Note: {item.note || "No details provided."}
                               </Text>
@@ -375,9 +375,9 @@ export default function InspectionDetailsScreen() {
                 <Text className="text-[10px] font-bold text-[#475569] uppercase">N/A</Text>
                 <Text className="text-lg font-bold text-[#475569] mt-1">{inspection.summary.na}</Text>
               </View>
-              <View className="flex-1 bg-[#EFF6FF] border border-[#DBEAFE] rounded-[16px] py-3 items-center">
-                <Text className="text-[10px] font-bold text-[#1E40AF] uppercase">Notes</Text>
-                <Text className="text-lg font-bold text-[#1D4ED8] mt-1">{inspection.summary.notes}</Text>
+              <View className="flex-1 bg-[#ECFDF5] border border-[#A7F3D0] rounded-[16px] py-3 items-center">
+                <Text className="text-[10px] font-bold text-[#065F46] uppercase">Notes</Text>
+                <Text className="text-lg font-bold text-[#047857] mt-1">{inspection.summary.notes}</Text>
               </View>
             </View>
           </View>
