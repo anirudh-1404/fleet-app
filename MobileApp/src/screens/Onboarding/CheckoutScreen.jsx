@@ -95,29 +95,38 @@ export default function CheckoutScreen() {
 
     setIsChecking(true);
     try {
-      // Pre-check if an account already exists for this exact module
       await authService.sendOtp(email.trim().toLowerCase(), "register", assignedRole);
-
-      // Successfully dispatched OTP, navigate to verification screen
-      navigation.navigate(ROUTES.VERIFY_OTP, {
-        registrationData: {
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          password,
-          phone: phone.trim(),
-          role: assignedRole,
-          planTitle: getPlanTitle(),
-        },
-      });
     } catch (err) {
+      console.warn("sendOtp error in checkout:", err);
+      const isAlreadyExists =
+        err.response?.data?.alreadyExistsForModule ||
+        (err.response?.status === 400 && err.response?.data?.message?.includes("already exists"));
+
       const msg =
         err.response?.data?.message ||
-        "An account with this email already exists for this module";
-      setDuplicateError(msg);
+        err.message ||
+        "Failed to send verification code. Please try again.";
+
+      if (isAlreadyExists) {
+        setDuplicateError(msg);
+      }
       setValidationError(msg);
-    } finally {
       setIsChecking(false);
+      return;
     }
+
+    setIsChecking(false);
+
+    navigation.navigate(ROUTES.VERIFY_OTP, {
+      registrationData: {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        phone: phone.trim(),
+        role: assignedRole,
+        planTitle: getPlanTitle(),
+      },
+    });
   };
 
   return (

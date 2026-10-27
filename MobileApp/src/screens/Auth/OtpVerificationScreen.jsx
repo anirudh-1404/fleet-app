@@ -59,14 +59,8 @@ export default function OtpVerificationScreen() {
     };
   }, [timer]);
 
-  // Auto-focus input & trigger initial OTP dispatch for registration mode
+  // Auto-focus input on mount
   useEffect(() => {
-    if (!isLoginMode && email) {
-      authService.sendOtp(email.toLowerCase(), "register", role).catch((err) => {
-        const msg = err.response?.data?.message || "Failed to dispatch verification email.";
-        setErrorMessage(msg);
-      });
-    }
     const focusTimeout = setTimeout(() => {
       inputRef.current?.focus();
     }, 300);

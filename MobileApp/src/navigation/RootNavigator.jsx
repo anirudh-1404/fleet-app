@@ -56,27 +56,18 @@ export default function RootNavigator() {
       screenOptions={{ headerShown: false }}
       initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : ROUTES.WELCOME}
     >
-      {isAuthenticated ? (
-        // Authenticated Stack
-        <>
-          <Stack.Screen name={ROUTES.MODULE_SELECTION} component={ModuleSelectionScreen} />
-          <Stack.Screen name="ManagerStack" component={ManagerNavigator} />
-          <Stack.Screen name="WorkshopStack" component={WorkshopNavigator} />
-          <Stack.Screen name="WorkshopEmployeeStack" component={WorkshopEmployeeNavigator} />
-          <Stack.Screen name="RentalStack" component={RentalNavigator} />
-          <Stack.Screen name="DriverStack" component={DriverNavigator} />
-        </>
-      ) : (
-        // Guest / Onboarding Stack
-        <>
-          <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />
-          <Stack.Screen name={ROUTES.PURCHASE} component={PurchaseScreen} />
-          <Stack.Screen name={ROUTES.CHECKOUT} component={CheckoutScreen} />
-          <Stack.Screen name={ROUTES.VERIFY_OTP} component={OtpVerificationScreen} />
-          <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-          <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
-        </>
-      )}
+      <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />
+      <Stack.Screen name={ROUTES.PURCHASE} component={PurchaseScreen} />
+      <Stack.Screen name={ROUTES.CHECKOUT} component={CheckoutScreen} />
+      <Stack.Screen name={ROUTES.VERIFY_OTP} component={OtpVerificationScreen} />
+      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
+      <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPasswordScreen} />
+      <Stack.Screen name={ROUTES.MODULE_SELECTION} component={ModuleSelectionScreen} />
+      <Stack.Screen name="ManagerStack" component={ManagerNavigator} />
+      <Stack.Screen name="WorkshopStack" component={WorkshopNavigator} />
+      <Stack.Screen name="WorkshopEmployeeStack" component={WorkshopEmployeeNavigator} />
+      <Stack.Screen name="RentalStack" component={RentalNavigator} />
+      <Stack.Screen name="DriverStack" component={DriverNavigator} />
     </Stack.Navigator>
   );
 }
