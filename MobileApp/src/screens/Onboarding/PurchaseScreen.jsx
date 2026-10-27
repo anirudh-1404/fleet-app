@@ -102,7 +102,7 @@ export default function PurchaseScreen() {
                   width: 22,
                   height: 22,
                   borderRadius: 11,
-                  backgroundColor: selectedPlan === "fleet" ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: selectedPlan === "fleet" ? "#059669" : "#F1F5F9",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -146,7 +146,7 @@ export default function PurchaseScreen() {
               padding: 18,
               marginBottom: 14,
               borderWidth: 2,
-              borderColor: selectedPlan === "rental" ? "#2563EB" : "#E2E8F0",
+              borderColor: selectedPlan === "rental" ? "#059669" : "#E2E8F0",
             }}
           >
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -158,7 +158,7 @@ export default function PurchaseScreen() {
                   width: 22,
                   height: 22,
                   borderRadius: 11,
-                  backgroundColor: selectedPlan === "rental" ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: selectedPlan === "rental" ? "#059669" : "#F1F5F9",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -202,7 +202,7 @@ export default function PurchaseScreen() {
               padding: 18,
               marginBottom: 14,
               borderWidth: 2,
-              borderColor: selectedPlan === "workshop" ? "#2563EB" : "#E2E8F0",
+              borderColor: selectedPlan === "workshop" ? "#059669" : "#E2E8F0",
             }}
           >
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -214,7 +214,7 @@ export default function PurchaseScreen() {
                   width: 22,
                   height: 22,
                   borderRadius: 11,
-                  backgroundColor: selectedPlan === "workshop" ? "#2563EB" : "#F1F5F9",
+                  backgroundColor: selectedPlan === "workshop" ? "#059669" : "#F1F5F9",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -256,10 +256,15 @@ export default function PurchaseScreen() {
             onPress={handleProceedToCheckout}
             style={{
               height: 52,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#01311B",
               borderRadius: 12,
               alignItems: "center",
               justifyContent: "center",
+              shadowColor: "#01311B",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              elevation: 3,
             }}
           >
             <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>

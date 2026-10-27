@@ -50,16 +50,22 @@ export default function LoginScreen() {
         return;
       }
 
+      const userModules = data.modules && data.modules.length > 0 ? data.modules : [data.role];
+      if (userModules.length > 1) {
+        navigation.reset({ index: 0, routes: [{ name: ROUTES.MODULE_SELECTION }] });
+        return;
+      }
+
       if (data.role === "workshop_manager") {
         navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
       } else if (data.role === "workshop_employee") {
         navigation.reset({ index: 0, routes: [{ name: "WorkshopEmployeeStack" }] });
-      } else if (data.role === "manager") {
-        navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
       } else if (data.role === "rental_owner") {
         navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
       } else if (data.role === "driver") {
         navigation.reset({ index: 0, routes: [{ name: "DriverStack" }] });
+      } else {
+        navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
       }
     } catch (error) {
       const errorMsg =
@@ -202,7 +208,7 @@ export default function LoginScreen() {
               onPress={() => navigation.navigate(ROUTES.FORGOT_PASSWORD)}
               style={{ alignSelf: "flex-end", paddingVertical: 4, marginBottom: 20 }}
             >
-              <Text style={{ fontSize: 13, fontWeight: "600", color: "#2563EB" }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: "#059669" }}>
                 Forgot Password?
               </Text>
             </TouchableOpacity>
@@ -214,10 +220,15 @@ export default function LoginScreen() {
               disabled={isSubmitting}
               style={{
                 height: 50,
-                backgroundColor: "#2563EB",
+                backgroundColor: "#01311B",
                 borderRadius: 12,
                 alignItems: "center",
                 justifyContent: "center",
+                shadowColor: "#01311B",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 8,
+                elevation: 3,
               }}
             >
               {isSubmitting ? (
@@ -236,7 +247,7 @@ export default function LoginScreen() {
             >
               <Text style={{ fontSize: 13, color: "#64748B" }}>
                 Don't have an account?{" "}
-                <Text style={{ fontWeight: "700", color: "#2563EB" }}>Get Started</Text>
+                <Text style={{ fontWeight: "700", color: "#059669" }}>Get Started</Text>
               </Text>
             </TouchableOpacity>
           </View>

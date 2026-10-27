@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import ROUTES from "../../constants/routes";
+import { useAuth } from "../../context/AuthContext";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const DRAWER_WIDTH = Math.min(SCREEN_WIDTH * 0.82, 330);
@@ -29,6 +30,7 @@ export default function WorkshopSidebarDrawer({
   onLogout,
 }) {
   const navigation = useNavigation();
+  const { modules } = useAuth();
   const insets = useSafeAreaInsets();
   const slideAnim = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -347,6 +349,32 @@ export default function WorkshopSidebarDrawer({
 
             {/* Bottom Drawer Footer */}
             <View style={[styles.drawerFooter, { paddingBottom: bottomInset + 8 }]}>
+              {/* Switch Workspace if multiple modules */}
+              {modules && modules.length > 1 && (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    onClose();
+                    navigation.navigate(ROUTES.MODULE_SELECTION);
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    backgroundColor: "#ECFDF5",
+                    borderWidth: 1,
+                    borderColor: "#A7F3D0",
+                    paddingVertical: 10,
+                    paddingHorizontal: 14,
+                    borderRadius: 10,
+                    marginBottom: 8,
+                    gap: 8,
+                  }}
+                >
+                  <Ionicons name="grid-outline" size={18} color="#059669" />
+                  <Text style={{ fontSize: 13, fontWeight: "700", color: "#065F46" }}>Switch Workspace</Text>
+                </TouchableOpacity>
+              )}
+
               {/* Logout Button */}
               <TouchableOpacity
                 activeOpacity={0.8}

@@ -21,9 +21,10 @@ const PrimaryButton = ({
             className={`
         h-14
         rounded-2xl
-        bg-black
+        bg-[#01311B]
         items-center
         justify-center
+        shadow-sm
         ${disabled ? "opacity-50" : ""}
         ${style}
       `}

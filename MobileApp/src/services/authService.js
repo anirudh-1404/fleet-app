@@ -37,21 +37,28 @@ export const authService = {
     return response.data;
   },
 
-  sendOtp: async (email, type = "register") => {
-    const response = await api.post("/auth/send-otp", { email, type });
+  sendOtp: async (email, type = "register", module) => {
+    const response = await api.post("/auth/send-otp", { email, type, module });
     return response.data;
   },
 
   verifyOtp: async (email, otp) => {
-    try {
-      const response = await api.post("/auth/verify-otp", { email, otp });
-      return response.data;
-    } catch (error) {
-      if (String(otp).trim() === "1234") {
-        return { success: true };
-      }
-      throw error;
-    }
+    const response = await api.post("/auth/verify-otp", { email, otp });
+    return response.data;
+  },
+
+  forgotPasswordSendOtp: async (email) => {
+    const response = await api.post("/auth/forgot-password/send-otp", { email });
+    return response.data;
+  },
+
+  resetPassword: async (email, otp, newPassword) => {
+    const response = await api.post("/auth/forgot-password/reset", {
+      email,
+      otp,
+      newPassword,
+    });
+    return response.data;
   },
 
   getMe: async () => {

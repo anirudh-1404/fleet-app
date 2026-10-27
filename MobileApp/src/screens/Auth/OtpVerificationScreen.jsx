@@ -21,7 +21,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function OtpVerificationScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { login, verifyLoginOtp } = useAuth();
+  const { login, verifyLoginOtp, setAuthSession } = useAuth();
 
   const isLoginMode = route?.params?.mode === "login";
   const registrationData = route?.params?.registrationData || {};
@@ -62,7 +62,7 @@ export default function OtpVerificationScreen() {
   // Auto-focus input & trigger initial OTP dispatch for registration mode
   useEffect(() => {
     if (!isLoginMode && email) {
-      authService.sendOtp(email.toLowerCase(), "register").catch((err) => {
+      authService.sendOtp(email.toLowerCase(), "register", role).catch((err) => {
         const msg = err.response?.data?.message || "Failed to dispatch verification email.";
         setErrorMessage(msg);
       });
@@ -89,7 +89,7 @@ export default function OtpVerificationScreen() {
     setCanResend(false);
 
     try {
-      await authService.sendOtp(email.toLowerCase(), isLoginMode ? "login" : "register");
+      await authService.sendOtp(email.toLowerCase(), isLoginMode ? "login" : "register", role);
       const successMsg = `A new 4-digit verification code has been sent to ${email}`;
       if (Platform.OS === "web") {
         window.alert(successMsg);
@@ -120,6 +120,17 @@ export default function OtpVerificationScreen() {
       if (isLoginMode) {
         // --- 2FA LOGIN VERIFICATION ---
         const loginData = await verifyLoginOtp(email.toLowerCase(), otp);
+        const userModules =
+          loginData.modules && loginData.modules.length > 0
+            ? loginData.modules
+            : [loginData.role || "manager"];
+
+        // If user owns multiple modules, show module selector
+        if (userModules.length > 1) {
+          navigation.reset({ index: 0, routes: [{ name: ROUTES.MODULE_SELECTION }] });
+          return;
+        }
+
         if (loginData.role === "workshop_manager") {
           navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
           return;
@@ -129,20 +140,20 @@ export default function OtpVerificationScreen() {
         } else if (loginData.role === "rental_owner") {
           navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
           return;
-        } else if (loginData.role === "manager") {
-          navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
-          return;
         } else if (loginData.role === "driver") {
           navigation.reset({ index: 0, routes: [{ name: "DriverStack" }] });
+          return;
+        } else {
+          navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
           return;
         }
       } else {
         // --- REGISTRATION FLOW ---
-        // 1. Verify OTP with backend
+        // 1. Verify real OTP from email
         await authService.verifyOtp(email.toLowerCase(), otp);
 
         // 2. Complete user registration
-        await authService.register(
+        const regRes = await authService.register(
           name.trim(),
           email.toLowerCase(),
           password,
@@ -150,39 +161,30 @@ export default function OtpVerificationScreen() {
           role
         );
 
-        // 3. Automatically log the user in
-        try {
-          const loginData = await login(email.toLowerCase(), password);
-          if (loginData.role === "workshop_manager") {
+        // 3. Immediately set auth session without secondary login
+        if (regRes.token && regRes.user) {
+          const userMods =
+            regRes.modules && regRes.modules.length > 0
+              ? regRes.modules
+              : [regRes.role || role];
+          await setAuthSession(regRes.user, regRes.token, regRes.role || role, userMods);
+
+          if (userMods.length > 1) {
+            navigation.reset({ index: 0, routes: [{ name: ROUTES.MODULE_SELECTION }] });
+            return;
+          }
+
+          if (regRes.role === "workshop_manager") {
             navigation.reset({ index: 0, routes: [{ name: "WorkshopStack" }] });
             return;
-          } else if (loginData.role === "rental_owner") {
+          } else if (regRes.role === "rental_owner") {
             navigation.reset({ index: 0, routes: [{ name: "RentalStack" }] });
             return;
-          } else if (loginData.role === "manager") {
+          } else {
             navigation.reset({ index: 0, routes: [{ name: "ManagerStack" }] });
             return;
           }
-        } catch (loginErr) {
-          console.warn("Auto-login failed after registration, navigating to Login screen:", loginErr);
         }
-
-        // Fallback if auto-login role redirect did not trigger
-        Alert.alert(
-          "Verification Successful 🎉",
-          "Your account has been verified and created successfully. Please sign in to continue.",
-          [
-            {
-              text: "Sign In",
-              onPress: () => {
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: ROUTES.LOGIN, params: { prefillEmail: email } }],
-                });
-              },
-            },
-          ]
-        );
       }
     } catch (error) {
       console.error("Verification error after OTP:", error);
@@ -226,20 +228,20 @@ export default function OtpVerificationScreen() {
             borderColor: isError
               ? "#EF4444"
               : isFocused
-              ? "#2563EB"
+              ? "#059669"
               : digit
-              ? "#93C5FD"
+              ? "#10B981"
               : "#E2E8F0",
             backgroundColor: isError
               ? "#FEF2F2"
               : isFocused
-              ? "#EFF6FF"
+              ? "#ECFDF5"
               : digit
-              ? "#F8FAFC"
+              ? "#F0FDF4"
               : "#FFFFFF",
             alignItems: "center",
             justifyContent: "center",
-            shadowColor: isFocused ? "#2563EB" : "#000",
+            shadowColor: isFocused ? "#059669" : "#000",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: isFocused ? 0.15 : 0.03,
             shadowRadius: 6,
@@ -250,7 +252,7 @@ export default function OtpVerificationScreen() {
             style={{
               fontSize: 26,
               fontWeight: "700",
-              color: isError ? "#DC2626" : "#0F172A",
+              color: isError ? "#DC2626" : "#01311B",
             }}
           >
             {digit}
@@ -327,15 +329,15 @@ export default function OtpVerificationScreen() {
                   width: 72,
                   height: 72,
                   borderRadius: 24,
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: "#ECFDF5",
                   borderWidth: 1,
-                  borderColor: "#DBEAFE",
+                  borderColor: "#A7F3D0",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: 16,
                 }}
               >
-                <Ionicons name="mail-unread-outline" size={36} color="#2563EB" />
+                <Ionicons name="mail-unread-outline" size={36} color="#059669" />
               </View>
 
               <Text
@@ -485,8 +487,8 @@ export default function OtpVerificationScreen() {
                     gap: 6,
                   }}
                 >
-                  <Ionicons name="refresh-outline" size={16} color="#2563EB" />
-                  <Text style={{ fontSize: 14, fontWeight: "700", color: "#2563EB" }}>
+                  <Ionicons name="refresh-outline" size={16} color="#059669" />
+                  <Text style={{ fontSize: 14, fontWeight: "700", color: "#059669" }}>
                     Resend Code
                   </Text>
                 </TouchableOpacity>
@@ -509,13 +511,13 @@ export default function OtpVerificationScreen() {
               disabled={isSubmitting || otp.length < 4}
               style={{
                 height: 52,
-                backgroundColor: otp.length === 4 && !isSubmitting ? "#2563EB" : "#94A3B8",
+                backgroundColor: otp.length === 4 && !isSubmitting ? "#01311B" : "#94A3B8",
                 borderRadius: 14,
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "row",
                 gap: 8,
-                shadowColor: "#2563EB",
+                shadowColor: "#01311B",
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: otp.length === 4 && !isSubmitting ? 0.2 : 0,
                 shadowRadius: 8,
@@ -540,7 +542,7 @@ export default function OtpVerificationScreen() {
             >
               <Text style={{ fontSize: 13, color: "#64748B" }}>
                 {isLoginMode ? "Need to change account? " : "Need to edit your details? "}
-                <Text style={{ fontWeight: "700", color: "#2563EB" }}>
+                <Text style={{ fontWeight: "700", color: "#059669" }}>
                   {isLoginMode ? "Back to Sign In" : "Go Back"}
                 </Text>
               </Text>

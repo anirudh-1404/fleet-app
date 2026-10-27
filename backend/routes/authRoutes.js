@@ -6,6 +6,8 @@ import {
   sendOtp,
   verifyOtp,
   verifyLoginOtp,
+  forgotPasswordSendOtp,
+  resetPassword,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -18,6 +20,8 @@ router.post("/verify-login-otp", verifyLoginOtp);
 router.post("/register", registerUser);
 router.post("/send-otp", sendOtp);
 router.post("/verify-otp", verifyOtp);
+router.post("/forgot-password/send-otp", forgotPasswordSendOtp);
+router.post("/forgot-password/reset", resetPassword);
 router.get("/me", protect, getMe);
 
 router.get("/test-smtp", async (req, res) => {

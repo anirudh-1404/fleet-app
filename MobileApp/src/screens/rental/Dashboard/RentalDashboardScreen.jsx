@@ -20,7 +20,7 @@ import RentalStateView from "../../../components/rental/RentalStateView";
 
 export default function RentalDashboardScreen() {
   const navigation = useNavigation();
-  const { user, logout } = useAuth();
+  const { user, logout, modules } = useAuth();
 
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -138,19 +138,42 @@ export default function RentalDashboardScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity
-          onPress={handleLogout}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 10,
-            backgroundColor: "#F1F5F9",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Ionicons name="log-out-outline" size={20} color="#64748B" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          {modules && modules.length > 1 && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate(ROUTES.MODULE_SELECTION)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "#ECFDF5",
+                borderWidth: 1,
+                borderColor: "#A7F3D0",
+                paddingHorizontal: 12,
+                height: 40,
+                borderRadius: 10,
+                gap: 6,
+              }}
+            >
+              <Ionicons name="grid-outline" size={16} color="#059669" />
+              <Text style={{ fontSize: 12, fontWeight: "700", color: "#065F46" }}>Switch</Text>
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              backgroundColor: "#F1F5F9",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name="log-out-outline" size={20} color="#64748B" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {isLoading ? (

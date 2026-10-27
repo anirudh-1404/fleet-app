@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import ROUTES from "../../constants/routes";
+import { authService } from "../../services/authService";
 
 export default function CheckoutScreen() {
   const navigation = useNavigation();
@@ -40,6 +40,8 @@ export default function CheckoutScreen() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [validationError, setValidationError] = useState("");
+  const [duplicateError, setDuplicateError] = useState("");
+  const [isChecking, setIsChecking] = useState(false);
 
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -52,22 +54,19 @@ export default function CheckoutScreen() {
     return matches ? matches.join(" ") : cleaned;
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     setValidationError("");
+    setDuplicateError("");
 
     if (!name.trim()) {
       const err = "Please enter your full name.";
       setValidationError(err);
-      if (Platform.OS === "web") window.alert(err);
-      else Alert.alert("Missing Name", err);
       return;
     }
 
     if (!email.trim()) {
       const err = "Please enter your email address.";
       setValidationError(err);
-      if (Platform.OS === "web") window.alert(err);
-      else Alert.alert("Missing Email", err);
       return;
     }
 
@@ -75,24 +74,18 @@ export default function CheckoutScreen() {
     if (!emailRegex.test(email.trim())) {
       const err = "Please enter a valid email address (e.g. name@example.com).";
       setValidationError(err);
-      if (Platform.OS === "web") window.alert(err);
-      else Alert.alert("Invalid Email", err);
       return;
     }
 
     if (!phone.trim()) {
       const err = "Please enter your phone number.";
       setValidationError(err);
-      if (Platform.OS === "web") window.alert(err);
-      else Alert.alert("Missing Phone", err);
       return;
     }
 
     if (!password || password.length < 6) {
       const err = "Password must be at least 6 characters long.";
       setValidationError(err);
-      if (Platform.OS === "web") window.alert(err);
-      else Alert.alert("Weak Password", err);
       return;
     }
 
@@ -100,17 +93,31 @@ export default function CheckoutScreen() {
     if (isWorkshop) assignedRole = "workshop_manager";
     else if (isRental) assignedRole = "rental_owner";
 
-    // Navigate to OTP verification screen with registration payload
-    navigation.navigate(ROUTES.VERIFY_OTP, {
-      registrationData: {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        password,
-        phone: phone.trim(),
-        role: assignedRole,
-        planTitle: getPlanTitle(),
-      },
-    });
+    setIsChecking(true);
+    try {
+      // Pre-check if an account already exists for this exact module
+      await authService.sendOtp(email.trim().toLowerCase(), "register", assignedRole);
+
+      // Successfully dispatched OTP, navigate to verification screen
+      navigation.navigate(ROUTES.VERIFY_OTP, {
+        registrationData: {
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password,
+          phone: phone.trim(),
+          role: assignedRole,
+          planTitle: getPlanTitle(),
+        },
+      });
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        "An account with this email already exists for this module";
+      setDuplicateError(msg);
+      setValidationError(msg);
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   return (
@@ -216,15 +223,19 @@ export default function CheckoutScreen() {
               <Text style={{ fontSize: 12, fontWeight: "700", color: "#475569", marginBottom: 4 }}>Email Address</Text>
               <TextInput
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(txt) => {
+                  setEmail(txt);
+                  if (validationError) setValidationError("");
+                  if (duplicateError) setDuplicateError("");
+                }}
                 placeholder="john@example.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 placeholderTextColor="#94A3B8"
                 style={{
-                  backgroundColor: "#F8FAFC",
+                  backgroundColor: duplicateError ? "#FEF2F2" : "#F8FAFC",
                   borderWidth: 1,
-                  borderColor: "#CBD5E1",
+                  borderColor: duplicateError ? "#EF4444" : "#CBD5E1",
                   borderRadius: 8,
                   paddingHorizontal: 12,
                   height: 44,
@@ -328,25 +339,33 @@ export default function CheckoutScreen() {
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={handleCheckout}
+            disabled={isChecking || Boolean(duplicateError)}
             style={{
               height: 52,
-              backgroundColor: "#2563EB",
+              backgroundColor: duplicateError ? "#94A3B8" : "#01311B",
               borderRadius: 14,
               alignItems: "center",
               justifyContent: "center",
               flexDirection: "row",
               gap: 8,
-              shadowColor: "#2563EB",
+              opacity: isChecking || Boolean(duplicateError) ? 0.6 : 1,
+              shadowColor: "#01311B",
               shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.2,
+              shadowOpacity: Boolean(duplicateError) ? 0 : 0.2,
               shadowRadius: 8,
               elevation: 4,
             }}
           >
-            <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
-              Next: Verify Email
-            </Text>
-            <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+            {isChecking ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <>
+                <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>
+                  Next: Verify Email
+                </Text>
+                <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+              </>
+            )}
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>

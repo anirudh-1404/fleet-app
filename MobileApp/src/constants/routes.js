@@ -5,6 +5,7 @@ const ROUTES = {
   VERIFY_OTP: "VerifyOtp",
   LOGIN: "Login",
   FORGOT_PASSWORD: "ForgotPassword",
+  MODULE_SELECTION: "ModuleSelection",
   MANAGER_DASHBOARD: "ManagerDashboard",
   FLEET_LIST: "FleetList",
   DRIVER_LIST: "DriverList",

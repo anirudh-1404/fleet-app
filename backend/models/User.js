@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["manager", "driver", "rental_owner", "workshop_manager", "workshop_employee"], default: "driver", required: true },
+    modules: { type: [String], default: [] },
     phone: { type: String, default: "" },
     status: { type: String, enum: ["Active", "Inactive"], default: "Active" },
     photo: { type: String, default: "" },

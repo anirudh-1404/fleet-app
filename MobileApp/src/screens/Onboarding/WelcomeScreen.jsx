@@ -80,10 +80,15 @@ export default function WelcomeScreen() {
             onPress={() => navigation.navigate(ROUTES.PURCHASE)}
             style={{
               height: 52,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#01311B",
               borderRadius: 12,
               alignItems: "center",
               justifyContent: "center",
+              shadowColor: "#01311B",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.2,
+              shadowRadius: 8,
+              elevation: 3,
             }}
           >
             <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: "700" }}>

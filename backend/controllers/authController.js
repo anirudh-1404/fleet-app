@@ -9,6 +9,13 @@ const generateToken = (id) => {
   });
 };
 
+const getModuleLabel = (role) => {
+  if (role === "workshop_manager" || role === "workshop") return "Workshop Management";
+  if (role === "rental_owner" || role === "rental") return "Vehicle Rental";
+  if (role === "manager" || role === "fleet") return "Fleet Management";
+  return role || "this";
+};
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -33,16 +40,19 @@ export const loginUser = async (req, res) => {
 
     // Send email using Hostinger SMTP with fallback
     try {
-      await sendOtpEmail(cleanEmail, generatedOtp);
+      await sendOtpEmail(cleanEmail, generatedOtp, "login");
       console.log(`[OTP] Sent login verification code to ${cleanEmail}`);
     } catch (mailError) {
       console.warn("[OTP] Notice: Could not send email via SMTP, OTP saved to DB:", mailError.message);
     }
 
+    const userModules = user.modules && user.modules.length > 0 ? user.modules : [user.role];
+
     return res.json({
       requiresOtp: true,
       email: user.email,
       role: user.role,
+      modules: userModules,
       message: "A verification code has been sent to your email",
     });
   } catch (error) {
@@ -61,16 +71,14 @@ export const verifyLoginOtp = async (req, res) => {
     const cleanEmail = email.toLowerCase().trim();
     const cleanOtp = String(otp).trim();
 
-    // Match OTP in database (also allowing demo code 1234 for testing)
+    // Match OTP in database (strictly real OTP from email)
     const record = await Otp.findOne({ email: cleanEmail, otp: cleanOtp });
 
-    if (!record && cleanOtp !== "1234") {
+    if (!record) {
       return res.status(400).json({ message: "Invalid or expired verification code" });
     }
 
-    if (record) {
-      await Otp.deleteMany({ email: cleanEmail });
-    }
+    await Otp.deleteMany({ email: cleanEmail });
 
     const user = await User.findOne({ email: cleanEmail });
     if (!user) {
@@ -78,16 +86,19 @@ export const verifyLoginOtp = async (req, res) => {
     }
 
     const token = generateToken(user._id);
+    const userModules = user.modules && user.modules.length > 0 ? user.modules : [user.role];
 
     return res.json({
       token,
       role: user.role,
+      modules: userModules,
       user: {
         id: user._id,
         _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
+        modules: userModules,
         phone: user.phone,
         status: user.status,
         photo: user.photo,
@@ -105,12 +116,14 @@ export const getMe = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const userModules = user.modules && user.modules.length > 0 ? user.modules : [user.role];
     return res.json({
       id: user._id,
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
+      modules: userModules,
       phone: user.phone,
       status: user.status,
       photo: user.photo,
@@ -128,32 +141,58 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "Name, email, and password are required" });
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
-    if (existingUser) {
-      return res.status(400).json({ message: "An account with this email already exists" });
+    const cleanEmail = email.toLowerCase().trim();
+    const assignedRole = role || "manager";
+    const moduleName = getModuleLabel(assignedRole);
+
+    let user = await User.findOne({ email: cleanEmail });
+
+    if (user) {
+      const existingModules = user.modules && user.modules.length > 0 ? user.modules : [user.role];
+      if (existingModules.includes(assignedRole)) {
+        return res.status(400).json({
+          message: `An account with this email already exists for ${moduleName} module`,
+          alreadyExistsForModule: true,
+        });
+      }
+
+      // Add new module to existing user account under same email
+      if (!user.modules.includes(assignedRole)) {
+        user.modules.push(assignedRole);
+      }
+      if (user.role && !user.modules.includes(user.role)) {
+        user.modules.push(user.role);
+      }
+      user.role = assignedRole; // active role for current registration
+      if (phone && !user.phone) user.phone = phone.trim();
+      await user.save();
+    } else {
+      user = await User.create({
+        name: name.trim(),
+        email: cleanEmail,
+        password,
+        phone: phone || "",
+        role: assignedRole,
+        modules: [assignedRole],
+        status: "Active",
+      });
     }
 
-    const user = await User.create({
-      name: name.trim(),
-      email: email.toLowerCase().trim(),
-      password,
-      phone: phone || "",
-      role: role || "manager",
-      status: "Active",
-    });
-
     const token = generateToken(user._id);
+    const userModules = user.modules && user.modules.length > 0 ? user.modules : [user.role];
 
     return res.status(201).json({
       message: "Account created successfully",
       token,
       role: user.role,
+      modules: userModules,
       user: {
         id: user._id,
         _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
+        modules: userModules,
         phone: user.phone,
         status: user.status,
       },
@@ -166,18 +205,28 @@ export const registerUser = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
   try {
-    const { email, type = "register" } = req.body;
+    const { email, type = "register", module: requestedModule } = req.body;
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
     const cleanEmail = email.toLowerCase().trim();
-
-    // Check existing user based on flow type
     const existingUser = await User.findOne({ email: cleanEmail });
+
     if (type === "register" && existingUser) {
-      return res.status(400).json({ message: "An account with this email already exists. Please sign in." });
+      const existingModules = existingUser.modules && existingUser.modules.length > 0
+        ? existingUser.modules
+        : [existingUser.role];
+      const checkModule = requestedModule || "manager";
+      if (existingModules.includes(checkModule)) {
+        const moduleName = getModuleLabel(checkModule);
+        return res.status(400).json({
+          message: `An account with this email already exists for ${moduleName} module`,
+          alreadyExistsForModule: true,
+        });
+      }
     }
+
     if (type === "login" && !existingUser) {
       return res.status(404).json({ message: "No account found with this email." });
     }
@@ -191,7 +240,7 @@ export const sendOtp = async (req, res) => {
 
     // Send email using Hostinger SMTP with fallback
     try {
-      await sendOtpEmail(cleanEmail, generatedOtp);
+      await sendOtpEmail(cleanEmail, generatedOtp, type);
       console.log(`[OTP] Sent verification code to ${cleanEmail}`);
     } catch (mailError) {
       console.warn("[OTP] Notice: Could not send email via SMTP, OTP saved to DB:", mailError.message);
@@ -217,21 +266,92 @@ export const verifyOtp = async (req, res) => {
     const cleanEmail = email.toLowerCase().trim();
     const cleanOtp = String(otp).trim();
 
-    // Match OTP in database (also allowing demo code 1234 for testing convenience)
+    // Match OTP in database (strictly real OTP from email)
     const record = await Otp.findOne({ email: cleanEmail, otp: cleanOtp });
 
-    if (!record && cleanOtp !== "1234") {
+    if (!record) {
       return res.status(400).json({ message: "Invalid or expired verification code" });
     }
 
     // Clear used OTP
-    if (record) {
-      await Otp.deleteMany({ email: cleanEmail });
-    }
+    await Otp.deleteMany({ email: cleanEmail });
 
     return res.json({ success: true, message: "Code verified successfully" });
   } catch (error) {
     console.error("verifyOtp Error:", error);
     return res.status(500).json({ message: "Failed to verify code" });
+  }
+};
+
+export const forgotPasswordSendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email address" });
+    }
+
+    const generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+    await Otp.deleteMany({ email: cleanEmail });
+    await Otp.create({ email: cleanEmail, otp: generatedOtp });
+
+    try {
+      await sendOtpEmail(cleanEmail, generatedOtp, "password_reset");
+      console.log(`[OTP] Sent password reset code to ${cleanEmail}`);
+    } catch (mailError) {
+      console.warn("[OTP] Notice: Could not send password reset email:", mailError.message);
+    }
+
+    return res.json({
+      success: true,
+      message: "Password reset verification code sent to your email",
+    });
+  } catch (error) {
+    console.error("forgotPasswordSendOtp Error:", error);
+    return res.status(500).json({ message: error.message || "Failed to send reset code" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: "Email, verification code, and new password are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanOtp = String(otp).trim();
+
+    const record = await Otp.findOne({ email: cleanEmail, otp: cleanOtp });
+    if (!record) {
+      return res.status(400).json({ message: "Invalid or expired verification code" });
+    }
+
+    const user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email address" });
+    }
+
+    user.password = newPassword; // Automatically hashed by User model pre-save hook
+    await user.save();
+    await Otp.deleteMany({ email: cleanEmail });
+
+    return res.json({
+      success: true,
+      message: "Password has been reset successfully. Please log in with your new password.",
+    });
+  } catch (error) {
+    console.error("resetPassword Error:", error);
+    return res.status(500).json({ message: error.message || "Failed to reset password" });
   }
 };

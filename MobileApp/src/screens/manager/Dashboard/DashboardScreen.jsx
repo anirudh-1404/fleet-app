@@ -27,7 +27,7 @@ import { useAuth } from "../../../context/AuthContext";
 export default function DashboardScreen() {
   const navigation = useNavigation();
   const { driverActivities, notifications, services, reminders } = useFleetData();
-  const { user, logout } = useAuth();
+  const { user, logout, modules } = useAuth();
 
   const [vehicles, setVehicles] = React.useState([]);
   const [drivers, setDrivers] = React.useState([]);
@@ -98,7 +98,17 @@ export default function DashboardScreen() {
             <Text className="text-2xl font-bold text-[#111827] mt-0.5">{user?.name || "Manager"}</Text>
             <Text className="text-[15px] font-normal text-[#6B7280] mt-1">Fleet Overview</Text>
           </View>
-          <View className="flex-row items-center gap-3">
+          <View className="flex-row items-center gap-2">
+            {modules && modules.length > 1 && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate(ROUTES.MODULE_SELECTION)}
+                className="h-10 px-3 rounded-full bg-emerald-50 border border-emerald-200 flex-row items-center justify-center gap-1.5"
+              >
+                <Ionicons name="grid-outline" size={16} color="#059669" />
+                <Text className="text-xs font-bold text-emerald-800">Switch</Text>
+              </TouchableOpacity>
+            )}
             <NotificationButton
               hasUnread={unreadNotifCount > 0}
               onPress={() => navigation.navigate(ROUTES.NOTIFICATIONS)}
