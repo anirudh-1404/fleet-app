@@ -24,7 +24,7 @@ import WorkshopEmployeeNavigator from "./WorkshopEmployeeNavigator";
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
-  const { user, token, role, modules, isLoading } = useAuth();
+  const { user, token, role, modules, isLoading, hasSignedOut } = useAuth();
 
   if (isLoading) {
     return (
@@ -50,14 +50,16 @@ export default function RootNavigator() {
     return "ManagerStack";
   };
 
+  const guestInitialRoute = hasSignedOut ? ROUTES.LOGIN : ROUTES.WELCOME;
+
   return (
     <Stack.Navigator
-      key={isAuthenticated ? `auth_${user?._id || user?.id}_${role}` : "guest"}
+      key={isAuthenticated ? `auth_${user?._id || user?.id}_${role}` : (hasSignedOut ? "guest_login" : "guest_welcome")}
       screenOptions={{ headerShown: false }}
-      initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : ROUTES.LOGIN}
+      initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : guestInitialRoute}
     >
-      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
       <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />
+      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
       <Stack.Screen name={ROUTES.PURCHASE} component={PurchaseScreen} />
       <Stack.Screen name={ROUTES.CHECKOUT} component={CheckoutScreen} />
       <Stack.Screen name={ROUTES.VERIFY_OTP} component={OtpVerificationScreen} />

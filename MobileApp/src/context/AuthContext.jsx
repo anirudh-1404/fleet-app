@@ -70,10 +70,13 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const [hasSignedOut, setHasSignedOut] = useState(false);
+
   const setAuthSession = async (userData, tokenString, activeRole, userModules) => {
     const mods = userModules && userModules.length > 0 ? userModules : [activeRole || userData?.role];
     const roleToSet = activeRole || userData?.role || mods[0];
 
+    setHasSignedOut(false);
     setUser(userData);
     setToken(tokenString);
     setRole(roleToSet);
@@ -113,6 +116,7 @@ export function AuthProvider({ children }) {
     try {
       await authService.logout();
       await AsyncStorage.removeItem("fleet_active_role");
+      setHasSignedOut(true);
       setUser(null);
       setToken(null);
       setRole(null);
@@ -130,6 +134,8 @@ export function AuthProvider({ children }) {
         role,
         modules,
         isLoading,
+        hasSignedOut,
+        resetSignOutFlag: () => setHasSignedOut(false),
         login,
         verifyLoginOtp,
         setAuthSession,

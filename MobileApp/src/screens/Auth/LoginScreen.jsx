@@ -84,7 +84,13 @@ export default function LoginScreen() {
       {/* Back Button */}
       <View style={{ paddingHorizontal: 20, paddingTop: 12 }}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            if (navigation.canGoBack()) {
+              navigation.goBack();
+            } else {
+              navigation.navigate(ROUTES.WELCOME);
+            }
+          }}
           style={{ width: 40, height: 40, justifyContent: "center" }}
         >
           <Ionicons name="arrow-back" size={24} color="#0F172A" />
