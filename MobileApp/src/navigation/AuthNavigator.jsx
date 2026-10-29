@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName={ROUTES.WELCOME} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName={ROUTES.WELCOME} screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}>
       <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />
       <Stack.Screen name={ROUTES.PURCHASE} component={PurchaseScreen} />
       <Stack.Screen name={ROUTES.CHECKOUT} component={CheckoutScreen} />

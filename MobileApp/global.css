@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fix Android Chrome and mobile web scrolling in React Native Web */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior-y: none;
+}
+
+/* Force Android Chrome to recognize vertical touch scrolling on scrollable containers */
+[style*="overflow-y: auto"],
+[style*="overflow-y: scroll"],
+.r-overflowY-auto,
+.r-overflowY-scroll,
+div[style*="overflow-y: auto"],
+div[style*="overflow-y: scroll"] {
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: contain;
+}
+
+[style*="overflow-x: auto"],
+[style*="overflow-x: scroll"],
+.r-overflowX-auto,
+.r-overflowX-scroll,
+div[style*="overflow-x: auto"],
+div[style*="overflow-x: scroll"] {
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Prevent buttons, links, and cards from swallowing vertical scroll touches on mobile browsers */
+[role="button"],
+[data-focusable="true"],
+button,
+a {
+  touch-action: manipulation;
+}

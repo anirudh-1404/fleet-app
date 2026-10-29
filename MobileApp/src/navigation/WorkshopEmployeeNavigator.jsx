@@ -16,7 +16,7 @@ export default function WorkshopEmployeeNavigator() {
   return (
     <Stack.Navigator
       initialRouteName={ROUTES.WORKSHOP_EMPLOYEE_HOME}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}
     >
       <Stack.Screen
         name={ROUTES.WORKSHOP_EMPLOYEE_HOME}

@@ -21,7 +21,7 @@ const Stack = createNativeStackNavigator();
 
 export default function RentalNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={ROUTES.RENTAL_DASHBOARD}>
+    <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }} initialRouteName={ROUTES.RENTAL_DASHBOARD}>
       {/* Dashboard */}
       <Stack.Screen name={ROUTES.RENTAL_DASHBOARD} component={RentalDashboardScreen} />
 

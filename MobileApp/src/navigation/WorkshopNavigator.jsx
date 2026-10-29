@@ -85,7 +85,7 @@ export default function WorkshopNavigator() {
   return (
     <Stack.Navigator
       initialRouteName={ROUTES.WORKSHOP_DASHBOARD}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}
     >
       {/* 1. Dashboard */}
       <Stack.Screen name={ROUTES.WORKSHOP_DASHBOARD} component={WorkshopDashboardScreen} />

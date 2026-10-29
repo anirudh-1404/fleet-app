@@ -65,7 +65,7 @@ const Stack = createNativeStackNavigator();
 
 export default function ManagerNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}>
       <Stack.Screen name={ROUTES.MANAGER_DASHBOARD} component={DashboardScreen} />
       <Stack.Screen name={ROUTES.FLEET_LIST} component={FleetListScreen} />
       <Stack.Screen name={ROUTES.DRIVER_LIST} component={DriverListScreen} />

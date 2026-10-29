@@ -15,6 +15,51 @@ import AppFooter from "./src/components/common/AppFooter";
 
 export default function App() {
   useEffect(() => {
+    // Inject web touch scrolling rules for Android Chrome & mobile browsers
+    if (Platform.OS === "web" && typeof document !== "undefined") {
+      const styleId = "workfle-android-scroll-fix";
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement("style");
+        style.id = styleId;
+        style.textContent = `
+          html, body, #root {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+          }
+          * {
+            -webkit-tap-highlight-color: transparent;
+          }
+          /* Force Android Chrome & mobile browsers to allow vertical touch scrolling */
+          [style*="overflow-y: auto"],
+          [style*="overflow-y: scroll"],
+          .r-overflowY-auto,
+          .r-overflowY-scroll,
+          div[style*="overflow-y: auto"],
+          div[style*="overflow-y: scroll"] {
+            touch-action: pan-y !important;
+            -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior-y: contain;
+          }
+          [style*="overflow-x: auto"],
+          [style*="overflow-x: scroll"],
+          .r-overflowX-auto,
+          .r-overflowX-scroll,
+          div[style*="overflow-x: auto"],
+          div[style*="overflow-x: scroll"] {
+            touch-action: pan-x !important;
+            -webkit-overflow-scrolling: touch !important;
+          }
+          [role="button"], [data-focusable="true"], [tabindex="0"], button, a {
+            touch-action: manipulation !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+
     async function checkForUpdates() {
       try {
         if (!__DEV__) {
@@ -32,8 +77,8 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
+    <GestureHandlerRootView style={[{ flex: 1 }, isWeb && { height: "100%", width: "100%", touchAction: "manipulation" }]}>
+      <SafeAreaProvider style={isWeb ? { flex: 1, height: "100%", width: "100%" } : { flex: 1 }}>
         <StatusBar
           barStyle="dark-content"
           backgroundColor="#FFFFFF"
@@ -44,7 +89,7 @@ export default function App() {
               <AuthProvider>
                 <FleetDataProvider>
                   <InspectionProvider>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, height: "100%", width: "100%", minHeight: 0 }}>
                       <RootNavigator />
                     </View>
                     <AppFooter />
@@ -71,8 +116,8 @@ const styles = StyleSheet.create({
       ? {
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh",
-          height: "100vh",
+          height: "100%",
+          minHeight: "100%",
           overflow: "hidden",
         }
       : {}),
@@ -87,7 +132,8 @@ const styles = StyleSheet.create({
       ? {
           maxWidth: 1200,
           alignSelf: "center",
-          maxHeight: "100vh",
+          height: "100%",
+          maxHeight: "100%",
           shadowColor: "#0F172A",
           shadowOffset: { width: 0, height: 10 },
           shadowOpacity: 0.08,

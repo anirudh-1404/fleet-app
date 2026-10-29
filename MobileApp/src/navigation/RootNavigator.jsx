@@ -55,7 +55,10 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator
       key={isAuthenticated ? `auth_${user?._id || user?.id}_${role}` : (hasSignedOut ? "guest_login" : "guest_welcome")}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { flex: 1, backgroundColor: "#FFFFFF" },
+      }}
       initialRouteName={isAuthenticated ? getAuthenticatedInitialRoute() : guestInitialRoute}
     >
       <Stack.Screen name={ROUTES.WELCOME} component={WelcomeScreen} />

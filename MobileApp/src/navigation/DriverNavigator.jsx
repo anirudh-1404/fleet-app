@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 export default function DriverNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}>
       <Stack.Screen name={ROUTES.DRIVER_HOME} component={DriverHomeScreen} />
       <Stack.Screen name={ROUTES.NOTIFICATIONS} component={NotificationsScreen} />
       <Stack.Screen name={ROUTES.DRIVER_PRECHECK} component={DriverPreCheckScreen} />

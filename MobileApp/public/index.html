@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Workfle</title>
+    <!-- The `react-native-web` recommended style reset -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+      /* Force Android Chrome & mobile browsers to allow vertical touch scrolling */
+      [style*="overflow-y: auto"],
+      [style*="overflow-y: scroll"],
+      .r-overflowY-auto,
+      .r-overflowY-scroll,
+      div[style*="overflow-y: auto"],
+      div[style*="overflow-y: scroll"] {
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: contain;
+      }
+      [style*="overflow-x: auto"],
+      [style*="overflow-x: scroll"],
+      .r-overflowX-auto,
+      .r-overflowX-scroll,
+      div[style*="overflow-x: auto"],
+      div[style*="overflow-x: scroll"] {
+        touch-action: pan-x !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      [role="button"], [data-focusable="true"], [tabindex="0"], button, a {
+        touch-action: manipulation !important;
+      }
+    </style>
+    <link rel="icon" href="/favicon.ico"/>
+  </head>
+
+  <body>
+    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+  </body>
+</html>
