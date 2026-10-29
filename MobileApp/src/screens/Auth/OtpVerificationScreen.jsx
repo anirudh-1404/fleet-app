@@ -312,6 +312,7 @@ export default function OtpVerificationScreen() {
             flexGrow: 1,
             justifyContent: "space-between",
           }}
+          nestedScrollEnabled={true}
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
         >

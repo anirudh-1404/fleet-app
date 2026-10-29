@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "./global.css";
 import React, { useEffect } from "react";
 import { View, StatusBar, StyleSheet, Platform } from "react-native";
@@ -31,28 +32,30 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#FFFFFF"
-      />
-      <View style={styles.outerShell}>
-        <View style={styles.appContainer}>
-          <NavigationContainer>
-            <AuthProvider>
-              <FleetDataProvider>
-                <InspectionProvider>
-                  <View style={{ flex: 1 }}>
-                    <RootNavigator />
-                  </View>
-                  <AppFooter />
-                </InspectionProvider>
-              </FleetDataProvider>
-            </AuthProvider>
-          </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="#FFFFFF"
+        />
+        <View style={styles.outerShell}>
+          <View style={styles.appContainer}>
+            <NavigationContainer>
+              <AuthProvider>
+                <FleetDataProvider>
+                  <InspectionProvider>
+                    <View style={{ flex: 1 }}>
+                      <RootNavigator />
+                    </View>
+                    <AppFooter />
+                  </InspectionProvider>
+                </FleetDataProvider>
+              </AuthProvider>
+            </NavigationContainer>
+          </View>
         </View>
-      </View>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -62,11 +65,12 @@ const styles = StyleSheet.create({
   outerShell: {
     flex: 1,
     backgroundColor: isWeb ? "#F1F5F9" : "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
     width: "100%",
+    height: "100%",
     ...(isWeb
       ? {
+          alignItems: "center",
+          justifyContent: "center",
           minHeight: "100vh",
           height: "100vh",
           overflow: "hidden",
@@ -76,13 +80,13 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     width: "100%",
-    maxWidth: isWeb ? 1200 : undefined,
-    alignSelf: "center",
+    height: "100%",
     backgroundColor: "#FFFFFF",
     position: "relative",
     ...(isWeb
       ? {
-          height: "100%",
+          maxWidth: 1200,
+          alignSelf: "center",
           maxHeight: "100vh",
           shadowColor: "#0F172A",
           shadowOffset: { width: 0, height: 10 },

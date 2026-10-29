@@ -87,9 +87,10 @@ export default function DashboardScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F5F7FA]" edges={["top"]}>
+    <SafeAreaView style={{ flex: 1 }} className="flex-1 bg-[#F5F7FA]" edges={["top"]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
         contentContainerStyle={{
           paddingBottom: Platform.OS === "ios" ? 40 : 24,
         }}

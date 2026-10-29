@@ -103,6 +103,7 @@ export default function LoginScreen() {
       >
         <ScrollView
           showsVerticalScrollIndicator={false}
+          nestedScrollEnabled={true}
           contentContainerStyle={{
             paddingHorizontal: 24,
             paddingTop: 16,

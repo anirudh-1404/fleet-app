@@ -191,6 +191,7 @@ export default function ModuleSelectionScreen({ navigation }) {
           width: "100%",
           alignSelf: "center",
         }}
+        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
       >
         {/* Title & Greeting */}
